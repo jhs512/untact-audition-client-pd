@@ -1,0 +1,206 @@
+<template>
+<ion-page>
+  <ion-content :fullscreen="true">
+    
+  <ion-refresher slot="fixed" @ionRefresh="doRefresh()">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    
+
+    <div v-if="globalShare.isLogined" class="flex flex-col min-h-screen mb-20">
+    
+    <TitleBar title="Audictionary">
+          <div class="btn-menu absolute top-1/2 right-2" @click="setOpen(true, $event)">
+             <ion-button slots ="icon-only" fill="clear" color="dark" class="relative">
+              <ion-icon :icon="menuOutline" ></ion-icon>          
+                <ion-popover css-class="pop-over-style" :is-open="isOpenRef" :event="eventRef" :translucent="true" :onDidDismiss="setClose(false)">
+                  <Popover></Popover>
+                </ion-popover>
+               </ion-button>
+          </div>
+    </TitleBar>    
+   
+
+    <div id="list" class="flex flex-col font-roboto">
+    <div class="recruit-list text-white container mx-auto" v-bind:key="recruit.id" v-for="recruit in state.recruits">
+      <div class="ml-4 mt-2 text-xs">NEW 오디션 : 방금 올라온 공고</div>
+      <div class="mt-2 text-center text-xl">{{recruit.title}}</div>
+      <div class="mt-1 text-center text-xs">{{recruit.body}}</div>
+      <div class="flex my-8 justify-center">
+        <router-link :to="`/usr/recruit/detail?id=${recruit.id}`">
+        <ion-button  color="light" size="small" fill="outline">
+          공고보기
+        </ion-button>
+        </router-link>
+       
+      </div>
+      <div v-if="recruit.extra != null" class="mx-4 mb-4">  
+      <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="object-contain mx-auto">
+      </div>
+    </div>
+    </div>
+
+  </div>
+
+<ion-infinite-scroll threshold="100px" id="infinite-scroll" @ionInfinite="loadData($event)">
+        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data...">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+</ion-content>
+
+
+    <div v-if="globalShare.isLogined" class="w-full flex container mx-auto">
+      
+    <BottomBar>
+    </BottomBar>
+    </div>
+    
+
+</ion-page>
+
+</template>
+
+<script lang="ts">
+import { defineComponent, getCurrentInstance, watch, reactive, onMounted, ref } from 'vue'
+import { IRecruit } from '../types/'
+import { MainApi, useMainApi } from '../apis/'
+import { IonContent, IonItem ,IonPage,IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonRouterOutlet, popoverController } from '@ionic/vue';
+import { menuOutline } from 'ionicons/icons'
+
+import TitleBar from '../components/TitleBar.vue';
+import BottomBar from '../components/BottomBar.vue';
+
+import Popover from './popover.vue'
+
+import './global.css'
+import router from '@/router';
+export default defineComponent({
+  components: { 
+    TitleBar,
+    BottomBar,
+    IonContent,
+    IonPage,
+    IonRefresher,
+    IonRefresherContent,
+    IonTabs,
+    IonTabBar,
+    IonIcon,
+    IonTabButton,
+    IonLabel,
+    IonBadge,
+    IonItem,
+    IonButton,
+    IonPopover,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    Popover
+    },
+  name: 'MainPage',
+  props:{
+    globalShare:{
+      type:Object,
+      required:true
+    }
+  },
+  setup(props) {
+      const mainApi:MainApi = useMainApi();
+      if ( props.globalShare.isLogined == false ) {
+        router.replace('/');
+      }
+    
+    let limit = 2;
+    let isAllLoaded = false;
+
+      const state = reactive({
+      recruits: [] as IRecruit[]
+      });
+
+    function loadRecruits(limit:number) {
+      mainApi.recruit_list(limit)
+      .then(axiosResponse => {
+        state.recruits = axiosResponse.data.body.recruits;
+        if(axiosResponse.data.body.isAllLoaded == true){
+          isAllLoaded = true;
+        }
+      });
+    }
+
+    onMounted(() => {
+      loadRecruits(2);
+    });
+
+    
+    const isOpenRef = ref(false);
+    const eventRef = ref();
+    const setOpen = (states: boolean, event?: Event) => {
+      eventRef.value = event; 
+      isOpenRef.value = states;
+    }
+    const setClose = ( states: boolean) => {
+      isOpenRef.value = states;
+    }
+
+     const doRefresh = () => {
+        window.location.reload();
+    }
+
+   async function loadData(event:any){
+      await wait(500);
+      event.target.complete();
+      limit = limit + 2;
+      addData(limit);
+      if ( isAllLoaded ) {
+        event.target.setAttribute('disabled' , 'true');
+      }
+    }
+    
+    function addData(limit:number){
+      loadRecruits(limit);
+    }
+
+    async function wait(time:any) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve('');
+        }, time);
+      });
+    }
+  
+    return {
+      state,
+      menuOutline,
+      eventRef,
+      isOpenRef,
+      setOpen,
+      setClose,
+      doRefresh,
+      loadData
+    }
+  }
+})
+
+</script>
+
+<style scoped>
+.recruit-list:nth-child(odd) {
+  background-color:#50555C;
+}
+.recruit-list:nth-child(even) {
+  background-color:#C4C4C4;
+}
+.btn-menu {
+  transform:translateY(-50%);
+}
+.btn-detail {
+  border:2px solid #FFFFFF;
+}
+.bg-btn{
+  background-color:#DADADA;
+}
+.bg-line{
+  background-color:black;
+  height:5px;
+  width:135px;
+  border-radius:10px;
+}
+</style>

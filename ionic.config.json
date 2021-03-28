@@ -1,0 +1,7 @@
+{
+  "name": "Audictionary_pd",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
