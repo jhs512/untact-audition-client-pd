@@ -66,16 +66,13 @@ export default defineComponent({
     },
   name: 'RecruitDetailPage',
   props:{
-    globalShare:{
-      type:Object,
-      required:true
-    },
     id: {
       type: Number,
       required:true
     }
   },
   setup(props) {
+    const globalState = useGlobalShare();
       const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
       const mainApi:MainApi = useMainApi();
       

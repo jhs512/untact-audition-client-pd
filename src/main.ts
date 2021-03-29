@@ -25,9 +25,9 @@ import '@ionic/vue/css/text-transformation.css';
 import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
 
+import router from './router'
 /* Theme variables */
 import './theme/variables.css';
-
 import './index.css'
 
 // MainApi 불러오기
@@ -38,8 +38,6 @@ import { mainApi, mainApiSymbol } from './apis/'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret, fas, faBars, faHome, faSearch, faComment, faUser, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import router from './router'
-
 
 library.add( faUserSecret );
 library.add( fas );
@@ -50,7 +48,7 @@ library.add( faComment );
 library.add( faUser );
 library.add( faArrowLeft );
 
-const app = createApp(App, {globalShare});
+const app = createApp(App);
   
   app.component('FormRow', FormRow);
   app.component('TitleBar', TitleBar);
@@ -58,7 +56,7 @@ const app = createApp(App, {globalShare});
   app.component('FontAweSomeIcon', FontAwesomeIcon);
   app.use(IonicVue);
   app.use(router);
-  app.provide(globalShareSymbol,globalShare);
+  app.provide(globalShareSymbol,globalShare());
   app.provide(mainApiSymbol, mainApi());
 
   router.isReady().then(() => {

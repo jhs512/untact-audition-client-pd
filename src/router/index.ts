@@ -1,4 +1,4 @@
-import { globalShare } from "@/stores";
+import { useGlobalStateOnOutsideOfVue } from "@/stores";
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 
@@ -12,6 +12,7 @@ import JoinSelectPage from '../pages/pd/JoinSelectPage.vue'
 import JoinTosPage from '../pages/pd/JoinTosPage.vue'
 
 import JoinPdPage from '../pages/pd/JoinPdPage.vue' 
+import JoinPdEmailCertPage from '../pages/pd/JoinPdEmailCertPage.vue' 
 import LoginPdPage from '../pages/pd/LoginPdPage.vue'
 
 import PdInfoPage from '../pages/pd/PdInfoPage.vue'
@@ -23,70 +24,76 @@ import PdFindLoginPwPage from '../pages/pd/FindLoginPwPdPage.vue'
 import MainPage from '../pages/MainPage.vue'
 import OpenPage from '../pages/OpenPage.vue'
 
-import Tabs from '../views/Tabs.vue'
 
 
+const globalState = useGlobalStateOnOutsideOfVue();
 
 const routes: Array<RouteRecordRaw>= [
   {
   path: '/',
-  component: OpenPage,
-  props: (route:any) => ({ globalShare })
+  component: () => globalState.isLogined ? import ('@/pages/MainPage.vue') : import('@/pages/OpenPage.vue') ,
+  props: (route:any) => ({ globalState })
   },
   {
     path: '/main',
-    component: MainPage,
-    props: (route:any) => ({ globalShare })
+    component: () => globalState.isLogined ? import ('@/pages/MainPage.vue') : import('@/pages/OpenPage.vue'),
+    props: (route:any) => ({ globalState })
   },
   {
   path: '/usr/member/joinTos',
   component: JoinTosPage,
-  props: (route:any) => ({ globalShare })
+  props: (route:any) => ({ globalState })
   },
     {
       path: '/usr/pd/info',
       component: PdInfoPage,
-      props: (route:any) => ({ globalShare })
+      props: (route:any) => ({ globalState })
     },
     {
       path: '/usr/pd/modify',
       component: PdModifyPage,
-      props: (route:any) => ({ globalShare })
+      props: (route:any) => ({ globalState })
   },
   {
     path: '/usr/pd/join',
     component: JoinPdPage,
-    props: (route:any) => ({ globalShare })
+    props: (route:any) => ({ globalState })
+    },
+
+  {
+    path: '/usr/pd/cert',
+    component: JoinPdEmailCertPage,
+    props: (route:any) => ({ globalState })
     },
     {
       path: '/usr/pd/login',
       component: LoginPdPage,
-      props: (route:any) => ({ globalShare })
+      props: (route:any) => ({ globalState })
     },
   {
     path: '/usr/pd/findSelect',
     component: FindSelectPage,
-    props: (route:any) => ({ globalShare })
+    props: (route:any) => ({ globalState })
   },
   {
     path: '/usr/pd/findLoginId',
     component: PdFindLoginIdPage,
-    props: (route:any) => ({ globalShare })
+    props: (route:any) => ({ globalState })
   },
   {
     path: '/usr/pd/findLoginPw',
     component: PdFindLoginPwPage,
-    props: (route:any) => ({ globalShare })
+    props: (route:any) => ({ globalState })
   },
   {
   path: '/usr/recruit/write',
   component: WriteRecruitPage,
-  props: (route:any) => ({ globalShare })
+  props: (route:any) => ({ globalState })
   },
   {
   path: '/usr/recruit/detail',
   component: RecruitDetailPage,
-  props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalShare })
+  props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
   }
 ]
 
@@ -97,7 +104,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  globalShare.fullPath = to.fullPath;
+  globalState.fullPath = to.fullPath;
   next();
 });
 

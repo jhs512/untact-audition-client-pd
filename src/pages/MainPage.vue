@@ -5,9 +5,8 @@
   <ion-refresher slot="fixed" @ionRefresh="doRefresh()">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    
 
-    <div v-if="globalShare.isLogined" class="flex flex-col min-h-screen mb-20">
+    <div v-if="globalState.isLogined" class="flex flex-col min-h-screen">
     
     <TitleBar title="Audictionary">
           <div class="btn-menu absolute top-1/2 right-2" @click="setOpen(true, $event)">
@@ -42,14 +41,14 @@
 
   </div>
 
-<ion-infinite-scroll threshold="100px" id="infinite-scroll" @ionInfinite="loadData($event)">
+      <ion-infinite-scroll threshold="200px" id="infinite-scroll" @ionInfinite="loadData($event)" class='mt-4'>
         <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data...">
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
+
 </ion-content>
 
-
-    <div v-if="globalShare.isLogined" class="w-full flex container mx-auto">
+    <div v-if="globalState.isLogined" class="w-full flex container mx-auto">
       
     <BottomBar>
     </BottomBar>
@@ -61,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, watch, reactive, onMounted, ref } from 'vue'
+import { defineComponent, reactive, onMounted, ref } from 'vue'
 import { IRecruit } from '../types/'
 import { MainApi, useMainApi } from '../apis/'
 import { IonContent, IonItem ,IonPage,IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonRouterOutlet, popoverController } from '@ionic/vue';
@@ -74,6 +73,7 @@ import Popover from './popover.vue'
 
 import './global.css'
 import router from '@/router';
+import { useGlobalShare } from '@/stores';
 export default defineComponent({
   components: { 
     TitleBar,
@@ -96,17 +96,12 @@ export default defineComponent({
     Popover
     },
   name: 'MainPage',
-  props:{
-    globalShare:{
-      type:Object,
-      required:true
-    }
-  },
   setup(props) {
-      const mainApi:MainApi = useMainApi();
-      if ( props.globalShare.isLogined == false ) {
-        router.replace('/');
-      }
+    const globalState = useGlobalShare();
+    
+    
+    const mainApi:MainApi = useMainApi();
+      
     
     let limit = 2;
     let isAllLoaded = false;
@@ -128,7 +123,6 @@ export default defineComponent({
     onMounted(() => {
       loadRecruits(2);
     });
-
     
     const isOpenRef = ref(false);
     const eventRef = ref();
@@ -174,7 +168,8 @@ export default defineComponent({
       setOpen,
       setClose,
       doRefresh,
-      loadData
+      loadData,
+      globalState
     }
   }
 })

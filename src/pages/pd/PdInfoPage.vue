@@ -10,25 +10,25 @@
 
     <div class="flex flex-col mt-4 container mx-auto border-t border-b py-2">
       <div class="flex flex-col mx-auto text-center">
-        <span>{{globalShare.loginedMember.name}}</span>
-        <span>{{globalShare.loginedMember.email}}</span>
-        <span>{{globalShare.loginedMember.cellPhoneNo}}</span>
-        <span>{{globalShare.loginedMember.address}}</span>
-        <span>{{globalShare.loginedMember.jobPosition}}</span>
-        <span>{{globalShare.loginedMember.corpName}}</span>
+        <span>{{globalState.loginedMember.name}}</span>
+        <span>{{globalState.loginedMember.email}}</span>
+        <span>{{globalState.loginedMember.cellPhoneNo}}</span>
+        <span>{{globalState.loginedMember.address}}</span>
+        <span>{{globalState.loginedMember.jobPosition}}</span>
+        <span>{{globalState.loginedMember.corpName}}</span>
 
-      <div v-if="globalShare.loginedMember.profileImgUrl != null" class="img-container mx-4 mb-4 p-4 mt-6">  
-        <img :src="globalShare.loginedMember.profileImgUrl" class="mx-auto">
+      <div v-if="globalState.loginedMember.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
+        <img :src="globalState.loginedMember.extra__thumbImg" class="mx-auto">
       </div>
 
         <router-link to="/usr/pd/modify"><div class="btn-modify border-2 mt-2 border-black text-xs">프로필 편집</div></router-link>
 
         <div class="mt-2">
           <form action="" >
-            <input type="hidden" ref="loginedMemberIdRef" :value="globalShare.loginedMember.id">
+            <input type="hidden" ref="loginedMemberIdRef" :value="globalState.loginedMember.id">
             <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)">
           </form>
-          <div class="my-6" v-on:click="logout">로그아웃</div>
+          <div class="my-6" v-on:click="globalState.logout">로그아웃</div>
 
         </div>
       </div>
@@ -46,6 +46,7 @@ import { IonPage, IonContent, IonIcon, alertController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 
 import { MainApi, useMainApi } from '../../apis'
+import { useGlobalShare } from '@/stores'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -54,13 +55,8 @@ export default defineComponent({
     IonContent,
     IonIcon
   },
-  props: {
-    globalShare: {
-      type: Object,
-      required: true
-    }
-  },
   setup(props) {
+    const globalState = useGlobalShare();
     const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = useMainApi();
 
@@ -91,7 +87,7 @@ export default defineComponent({
           localStorage.removeItem("loginedMemberCorpName");
           localStorage.removeItem("loginedMemberCorpType");
 
-          props.globalShare.loginedMember = {
+          globalState.loginedMember = {
             authKey:null,
             id:null,
             name:null,
@@ -100,7 +96,8 @@ export default defineComponent({
             cellPhoneNo:null,
             jobPosition:null,
             corpName:null,
-            corpType:null
+            corpType:null,
+            profileImgUrl:null
           };
 
           router.replace('/');
@@ -120,7 +117,7 @@ export default defineComponent({
           localStorage.removeItem("loginedMemberCorpType");  
           localStorage.removeItem("loginedMemberProfileImgUrl");
 
-          props.globalShare.loginedMember = {
+          globalState.loginedMember = {
             authKey:null,
             id:null,
             name:null,
@@ -171,7 +168,8 @@ export default defineComponent({
      returnUpBackOutline,
      hisback,
      logout,
-     presentAlertConfirm
+     presentAlertConfirm,
+     globalState
    }
   }
 })

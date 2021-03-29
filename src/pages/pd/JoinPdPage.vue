@@ -23,7 +23,6 @@
 
         <FormRow title="휴대폰:">
           <input ref="cellPhoneNoElRef" type="text" class="p-1 w-full mt-2">
-          <div class="btn-cert text-10px right-0 mr-1 px-3 absolute" v-on:click="cellPhoneCert">인증하기</div>
         </FormRow>
 
         <FormRow title="이메일(아이디):">
@@ -61,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, ref } from 'vue'
+import { defineComponent, getCurrentInstance, reactive, ref } from 'vue'
 import { IonPage, IonContent, IonIcon } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import { Router } from 'vue-router';
@@ -69,6 +68,7 @@ import { Router } from 'vue-router';
 import { MainApi, useMainApi } from '../../apis'
 
 import { sha256 } from 'js-sha256'
+import { useGlobalShare } from '@/stores';
 export default defineComponent({
   name: 'JoinPdPage',
   components: {
@@ -76,12 +76,9 @@ export default defineComponent({
     IonContent,
     IonIcon
   },
-  props: {
-    globalShare: {
-      type: Object
-    }
-  },
   setup(props) {
+    const globalState = useGlobalShare();
+    
     const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = useMainApi();
 
@@ -96,24 +93,7 @@ export default defineComponent({
     const loginPwCfElRef = ref<HTMLInputElement>();
     const loginPwRealElRef = ref<HTMLInputElement>();
     
-    let isCellPhoneCert = false;
-    let isEmailCert = false;
-
-    function cellPhoneCert() {
-      const cellPhoneNoEl = cellPhoneNoElRef.value;
-
-      if ( cellPhoneNoEl == null ){
-        alert("전화번호를 입력해 주세요.");
-        return;
-      }
-      if( cellPhoneNoEl.value.length == 0 ){
-        alert("이메일을 입력해주세요.");
-        return;
-      }
-
-      alert("인증되었습니다.")
-      isCellPhoneCert = true;
-    }
+    
 
     function emailCert() {
       const emailEl = emailElRef.value;
@@ -127,22 +107,18 @@ export default defineComponent({
         return;
       }
       
-      alert("인증되었습니다.");
-      isEmailCert = true;
+       mainApi.pd_emailCert(emailEl.value)
+        .then(axiosResponse => {
+          alert(axiosResponse.data.msg);
+          if ( axiosResponse.data.fail ) {
+            return;
+          }
+
+        });
+
     }
-
-
     
     function checkAndJoin() {
-      if ( !!! isCellPhoneCert ) {
-        alert("휴대폰이 인증되지 않았습니다.");
-        return;
-      }
-      if ( !!! isEmailCert ) {
-        alert("이메일이 인증되지 않았습니다.");
-        return;
-      }
-      
       // 이름 체크
       if ( nameElRef.value == null ) {
         return;
@@ -215,6 +191,15 @@ export default defineComponent({
         return;
       }
 
+      if ( localStorage.getItem("isEmailCert") != "true" ) {
+        alert("이메일이 인증되지 않았습니다.");
+        return;
+      }
+      if ( localStorage.getItem("emailCert") != emailEl.value ){
+        alert("인증된 이메일이 아닙니다.");
+        return;
+      }
+
       // 주소 체크
       if ( addressElRef.value == null ) {
         return;
@@ -279,9 +264,10 @@ export default defineComponent({
       }
       loginPwReal.value = sha256(loginPwEl.value);
 
+      
+
       join(nameEl.value, regNumber, gender, cellPhoneNoEl.value, emailEl.value, addressEl.value, jobPositionEl.value, loginPwReal.value);
-      isCellPhoneCert = false;
-      isEmailCert = false;
+      
     }
 
     function join(name:String, regNumber:String, gender:String, cellPhoneNo:String, email:String, address:String, jobPosition:String, loginPw:String) {
@@ -291,7 +277,8 @@ export default defineComponent({
           if ( axiosResponse.data.fail ) {
             return;
           }
-
+          localStorage.removeItem("isEmailCert");
+          localStorage.removeItem("emailCert");
           router.replace('/');
     
         });
@@ -301,7 +288,6 @@ export default defineComponent({
      router.back();
     }
     return {
-    cellPhoneCert,
     emailCert,
     checkAndJoin,
     nameElRef,
@@ -329,6 +315,7 @@ input {
 .btn-cert{
   background-color:#C4C4C4;
   top:58%;
+  cursor:pointer;
 }
 .btn-next {
   background-color:#C4C4C4;

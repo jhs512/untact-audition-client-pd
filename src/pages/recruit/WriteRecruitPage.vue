@@ -17,7 +17,7 @@
 
     <div class="container mx-auto mt-8 flex flex-col flex-1">
       <form action="" v-on:submit.prevent="checkAndWrite" class="mx-4">
-        <input ref="loginedMemberIdElRef" type="hidden" :value="globalShare.loginedMember.id">
+        <input ref="loginedMemberIdElRef" type="hidden" :value="globalState.loginedMember.id">
         
       <section v-show="state.pageNum == 1">
         <FormRow title="제목:">
@@ -177,7 +177,7 @@ export default defineComponent({
     IonLabel,    
   },
   props: {
-    globalShare: {
+    globalState: {
       type: Object,
       required:true
     }
@@ -510,7 +510,7 @@ export default defineComponent({
 
       const startWrite = (genFileIdsStr:string) => {
       
-      write( props.globalShare.loginedMember.id , 3, titleEl.value, bodyEl.value, roleTypeEl.value, locationEl.value, periodEl.value, deadline , managerEl.value, 
+      write( props.globalState.loginedMember.id , 3, titleEl.value, bodyEl.value, roleTypeEl.value, locationEl.value, periodEl.value, deadline , managerEl.value, 
       artworkNameEl.value, genreEl.value, corpEl.value, directorEl.value, artworkEtcEl.value,
       roleRealNameEl.value, roleNameEl.value, payEl.value, roleAgeEl.value, roleGenderEl, roleJobEl.value, roleScriptEl, roleSceneCountEl.value, roleShootingCountEl.value, actingRoleEtcEl.value,
       genFileIdsStr);

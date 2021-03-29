@@ -35,6 +35,7 @@ import { menuOutline } from 'ionicons/icons'
 import TitleBar from '../components/TitleBar.vue';
 import BottomBar from '../components/BottomBar.vue';
 import router from '@/router';
+import { useGlobalShare } from '@/stores';
 
 
 export default defineComponent({
@@ -46,17 +47,15 @@ export default defineComponent({
     },
   name: 'OpenPage',
   props:{
-    globalShare:{
+    globalState:{
       type:Object,
       required:true
     }
   },
   setup(props) {
+    const globalState = useGlobalShare();
+    console.log(globalState);
       const mainApi:MainApi = useMainApi();
-      
-      if ( props.globalShare.isLogined ) {
-        router.replace('/main');
-      }
     
     return {
       menuOutline

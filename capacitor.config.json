@@ -9,9 +9,5 @@
       "launchShowDuration": 0
     }
   },
-  "cordova": {},
-  "server": {
-    "url": "http://172.30.1.15:5555",
-    "cleartext": true
-  }
+  "cordova": {}
 }

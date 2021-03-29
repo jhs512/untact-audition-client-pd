@@ -41,6 +41,7 @@ import { IonContent,  IonPage, IonIcon } from '@ionic/vue';
 import { returnUpBackOutline } from 'ionicons/icons'
 import { MainApi, useMainApi } from '../../apis'
 import { sha256 } from 'js-sha256'
+import { useGlobalShare } from '@/stores';
 
 export default defineComponent({
   name: 'LoginPdPage',
@@ -49,13 +50,8 @@ export default defineComponent({
     IonPage,
     IonIcon
   },
-  props: {
-    globalShare: {
-      type: Object,
-      required: true
-    }
-  },
   setup(props) {
+    const globalState = useGlobalShare();
     const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = useMainApi();
 
@@ -127,7 +123,7 @@ export default defineComponent({
           localStorage.setItem("loginedMemberProfileImgUrl", loginedPd.extra__thumbImg);
 
 
-          props.globalShare.loginedMember = {
+          globalState.loginedMember = {
             authKey,
             id:loginedPd.id,
             name:loginedPd.name,
@@ -139,9 +135,6 @@ export default defineComponent({
             corpType:loginedPd.corpType,
             profileImgUrl:loginedPd.extra__thumbImg
           };
-          
-
-         props.globalShare.member = axiosResponse.data.body.pd;
 
           router.replace('/main');
     

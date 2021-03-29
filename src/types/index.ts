@@ -4,7 +4,15 @@ export interface IEntity {
   updateDate:string;
 }
 
+export interface GlobalState {
+  fullPath:string;
+  loginedMember:IPd;
+  isLogined:boolean;
+}
+
 export interface IPd extends IEntity {
+  authKey:string;
+  id:number;
   loginId:string;
   authLevel:number;
   name:string;

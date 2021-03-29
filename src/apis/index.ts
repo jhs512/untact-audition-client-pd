@@ -94,6 +94,11 @@ export interface MainApi__pd_doJoin__IResponseBody extends Base__IResponseBodyTy
     id: Number
   };
 }
+export interface MainApi__pd_emailCert__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    isCert: boolean
+  };
+}
 export interface MainApi__pd_doLogin__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     authKey: string,
@@ -193,12 +198,20 @@ export class MainApi extends HttpClient {
     return this.postByForm<MainApi__pd_doJoin__IResponseBody>(`/usr/pd/doJoin`,{name, regNumber, gender, cellPhoneNo, email, address, jobPosition, loginPw});
   }
 
+  public pd_emailCert(email:string) {
+    return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/emailCert?email=${email}` );
+  }
+  
+  public pd_cert(email:string) {
+    return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/cert?email=${email}` );
+  }
+
   public pd_doLogin( email:String, loginPw:String) {
     return this.postByForm<MainApi__pd_doLogin__IResponseBody>(`/usr/pd/doLogin`,{ email, loginPw });
   }
 
-  public pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, genFileIdsStr:string) {
-    return this.postByForm<MainApi__pd_doModify__IResponseBody>(`/usr/pd/doModify`,{ loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, genFileIdsStr });
+  public pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String ) {
+    return this.postByForm<MainApi__pd_doModify__IResponseBody>(`/usr/pd/doModify`,{ loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName });
   }
   public pd_doFindLoginId( name:String, regNumber:String ) {
     return this.postByForm<MainApi__pd_doFindLoginId__IResponseBody>(`/usr/pd/doFindLoginId`,{ name, regNumber });
@@ -242,9 +255,9 @@ export class MainApi extends HttpClient {
     );
   }
 
-  public common_pdGenFile_doUpload(file:File) {
+  public common_pdGenFile_doUpload(file:File,id:string) {
     const formDate = new FormData();
-    formDate.append("file__pd__0__common__attachment__1", file);
+    formDate.append("file__pd__"+id+"__common__attachment__1", file);
     return this.post<MainApi__common_genFile_doUpload__IResponseBody>(
       `/common/genFile/doUpload`, formDate
     );

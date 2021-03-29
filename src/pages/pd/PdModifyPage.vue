@@ -10,10 +10,10 @@
     <div class="flex flex-col mt-4 container mx-auto">
       
       <form action="" v-on:submit.prevent="checkAndModify" class="mx-4">
-        <input type="hidden" ref="loginedMemberIdRef" :value="globalShare.loginedMember.id">
+        <input type="hidden" ref="loginedMemberIdRef" :value="globalState.loginedMember.id">
 
         <FormRow title="이름:">
-          <input type="text" ref="nameElRef" :value="globalShare.loginedMember.name" class="w-full">
+          <input type="text" ref="nameElRef" :value="globalState.loginedMember.name" class="w-full">
         </FormRow>
 
         <FormRow title="비밀번호:">
@@ -22,19 +22,19 @@
         </FormRow>
 
         <FormRow title="주소:">
-          <input type="text" ref="addressElRef" :value="globalShare.loginedMember.address" class="w-full">
+          <input type="text" ref="addressElRef" :value="globalState.loginedMember.address" class="w-full">
         </FormRow>
 
         <FormRow title="전화번호:">
-          <input type="text" ref="cellPhoneNoElRef" :value="globalShare.loginedMember.cellPhoneNo" class="w-full">
+          <input type="text" ref="cellPhoneNoElRef" :value="globalState.loginedMember.cellPhoneNo" class="w-full">
         </FormRow>
 
         <FormRow title="직급:">
-          <input type="text" ref="jobPositionElRef" :value="globalShare.loginedMember.jobPosition" class="w-full">
+          <input type="text" ref="jobPositionElRef" :value="globalState.loginedMember.jobPosition" class="w-full">
         </FormRow>
 
         <FormRow title="회사:">
-          <input type="text" ref="corpNameElRef" :value="globalShare.loginedMember.corpName" class="w-full">
+          <input type="text" ref="corpNameElRef" :value="globalState.loginedMember.corpName" class="w-full">
         </FormRow>
 
         <FormRow title="프로필 이미지:">
@@ -65,7 +65,7 @@ export default defineComponent({
     IonInput
   },
   props: {
-    globalShare: {
+    globalState: {
       type: Object,
       required: true
     }
@@ -135,38 +135,34 @@ export default defineComponent({
       }
 
     
-      const startModify = (genFileIdsStr:string) => {
-        
-          modify(loginedMemberId.value, nameEl.value, loginPwRealEl.value, addressEl.value,  cellPhoneNoEl.value, jobPositionEl.value, corpNameEl.value, genFileIdsStr );
-        
-      };
-
-      const startFileUpload = (onSuccess:Function) => {
-        if ( !!!pdProfileImg ) {
-          onSuccess("");
+      const startModify = () => {
+        modify(loginedMemberId.value, nameEl.value, loginPwRealEl.value, addressEl.value,  cellPhoneNoEl.value, jobPositionEl.value, corpNameEl.value );
+        if ( pdProfileImg != null ) {
+          doFileUpload();
           return;
         }
-        
-        mainApi.common_pdGenFile_doUpload(pdProfileImg)
+      }
+         
+        function doFileUpload(){
+        if(loginedMemberId == null){
+          return;
+        }
+        mainApi.common_pdGenFile_doUpload(pdProfileImg,loginedMemberId.value)
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
               alert(axiosResponse.data.msg);
               return;
             }
             else {
-              onSuccess(axiosResponse.data.body.genFileIdsStr);
+              
             }
           });
-
-      
-
-      };
-      startFileUpload(startModify);
-  
+        }
+      startModify();     
     }  
 
-    function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string, genFileStr:string ){
-         mainApi.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName, genFileStr )
+    function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string ){
+         mainApi.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName )
         .then(axiosResponse => {
           alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
@@ -204,7 +200,7 @@ export default defineComponent({
           localStorage.setItem("loginedMemberProfileImgUrl", loginedPd.extra__thumbImg);
   
 
-          props.globalShare.loginedMember = {
+          props.globalState.loginedMember = {
             authKey,
             id:loginedPd.id,
             name:loginedPd.name,
@@ -213,10 +209,11 @@ export default defineComponent({
             cellPhoneNo:loginedPd.cellPhoneNo,
             jobPosition:loginedPd.jobPosition,
             corpName:loginedPd.corpName,
-            corpType:loginedPd.corpType
+            corpType:loginedPd.corpType,
+            profileImgUrl:loginedPd.extra__thumbImg
           };
 
-          router.push('/usr/pd/info');
+          router.replace('/usr/pd/info');
     });
       }
 
