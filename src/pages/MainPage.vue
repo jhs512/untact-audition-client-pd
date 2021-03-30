@@ -12,7 +12,7 @@
           <div class="btn-menu absolute top-1/2 right-2" @click="setOpen(true, $event)">
              <ion-button slots ="icon-only" fill="clear" color="dark" class="relative">
               <ion-icon :icon="menuOutline" ></ion-icon>          
-                <ion-popover css-class="pop-over-style" :is-open="isOpenRef" :event="eventRef" :translucent="true" :onDidDismiss="setClose(false)">
+                <ion-popover css-class="pop-over-style" :is-open="isOpenRef" :translucent="true" :onDidDismiss="setClose(false)">
                   <Popover></Popover>
                 </ion-popover>
                </ion-button>
@@ -31,8 +31,8 @@
           공고보기
         </ion-button>
         </router-link>
-       
       </div>
+
       <div v-if="recruit.extra != null" class="mx-4 mb-4">  
       <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="object-contain mx-auto">
       </div>
@@ -48,8 +48,7 @@
 
 </ion-content>
 
-    <div v-if="globalState.isLogined" class="w-full flex container mx-auto">
-      
+    <div class="w-full flex container mx-auto">
     <BottomBar>
     </BottomBar>
     </div>
@@ -63,11 +62,8 @@
 import { defineComponent, reactive, onMounted, ref } from 'vue'
 import { IRecruit } from '../types/'
 import { MainApi, useMainApi } from '../apis/'
-import { IonContent, IonItem ,IonPage,IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonRouterOutlet, popoverController } from '@ionic/vue';
+import { IonContent, IonItem ,IonPage,IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue';
 import { menuOutline } from 'ionicons/icons'
-
-import TitleBar from '../components/TitleBar.vue';
-import BottomBar from '../components/BottomBar.vue';
 
 import Popover from './popover.vue'
 
@@ -75,9 +71,7 @@ import './global.css'
 import router from '@/router';
 import { useGlobalShare } from '@/stores';
 export default defineComponent({
-  components: { 
-    TitleBar,
-    BottomBar,
+  components: {
     IonContent,
     IonPage,
     IonRefresher,
@@ -98,11 +92,8 @@ export default defineComponent({
   name: 'MainPage',
   setup(props) {
     const globalState = useGlobalShare();
-    
-    
     const mainApi:MainApi = useMainApi();
       
-    
     let limit = 2;
     let isAllLoaded = false;
 
@@ -125,13 +116,12 @@ export default defineComponent({
     });
     
     const isOpenRef = ref(false);
-    const eventRef = ref();
-    const setOpen = (states: boolean, event?: Event) => {
-      eventRef.value = event; 
-      isOpenRef.value = states;
+    
+    const setOpen = (isOpened: boolean) => {
+      isOpenRef.value = isOpened;
     }
-    const setClose = ( states: boolean) => {
-      isOpenRef.value = states;
+    const setClose = ( isOpened: boolean) => {
+      isOpenRef.value = isOpened;
     }
 
      const doRefresh = () => {
@@ -163,7 +153,6 @@ export default defineComponent({
     return {
       state,
       menuOutline,
-      eventRef,
       isOpenRef,
       setOpen,
       setClose,

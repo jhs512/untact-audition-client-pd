@@ -12,9 +12,6 @@ import { defineComponent } from 'vue'
 import { IonList, IonItemOptions, IonItemOption, IonItem, IonItemSliding, IonLabel } from '@ionic/vue'
 export default defineComponent({
   props: {
-    globalState: {
-      type: Object
-    },
     title: {
       type: String
     }

@@ -17,10 +17,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance } from 'vue'
+import { defineComponent } from 'vue'
 import { IonPage, IonContent, IonIcon } from'@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import { Router } from 'vue-router'
+import router from '@/router'
 
 export default defineComponent({
   name: 'FindSelectPage',
@@ -30,13 +30,9 @@ export default defineComponent({
     IonIcon
   },
   props: {
-    globalShare: {
-      type: Object
-    }
+    
   },
   setup(props) {
-
-  const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
 
   function hisback() {
      router.back();

@@ -41,10 +41,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, getCurrentInstance } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { IonPage, IonContent, IonIcon, alertController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-
+import router from '@/router'
 import { MainApi, useMainApi } from '../../apis'
 import { useGlobalShare } from '@/stores'
 
@@ -57,7 +57,6 @@ export default defineComponent({
   },
   setup(props) {
     const globalState = useGlobalShare();
-    const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = useMainApi();
 
     const loginedMemberIdRef = ref<HTMLInputElement>();
@@ -77,59 +76,11 @@ export default defineComponent({
             return;
           }
 
-          localStorage.removeItem("authKey");
-          localStorage.removeItem("loginedMemberId");
-          localStorage.removeItem("loginedMemberName");
-          localStorage.removeItem("loginedMemberEmail");
-          localStorage.removeItem("loginedMemberCellPhoneNo");
-          localStorage.removeItem("loginedMemberAddress");
-          localStorage.removeItem("loginedMemberJobPosition");
-          localStorage.removeItem("loginedMemberCorpName");
-          localStorage.removeItem("loginedMemberCorpType");
-
-          globalState.loginedMember = {
-            authKey:null,
-            id:null,
-            name:null,
-            address:null,
-            email:null,
-            cellPhoneNo:null,
-            jobPosition:null,
-            corpName:null,
-            corpType:null,
-            profileImgUrl:null
-          };
-
+          globalState.logout();
+          
           router.replace('/');
     });
 
-    }
-
-    function logout(){
-          localStorage.removeItem("authKey");
-          localStorage.removeItem("loginedMemberId");
-          localStorage.removeItem("loginedMemberName");
-          localStorage.removeItem("loginedMemberEmail");
-          localStorage.removeItem("loginedMemberCellPhoneNo");
-          localStorage.removeItem("loginedMemberAddress");
-          localStorage.removeItem("loginedMemberJobPosition");
-          localStorage.removeItem("loginedMemberCorpName");
-          localStorage.removeItem("loginedMemberCorpType");  
-          localStorage.removeItem("loginedMemberProfileImgUrl");
-
-          globalState.loginedMember = {
-            authKey:null,
-            id:null,
-            name:null,
-            address:null,
-            email:null,
-            cellPhoneNo:null,
-            jobPosition:null,
-            corpName:null,
-            corpType:null,
-            profileImgUrl:null
-          };
-          router.replace('/');
     }
 
     function hisback() {
@@ -167,7 +118,6 @@ export default defineComponent({
      loginedMemberIdRef,
      returnUpBackOutline,
      hisback,
-     logout,
      presentAlertConfirm,
      globalState
    }

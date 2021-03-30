@@ -31,11 +31,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, reactive } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import { IonPage, IonContent, IonIcon } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 
-import { Router } from 'vue-router'
+import router from '@/router'
 
 export default defineComponent({
   name: 'JoinTosPage',
@@ -45,12 +45,9 @@ export default defineComponent({
     IonIcon
   },
   props: {
-    globalShare: {
-      type: Object
-    }
+    
   },
   setup(props) {
-    const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
 
     const state = reactive({
       isCheckTos1: false,

@@ -49,7 +49,7 @@ library.add( faUser );
 library.add( faArrowLeft );
 
 const app = createApp(App);
-  
+
   app.component('FormRow', FormRow);
   app.component('TitleBar', TitleBar);
   app.component('BottomBar', BottomBar);
@@ -62,6 +62,6 @@ const app = createApp(App);
   router.isReady().then(() => {
     app.mount('#app');
   });
-
+  
 // 전역 라이브러리 등록
 app.config.globalProperties.$router = router;

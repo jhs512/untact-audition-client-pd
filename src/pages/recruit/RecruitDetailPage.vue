@@ -45,21 +45,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance,  reactive, onMounted } from 'vue'
+import { defineComponent,  reactive, onMounted } from 'vue'
 import { IonPage, IonContent, IonIcon } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import { Router } from 'vue-router'
+import router from '@/router'
 import { IRecruit, IArtwork, IActingRole } from '../../types'
 import { MainApi, useMainApi } from '../../apis'
-import TitleBar from '../../components/TitleBar.vue';
-import BottomBar from '../../components/BottomBar.vue';
 import { useGlobalShare } from '@/stores'
 
 
 export default defineComponent({
   components: { 
-    TitleBar,
-    BottomBar,
     IonPage,
     IonContent,
     IonIcon
@@ -72,8 +68,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const globalState = useGlobalShare();
-      const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
+      const globalState = useGlobalShare();
+      
       const mainApi:MainApi = useMainApi();
       
       

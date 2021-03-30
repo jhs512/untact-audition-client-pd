@@ -38,11 +38,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, ref, reactive, watch } from 'vue'
+import { defineComponent, ref, reactive } from 'vue'
 import { IonPage, IonContent, IonIcon } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import { MainApi, useMainApi } from '../../apis'
-import { Router } from 'vue-router'
+import router from '@/router'
 
 export default defineComponent({
   name: 'FindLoginIdPdPage',
@@ -52,13 +52,9 @@ export default defineComponent({
     IonIcon
   },
   props: {
-    globalShare: {
-      type: Object,
-      required: true
-    }
   },
   setup(props) {
-    const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
+    
     const mainApi:MainApi = useMainApi();
 
     const nameElRef = ref<HTMLInputElement>();

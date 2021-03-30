@@ -94,6 +94,16 @@ export interface MainApi__pd_doJoin__IResponseBody extends Base__IResponseBodyTy
     id: Number
   };
 }
+export interface MainApi__pd_emailDupCheck__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    
+  };
+}
+export interface MainApi__pd_sendEmail__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    
+  };
+}
 export interface MainApi__pd_emailCert__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     isCert: boolean
@@ -108,6 +118,11 @@ export interface MainApi__pd_doLogin__IResponseBody extends Base__IResponseBodyT
 export interface MainApi__pd_doModify__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     authKey: string,
+    pd: IPd
+  };
+}
+export interface MainApi__pd_doUpdate__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
     pd: IPd
   };
 }
@@ -198,20 +213,28 @@ export class MainApi extends HttpClient {
     return this.postByForm<MainApi__pd_doJoin__IResponseBody>(`/usr/pd/doJoin`,{name, regNumber, gender, cellPhoneNo, email, address, jobPosition, loginPw});
   }
 
-  public pd_emailCert(email:string) {
-    return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/emailCert?email=${email}` );
+  public pd_emailDupCheck(email:string) {
+    return this.get<MainApi__pd_emailDupCheck__IResponseBody>(`/usr/pd/emailDupCheck?email=${email}` );
+  }
+
+  public pd_sendEmail(email:string) {
+    return this.get<MainApi__pd_sendEmail__IResponseBody>(`/usr/pd/sendEmail?email=${email}` );
   }
   
-  public pd_cert(email:string) {
-    return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/cert?email=${email}` );
+  public pd_emailCert(email:string, key:string) {
+    return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/emailCert?email=${email}&key=${key}` );
   }
 
   public pd_doLogin( email:String, loginPw:String) {
     return this.postByForm<MainApi__pd_doLogin__IResponseBody>(`/usr/pd/doLogin`,{ email, loginPw });
   }
 
-  public pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String ) {
-    return this.postByForm<MainApi__pd_doModify__IResponseBody>(`/usr/pd/doModify`,{ loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName });
+  public pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, isFileUploaded:boolean ) {
+    return this.postByForm<MainApi__pd_doModify__IResponseBody>(`/usr/pd/doModify`,{ loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, isFileUploaded });
+  }
+
+  public pd_update(loginedMemberId:string) {
+    return this.postByForm<MainApi__pd_doUpdate__IResponseBody>(`/usr/pd/update`, {loginedMemberId} );
   }
   public pd_doFindLoginId( name:String, regNumber:String ) {
     return this.postByForm<MainApi__pd_doFindLoginId__IResponseBody>(`/usr/pd/doFindLoginId`,{ name, regNumber });

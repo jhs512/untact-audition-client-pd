@@ -2,32 +2,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, ref } from 'vue'
-import { Router } from 'vue-router';
-import { globalShare, useGlobalShare } from '../../stores/';
+import { useGlobalShare } from '@/stores';
+import { defineComponent } from 'vue'
+
 import { MainApi, useMainApi } from '../../apis'
 
 export default defineComponent({
   name: 'JoinPdEmailCertPage',
-  setup() {
+  props:{
+    email : {
+      type: String,
+      required: true
+    },
+    emailCertKey:{
+      type:String,
+      required:true
+    }
+  },
+  setup(props) {
+    const mainApi:MainApi = useMainApi();
     const globalState = useGlobalShare();
     
-    const mainApi:MainApi = useMainApi();
-    localStorage.setItem("emailCert",globalState.fullPath.split("?")[1].split("=")[1]);
-    localStorage.setItem("isEmailCert", "true");
-    window.close();
-      onMounted(() => {
-        
-       mainApi.pd_cert( globalState.fullPath.split("?")[1].split("=")[1])
+     mainApi.pd_emailCert(props.email,props.emailCertKey)
         .then(axiosResponse => {
           alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
             return;
           }
-          
+          localStorage.setItem("isEmailCert","true");
+          localStorage.setItem("certEmail",props.email);
         });
-      })
-
+    
     return {
       
     }

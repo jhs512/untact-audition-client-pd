@@ -32,30 +32,22 @@ import { MainApi, useMainApi } from '../apis'
 import { IonContent, IonPage } from '@ionic/vue';
 import { menuOutline } from 'ionicons/icons'
 
-import TitleBar from '../components/TitleBar.vue';
-import BottomBar from '../components/BottomBar.vue';
 import router from '@/router';
 import { useGlobalShare } from '@/stores';
 
 
 export default defineComponent({
-  components: { 
-    TitleBar,
-    BottomBar,
+  components: {
     IonContent,
     IonPage
     },
   name: 'OpenPage',
   props:{
-    globalState:{
-      type:Object,
-      required:true
-    }
   },
   setup(props) {
     const globalState = useGlobalShare();
-    console.log(globalState);
-      const mainApi:MainApi = useMainApi();
+    
+    const mainApi:MainApi = useMainApi();
     
     return {
       menuOutline

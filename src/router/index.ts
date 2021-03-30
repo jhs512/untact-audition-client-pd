@@ -61,9 +61,9 @@ const routes: Array<RouteRecordRaw>= [
     },
 
   {
-    path: '/usr/pd/cert',
+    path: '/usr/pd/emailCert',
     component: JoinPdEmailCertPage,
-    props: (route:any) => ({ globalState })
+    props: (route:any) => ( { email:route.query.email, emailCertKey:route.query.key, globalState })
     },
     {
       path: '/usr/pd/login',

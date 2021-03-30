@@ -8,6 +8,8 @@ export interface GlobalState {
   fullPath:string;
   loginedMember:IPd;
   isLogined:boolean;
+  isMainLayoutVisible:boolean;
+  logout:Function;
 }
 
 export interface IPd extends IEntity {

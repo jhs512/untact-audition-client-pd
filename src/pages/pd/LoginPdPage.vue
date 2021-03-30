@@ -11,6 +11,7 @@
     <div class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndLogin">
         <FormRow title="이메일(아이디):">
+          <ion-input v-model="state.email" type="text" placeholder="아이디" autofocus="true" clear-input="true" required="true"></ion-input>
           <input ref="emailElRef" type="text" class="p-1 w-full mt-2px">
         </FormRow>
         <FormRow title="PASSWORD:">
@@ -36,23 +37,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, ref } from 'vue'
-import { IonContent,  IonPage, IonIcon } from '@ionic/vue';
+import { defineComponent, reactive, ref } from 'vue'
+import { IonContent,  IonPage, IonIcon, IonInput } from '@ionic/vue';
 import { returnUpBackOutline } from 'ionicons/icons'
 import { MainApi, useMainApi } from '../../apis'
 import { sha256 } from 'js-sha256'
 import { useGlobalShare } from '@/stores';
+import router from '@/router'
 
 export default defineComponent({
   name: 'LoginPdPage',
   components: {
     IonContent,
     IonPage,
-    IonIcon
+    IonIcon,
+    IonInput
+  },
+  props:{
+    
   },
   setup(props) {
+    
     const globalState = useGlobalShare();
-    const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
+    
     const mainApi:MainApi = useMainApi();
 
     const emailElRef = ref<HTMLInputElement>();
@@ -60,8 +67,12 @@ export default defineComponent({
     const loginPwCfElRef = ref<HTMLInputElement>();
     const loginPwRealElRef = ref<HTMLInputElement>();
     
+    const state = reactive({
+      email:''
+    })
 
     function checkAndLogin() {
+      console.log(state.email);
       // 이메일(아이디) 체크
       if ( emailElRef.value == null ) {
         return;
@@ -110,7 +121,6 @@ export default defineComponent({
           const authKey = axiosResponse.data.body.authKey;
           const loginedPd = axiosResponse.data.body.pd;
           
-          
           localStorage.setItem("authKey", authKey);
           localStorage.setItem("loginedMemberId", loginedPd.id + "");
           localStorage.setItem("loginedMemberName", loginedPd.name);
@@ -121,22 +131,8 @@ export default defineComponent({
           localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
           localStorage.setItem("loginedMemberCorpType", loginedPd.corpType);
           localStorage.setItem("loginedMemberProfileImgUrl", loginedPd.extra__thumbImg);
-
-
-          globalState.loginedMember = {
-            authKey,
-            id:loginedPd.id,
-            name:loginedPd.name,
-            address:loginedPd.address,
-            email:loginedPd.email,
-            cellPhoneNo:loginedPd.cellPhoneNo,
-            jobPosition:loginedPd.jobPosition,
-            corpName:loginedPd.corpName,
-            corpType:loginedPd.corpType,
-            profileImgUrl:loginedPd.extra__thumbImg
-          };
-
-          router.replace('/main');
+          
+          location.replace('/main');
     
         });
     }
@@ -152,7 +148,8 @@ export default defineComponent({
     loginPwRealElRef,
     router,
     hisback,
-    returnUpBackOutline
+    returnUpBackOutline,
+    state
    }
   }
   
@@ -161,7 +158,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-input {
+input, ion-input {
   border:2px solid #D4D4D4;
 }
 .login-form {

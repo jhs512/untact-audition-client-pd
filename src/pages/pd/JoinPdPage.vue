@@ -60,15 +60,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, reactive, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { IonPage, IonContent, IonIcon } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import { Router } from 'vue-router';
+import router from '@/router';
 
 import { MainApi, useMainApi } from '../../apis'
 
 import { sha256 } from 'js-sha256'
-import { useGlobalShare } from '@/stores';
 export default defineComponent({
   name: 'JoinPdPage',
   components: {
@@ -76,10 +75,11 @@ export default defineComponent({
     IonContent,
     IonIcon
   },
+  props:{
+
+  },
   setup(props) {
-    const globalState = useGlobalShare();
     
-    const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = useMainApi();
 
     const nameElRef = ref<HTMLInputElement>();
@@ -92,8 +92,6 @@ export default defineComponent({
     const loginPwElRef = ref<HTMLInputElement>();
     const loginPwCfElRef = ref<HTMLInputElement>();
     const loginPwRealElRef = ref<HTMLInputElement>();
-    
-    
 
     function emailCert() {
       const emailEl = emailElRef.value;
@@ -106,16 +104,28 @@ export default defineComponent({
         alert("이메일을 입력해주세요.");
         return;
       }
-      
-       mainApi.pd_emailCert(emailEl.value)
+
+       mainApi.pd_emailDupCheck(emailEl.value)
         .then(axiosResponse => {
           alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
             return;
           }
-
+          sendMail(emailEl.value);
         });
+       
 
+    }
+
+    function sendMail(email:string){
+      mainApi.pd_sendEmail(email)
+        .then(axiosResponse => {
+          alert(axiosResponse.data.msg);
+          if ( axiosResponse.data.fail ) {
+            return;
+          }
+          
+        });
     }
     
     function checkAndJoin() {
@@ -195,8 +205,8 @@ export default defineComponent({
         alert("이메일이 인증되지 않았습니다.");
         return;
       }
-      if ( localStorage.getItem("emailCert") != emailEl.value ){
-        alert("인증된 이메일이 아닙니다.");
+      if( localStorage.getItem("certEmail") != emailEl.value) {
+        alert("인증된 이메일 주소가 아닙니다.");
         return;
       }
 
@@ -278,7 +288,7 @@ export default defineComponent({
             return;
           }
           localStorage.removeItem("isEmailCert");
-          localStorage.removeItem("emailCert");
+          localStorage.removeItem("certEmail");
           router.replace('/');
     
         });

@@ -13,22 +13,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance } from 'vue'
-import { Router } from 'vue-router'
+import { defineComponent } from 'vue'
+import router from '@/router'
 
 export default defineComponent({
   name: 'JoinSelectPage',
   components: {
   },
   props: {
-    globalShare: {
-      type: Object
-    }
+    
   },
   setup(props) {
 
-    const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
-   
    function hisback() {
      router.back();
     }

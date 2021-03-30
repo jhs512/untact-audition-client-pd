@@ -38,7 +38,7 @@
         </FormRow>
 
         <FormRow title="프로필 이미지:">
-            <ion-input @ionChange="setProfileImg($event)" ref="ionInputElRef" type="file" accept="image/*"></ion-input>
+            <ion-input @ionChange="setProfileImg($event)" type="file" accept="image/*"></ion-input>
         </FormRow>
         <input accept="true" type="submit" class="w-full mt-10 text-center btn-next text-xs mx-auto p-2">
       </form>
@@ -49,10 +49,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, Ref, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import { Router } from 'vue-router'
+import router from '@/router'
 import { MainApi, useMainApi } from '../../apis'
 import { sha256 } from 'js-sha256'
 
@@ -65,13 +65,9 @@ export default defineComponent({
     IonInput
   },
   props: {
-    globalState: {
-      type: Object,
-      required: true
-    }
+
   },
   setup(props) {
-    const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
     const mainApi:MainApi = useMainApi();
 
     const loginedMemberIdRef = ref<HTMLInputElement>();
@@ -136,17 +132,24 @@ export default defineComponent({
 
     
       const startModify = () => {
-        modify(loginedMemberId.value, nameEl.value, loginPwRealEl.value, addressEl.value,  cellPhoneNoEl.value, jobPositionEl.value, corpNameEl.value );
+
+        if ( pdProfileImg != null ) {
+         modify(loginedMemberId.value, nameEl.value, loginPwRealEl.value, addressEl.value,  cellPhoneNoEl.value, jobPositionEl.value, corpNameEl.value, true ); 
+        }else {
+         modify(loginedMemberId.value, nameEl.value, loginPwRealEl.value, addressEl.value,  cellPhoneNoEl.value, jobPositionEl.value, corpNameEl.value, false );
+        }
+         
         if ( pdProfileImg != null ) {
           doFileUpload();
           return;
         }
       }
-         
+
         function doFileUpload(){
         if(loginedMemberId == null){
           return;
         }
+
         mainApi.common_pdGenFile_doUpload(pdProfileImg,loginedMemberId.value)
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
@@ -154,66 +157,103 @@ export default defineComponent({
               return;
             }
             else {
-              
+              updatePd(loginedMemberId.value);
             }
           });
         }
+
+
       startModify();     
+      
     }  
 
-    function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string ){
-         mainApi.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName )
+   
+         function updatePd(loginedMemberId:string){
+           if(loginedMemberId == null){
+              return;
+          }
+          mainApi.pd_update(loginedMemberId)
+          .then(axiosResponse => {
+            if ( axiosResponse.data.fail ) {
+              alert(axiosResponse.data.msg);
+              return;
+            }
+            else {
+          
+          const loginedPd = axiosResponse.data.body.pd;
+          
+          if( loginedPd.name != null ){
+              localStorage.removeItem("loginedMemberName");
+          }
+          if( loginedPd.cellPhoneNo != null ){
+              localStorage.removeItem("loginedMemberCellPhoneNo");
+          }
+          if( loginedPd.address != null ){
+              localStorage.removeItem("loginedMemberAddress");
+          }
+          if( loginedPd.jobPosition != null ){
+              localStorage.removeItem("loginedMemberJobPosition");
+          }
+          if( loginedPd.corpName != null ){
+              localStorage.removeItem("loginedMemberCorpName");
+          }
+          if( loginedPd.extra__thumbImg != null ){
+              localStorage.removeItem("loginedMemberProfileImgUrl");
+          }
+          
+          localStorage.setItem("loginedMemberId", loginedPd.id + "");
+          localStorage.setItem("loginedMemberName", loginedPd.name);
+          localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);
+          localStorage.setItem("loginedMemberAddress", loginedPd.address);
+          localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
+          localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
+          localStorage.setItem("loginedMemberProfileImgUrl", loginedPd.extra__thumbImg);
+
+          location.replace("/usr/pd/info");          
+  
+            }
+          });
+    }
+
+
+    function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string, isFileUploaded:boolean ){
+         mainApi.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName, isFileUploaded )
         .then(axiosResponse => {
           alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
             return;
           }
-
-          const authKey = axiosResponse.data.body.authKey;
-          const loginedPd = axiosResponse.data.body.pd;
+        
+        const loginedPd = axiosResponse.data.body.pd;
           
-          if( name != null ){
+          if( loginedPd.name != null ){
               localStorage.removeItem("loginedMemberName");
           }
-          if( cellPhoneNo != null ){
+          if( loginedPd.cellPhoneNo != null ){
               localStorage.removeItem("loginedMemberCellPhoneNo");
           }
-          if( address != null ){
+          if( loginedPd.address != null ){
               localStorage.removeItem("loginedMemberAddress");
           }
-          if( jobPosition != null ){
+          if( loginedPd.jobPosition != null ){
               localStorage.removeItem("loginedMemberJobPosition");
           }
-          if( corpName != null ){
+          if( loginedPd.corpName != null ){
               localStorage.removeItem("loginedMemberCorpName");
           }
-         
-         
-
-          localStorage.setItem("authKey", authKey);
+          if( loginedPd.extra__thumbImg != null ){
+              localStorage.removeItem("loginedMemberProfileImgUrl");
+          }
+          
           localStorage.setItem("loginedMemberId", loginedPd.id + "");
           localStorage.setItem("loginedMemberName", loginedPd.name);
           localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);
-          localStorage.setItem("loginedMemberAddress", address);
-          localStorage.setItem("loginedMemberJobPosition", jobPosition);
-          localStorage.setItem("loginedMemberCorpName", corpName);
+          localStorage.setItem("loginedMemberAddress", loginedPd.address);
+          localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
+          localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
           localStorage.setItem("loginedMemberProfileImgUrl", loginedPd.extra__thumbImg);
-  
-
-          props.globalState.loginedMember = {
-            authKey,
-            id:loginedPd.id,
-            name:loginedPd.name,
-            address:loginedPd.address,
-            email:loginedPd.email,
-            cellPhoneNo:loginedPd.cellPhoneNo,
-            jobPosition:loginedPd.jobPosition,
-            corpName:loginedPd.corpName,
-            corpType:loginedPd.corpType,
-            profileImgUrl:loginedPd.extra__thumbImg
-          };
-
-          router.replace('/usr/pd/info');
+          
+          updatePd(loginedMemberId);
     });
       }
 

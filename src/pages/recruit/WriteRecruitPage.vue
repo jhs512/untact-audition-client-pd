@@ -161,11 +161,12 @@
 
 <script lang="ts">
 
-import { defineComponent, getCurrentInstance, ref, reactive, computed, watch } from 'vue'
-import { IonPage, IonContent, IonDatetime, IonItem, IonLabel, pickerController } from '@ionic/vue'
+import { defineComponent, ref, reactive } from 'vue'
+import { IonPage, IonContent, IonDatetime, IonItem, IonLabel } from '@ionic/vue'
 
-import { Router } from 'vue-router'
+import router from '@/router'
 import { MainApi, useMainApi } from '../../apis'
+import { useGlobalShare } from '@/stores'
 
 export default defineComponent({
   name: 'WriteRecruitPage',
@@ -177,13 +178,11 @@ export default defineComponent({
     IonLabel,    
   },
   props: {
-    globalState: {
-      type: Object,
-      required:true
-    }
+    
   },
   setup(props) {
-    const router:Router = getCurrentInstance()?.appContext.config.globalProperties.$router;
+    const globalState = useGlobalShare();
+    
     const mainApi:MainApi = useMainApi();
 
     const titleElRef = ref<HTMLInputElement>();
@@ -510,7 +509,7 @@ export default defineComponent({
 
       const startWrite = (genFileIdsStr:string) => {
       
-      write( props.globalState.loginedMember.id , 3, titleEl.value, bodyEl.value, roleTypeEl.value, locationEl.value, periodEl.value, deadline , managerEl.value, 
+      write( globalState.loginedMember.id , 3, titleEl.value, bodyEl.value, roleTypeEl.value, locationEl.value, periodEl.value, deadline , managerEl.value, 
       artworkNameEl.value, genreEl.value, corpEl.value, directorEl.value, artworkEtcEl.value,
       roleRealNameEl.value, roleNameEl.value, payEl.value, roleAgeEl.value, roleGenderEl, roleJobEl.value, roleScriptEl, roleSceneCountEl.value, roleShootingCountEl.value, actingRoleEtcEl.value,
       genFileIdsStr);
