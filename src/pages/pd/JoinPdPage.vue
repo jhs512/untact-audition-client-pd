@@ -26,7 +26,7 @@
         </FormRow>
 
         <FormRow title="이메일(아이디):">
-          <input ref="emailElRef" type="text" class="p-1 w-full mt-2">
+          <input ref="emailElRef" type="text" class="p-1 w-full mt-2" inputmode="email">
           <div class="btn-cert text-10px right-0 mr-1 px-3 absolute" v-on:click="emailCert">인증하기</div>
         </FormRow>
         <div class="text-10px">회원가입 확인 메일이 확인 가능한 메일로 작성해주세요</div>
@@ -127,6 +127,8 @@ export default defineComponent({
           
         });
     }
+
+    let isEmailCert = false;
     
     function checkAndJoin() {
       // 이름 체크
@@ -201,14 +203,16 @@ export default defineComponent({
         return;
       }
 
-      if ( localStorage.getItem("isEmailCert") != "true" ) {
-        alert("이메일이 인증되지 않았습니다.");
-        return;
-      }
-      if( localStorage.getItem("certEmail") != emailEl.value) {
-        alert("인증된 이메일 주소가 아닙니다.");
-        return;
-      }
+      
+       mainApi.pd_checkEmailCertificated(emailEl.value)
+        .then(axiosResponse => {
+          alert(axiosResponse.data.msg);
+          if ( axiosResponse.data.fail ) {
+            return;
+          }
+          isEmailCert = true;  
+        });
+
 
       // 주소 체크
       if ( addressElRef.value == null ) {

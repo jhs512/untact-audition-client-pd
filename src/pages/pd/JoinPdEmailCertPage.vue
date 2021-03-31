@@ -27,10 +27,11 @@ export default defineComponent({
         .then(axiosResponse => {
           alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
+            window.close();
             return;
+            
           }
-          localStorage.setItem("isEmailCert","true");
-          localStorage.setItem("certEmail",props.email);
+          window.close();
         });
     
     return {

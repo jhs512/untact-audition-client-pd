@@ -183,7 +183,7 @@ export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__I
     genFileIdsStr: string,
   };
 }
-// http://localhost:8021/usr/ 와의 통신장치
+// 백엔드 와의 통신장치
 export class MainApi extends HttpClient {
   public constructor() {
     super(
@@ -223,6 +223,10 @@ export class MainApi extends HttpClient {
   
   public pd_emailCert(email:string, key:string) {
     return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/emailCert?email=${email}&key=${key}` );
+  }
+
+  public pd_checkEmailCertificated(email:string) {
+    return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/isEmailCert?email=${email}` );
   }
 
   public pd_doLogin( email:String, loginPw:String) {
