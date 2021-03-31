@@ -3,18 +3,17 @@
   <ion-content :fullscreen="true">
   <div class="flex flex-col min-h-screen mb-20">
    
-  <TitleBar title="Audictionary">
-      <div class="hisback absolute left-5" v-on:click="hisback"><ion-icon :icon="returnUpBackOutline"></ion-icon></div>
-  </TitleBar>    
+  <TitleBar title="Audictionary" btn_back="true"></TitleBar>    
   
   <div class="font-roboto font-black detail-container container flex flex-col">
     <div class="w-full mx-auto mt-4 text-center">
       <div class="text-lg font-coda font-normal">{{state.artwork.name}}</div>
       <div v-if="state.dateDiff >= 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
       <div v-if="state.dateDiff < 0" class="text-xs mt-2">기한 마감</div>
+      <router-link :to="`/usr/recruit/modify?id=${state.recruit.id}`">수정</router-link>
 
       <div v-if="state.recruit.extra != null && state.recruit.extra.file__common__attachment[0].fileExtTypeCode == 'img'" class="img-container mx-4 mb-4 p-4 mt-6">  
-      <img :src="state.recruit.extra.file__common__attachment[0].forPrintUrl" class="mx-auto">
+      <img :src="state.recruit.extra.file__common__attachment[0].forPrintUrl" class="detail_img mx-auto">
       </div>
     </div>
 
@@ -37,10 +36,11 @@
   
 
 </div>
-  <BottomBar>
-  </BottomBar>
+  
 
 </ion-content>
+<BottomBar>
+  </BottomBar>
 </ion-page>
 </template>
 
@@ -69,7 +69,6 @@ export default defineComponent({
   },
   setup(props) {
       const globalState = useGlobalShare();
-      
       const mainApi:MainApi = useMainApi();
       
       
@@ -80,36 +79,22 @@ export default defineComponent({
       dateDiff: 0
       });
 
-      
+    
 
     function loadRecruit(id:number) {
       mainApi.recruit_detail(id)
       .then(axiosResponse => {
         state.recruit = axiosResponse.data.body.recruit;
         let today = new Date();
-      let regDate = new Date(state.recruit.deadline);
+        let regDate = new Date(state.recruit.deadline);
       
       state.dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
       });
     }
 
-    function loadArtwork(recruitId:number) {
-      mainApi.artwork_detail(recruitId)
-      .then(axiosResponse => {
-        state.artwork = axiosResponse.data.body.artwork;
-      });
-    }
-    function loadActingRole(recruitId:number) {
-      mainApi.actingRole_detail(recruitId)
-      .then(axiosResponse => {
-        state.actingRole = axiosResponse.data.body.actingRole;
-      });
-    }
 
     onMounted(() => {
       loadRecruit(props.id);
-      loadArtwork(props.id);
-      loadActingRole(props.id);         
     });
 
     function hisback() {

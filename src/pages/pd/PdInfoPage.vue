@@ -4,11 +4,9 @@
   <ion-content :fullscreen="true">
   <div class="flex flex-col min-h-screen mb-20">
 
-    <TitleBar title="Audictionary">
-      <div class="hisback absolute left-5" v-on:click="hisback"><ion-icon :icon="returnUpBackOutline"></ion-icon></div>
-    </TitleBar>
+    <TitleBar title="Audictionary" btn_back="true"></TitleBar>
 
-    <div class="flex flex-col mt-4 container mx-auto border-t border-b py-2">
+    <div class="flex flex-col container mx-auto border-t border-b py-2">
       <div class="flex flex-col mx-auto text-center">
         <span>{{globalState.loginedMember.name}}</span>
         <span>{{globalState.loginedMember.email}}</span>

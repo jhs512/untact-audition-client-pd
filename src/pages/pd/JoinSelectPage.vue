@@ -1,9 +1,7 @@
 <template>
   <div class="flex flex-col min-h-screen mb-20">
 
-    <TitleBar title="회원가입 페이지">
-      <div class="hisback absolute left-5" v-on:click="hisback"><FontAweSomeIcon :icon="['fas' , 'arrow-left']" /></div>
-    </TitleBar>
+    <TitleBar title="회원가입 페이지" btn_back="true"></TitleBar>
 
     <div class="flex flex-col mt-4 w-72 text-white mx-auto">
       <div class="relative btn-joinSel h-32 mt-2"><span class="inline-block left-1/2 top-1/2 relative">아티스트로 시작하기</span><div class="top-1/2 mx-auto relative bg-line"></div></div>

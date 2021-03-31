@@ -8,16 +8,7 @@
 
     <div v-if="globalState.isLogined" class="flex flex-col min-h-screen">
     
-    <TitleBar title="Audictionary">
-          <div class="btn-menu absolute top-1/2 right-2" @click="setOpen(true, $event)">
-             <ion-button slots ="icon-only" fill="clear" color="dark" class="relative">
-              <ion-icon :icon="menuOutline" ></ion-icon>          
-                <ion-popover css-class="pop-over-style" :is-open="isOpenRef" :translucent="true" :onDidDismiss="setClose(false)">
-                  <Popover></Popover>
-                </ion-popover>
-               </ion-button>
-          </div>
-    </TitleBar>    
+    <TitleBar title="Audictionary" btn_menu="true"></TitleBar>    
    
 
     <div id="list" class="flex flex-col font-roboto">
@@ -112,18 +103,10 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      loadRecruits(2);
+      loadRecruits(2); 
     });
     
-    const isOpenRef = ref(false);
     
-    const setOpen = (isOpened: boolean) => {
-      isOpenRef.value = isOpened;
-    }
-    const setClose = ( isOpened: boolean) => {
-      isOpenRef.value = isOpened;
-    }
-
      const doRefresh = () => {
         window.location.reload();
     }
@@ -153,9 +136,6 @@ export default defineComponent({
     return {
       state,
       menuOutline,
-      isOpenRef,
-      setOpen,
-      setClose,
       doRefresh,
       loadData,
       globalState

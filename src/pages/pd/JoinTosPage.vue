@@ -4,9 +4,7 @@
   <ion-content :fullscreen="true">
   <div class="flex flex-col min-h-screen mb-20">
 
-    <TitleBar title="회원가입 페이지">
-      <div class="hisback absolute left-5" v-on:click="hisback"><ion-icon :icon="returnUpBackOutline"></ion-icon></div>
-    </TitleBar>
+    <TitleBar title="회원가입 페이지" btn_back="true"></TitleBar>
 
     <div class="flex flex-col mx-auto mt-4">
       <span class="text-center text-sm">이용 약관 동의</span>

@@ -3,20 +3,16 @@
   <ion-content :fullscreen="true">
   <div class="login-form flex flex-col relative min-h-screen mb-20">
 
-    <TitleBar title="로그인 페이지">
-      <div class="hisback absolute left-5" v-on:click="hisback"><ion-icon :icon="returnUpBackOutline"></ion-icon></div>
-    </TitleBar>
+    <TitleBar title="로그인 페이지" btn_back="true"></TitleBar>
 
 
     <div class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndLogin">
         <FormRow title="이메일(아이디):">
-          <ion-input v-model="state.email" type="text" placeholder="아이디" autofocus="true" clear-input="true" required="true"></ion-input>
-          <input ref="emailElRef" type="text" class="p-1 w-full mt-2px">
+          <ion-input v-model="input.emailEl" ref="emailElRef" type="text" placeholder="아이디" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
         <FormRow title="PASSWORD:">
-          <input type="hidden" ref="loginPwRealElRef">
-          <input ref="loginPwElRef" type="password" class="p-1 w-full mt-2px">
+          <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password" clear-input="true" required="true" placeholder="비밀번호" enterkeyhint="done"></ion-input>
         </FormRow>
         <router-link to="/usr/pd/findSelect"><span class="text-10px">아이디 혹은 비밀번호가 기억나지 않으시나요?</span></router-link>
       <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="LOGIN">
@@ -62,27 +58,19 @@ export default defineComponent({
     
     const mainApi:MainApi = useMainApi();
 
-    const emailElRef = ref<HTMLInputElement>();
-    const loginPwElRef = ref<HTMLInputElement>();
-    const loginPwCfElRef = ref<HTMLInputElement>();
-    const loginPwRealElRef = ref<HTMLInputElement>();
+    const emailElRef = ref<HTMLIonInputElement>();
+    const loginPwElRef = ref<HTMLIonInputElement>();
     
-    const state = reactive({
-      email:''
+    const input = reactive({
+      emailEl:'',
+      loginPwEl:''
     })
 
     function checkAndLogin() {
-      console.log(state.email);
       // 이메일(아이디) 체크
-      if ( emailElRef.value == null ) {
-        return;
-      }
-
-      const emailEl = emailElRef.value;
-
-      if ( emailEl.value.length == 0 ) {
+      if ( input.emailEl.length == 0 ) {
         alert('이메일을 입력해 주세요.');
-        emailEl.focus();
+        emailElRef.value?.focus();
         return;
       }
 
@@ -93,21 +81,15 @@ export default defineComponent({
 
       const loginPwEl = loginPwElRef.value;
 
-      if ( loginPwEl.value.length == 0 ) {
+      if ( input.loginPwEl.length == 0 ) {
         alert('비밀번호를 입력해 주세요.');
         loginPwEl.focus();
         return;
       }
 
-      const loginPwReal = loginPwRealElRef.value;
+      const loginPwReal = sha256(input.loginPwEl);
       
-      if ( loginPwReal == null ){
-        return;
-      }
-
-      loginPwReal.value = sha256(loginPwEl.value);
-      
-      login(emailEl.value, loginPwReal.value);
+      login( input.emailEl, loginPwReal);
     }
 
     function login( email:String,loginPw:String) {
@@ -144,12 +126,10 @@ export default defineComponent({
     checkAndLogin,
     emailElRef,
     loginPwElRef,
-    loginPwCfElRef,
-    loginPwRealElRef,
     router,
     hisback,
     returnUpBackOutline,
-    state
+    input
    }
   }
   

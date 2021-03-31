@@ -3,42 +3,38 @@
   <ion-content :fullscreen="true">
   <div class="flex flex-col min-h-screen mb-20">
 
-     <TitleBar title="Audictionary">
-      <div class="hisback absolute left-5" v-on:click="hisback"><ion-icon :icon="returnUpBackOutline"></ion-icon></div>
-    </TitleBar>
+     <TitleBar title="Audictionary" btn_back="true"></TitleBar>
 
     <div class="flex flex-col mt-4 container mx-auto">
       
       <form action="" v-on:submit.prevent="checkAndModify" class="mx-4">
-        <input type="hidden" ref="loginedMemberIdRef" :value="globalState.loginedMember.id">
 
         <FormRow title="이름:">
-          <input type="text" ref="nameElRef" :value="globalState.loginedMember.name" class="w-full">
+          <ion-input v-model="input.nameEl" ref="nameElRef" type="text"></ion-input>
         </FormRow>
 
         <FormRow title="비밀번호:">
-          <input type="hidden" ref="loginPwRealElRef">
-          <input type="password" ref="loginPwElRef" class="w-full">
+          <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password"></ion-input>
         </FormRow>
 
         <FormRow title="주소:">
-          <input type="text" ref="addressElRef" :value="globalState.loginedMember.address" class="w-full">
+          <ion-input v-model="input.addressEl" ref="addressElRef" type="text"></ion-input>
         </FormRow>
 
         <FormRow title="전화번호:">
-          <input type="text" ref="cellPhoneNoElRef" :value="globalState.loginedMember.cellPhoneNo" class="w-full">
+          <ion-input v-model="input.cellPhoneNoEl" ref="cellPhoneNoElRef" type="text"></ion-input>
         </FormRow>
 
         <FormRow title="직급:">
-          <input type="text" ref="jobPositionElRef" :value="globalState.loginedMember.jobPosition" class="w-full">
+          <ion-input v-model="input.jobPositionEl" ref="jobPositionElRef" type="text"></ion-input>
         </FormRow>
 
         <FormRow title="회사:">
-          <input type="text" ref="corpNameElRef" :value="globalState.loginedMember.corpName" class="w-full">
+          <ion-input v-model="input.corpNameEl" ref="corpNameElRef" type="text"></ion-input>
         </FormRow>
 
         <FormRow title="프로필 이미지:">
-            <ion-input @ionChange="setProfileImg($event)" type="file" accept="image/*"></ion-input>
+            <ion-input v-model="input.fileEl" @ionChange="setProfileImg($event)" type="file" accept="image/*"></ion-input>
         </FormRow>
         <input accept="true" type="submit" class="w-full mt-10 text-center btn-next text-xs mx-auto p-2">
       </form>
@@ -49,12 +45,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router'
 import { MainApi, useMainApi } from '../../apis'
 import { sha256 } from 'js-sha256'
+import { useGlobalShare } from '@/stores'
+import * as Util from '@/utils'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -69,95 +67,66 @@ export default defineComponent({
   },
   setup(props) {
     const mainApi:MainApi = useMainApi();
+    const globalState = useGlobalShare();
 
-    const loginedMemberIdRef = ref<HTMLInputElement>();
+    
     const nameElRef = ref<HTMLInputElement>();
     const loginPwElRef = ref<HTMLInputElement>();
-    const loginPwRealElRef = ref<HTMLInputElement>();
     const addressElRef = ref<HTMLInputElement>();
     const cellPhoneNoElRef = ref<HTMLInputElement>();
     const jobPositionElRef = ref<HTMLInputElement>();
     const corpNameElRef = ref<HTMLInputElement>();
     
-    let pdProfileImg:File;
+    const input = reactive({
+      nameEl:globalState.loginedMember.name,
+      loginPwEl:'',
+      addressEl:globalState.loginedMember.address,
+      cellPhoneNoEl:globalState.loginedMember.cellPhoneNo,
+      jobPositionEl:globalState.loginedMember.jobPosition,
+      corpNameEl:globalState.loginedMember.corpName,
+      fileEl: new File([""],""),
+    })
+
 
    function setProfileImg(event:any){
-        pdProfileImg = event.target.children[0].files[0];
+        input.fileEl = event.target.children[0].files[0];
    }
 
+  let isFileUploaded = false;
+
     function checkAndModify() {
-
-      const loginedMemberId = loginedMemberIdRef.value;
-      if(loginedMemberId == null) {
-        return;
-      }
-      
-      const nameEl = nameElRef.value;
-      if(nameEl == null) {
-        return;
-      }
-
-      const loginPwRealEl = loginPwElRef.value;
-      if ( loginPwRealEl == null ){
-        return;
-      }
-      if (loginPwElRef.value != null){
-        const loginPwEl = loginPwElRef.value;  
-        
-        if (loginPwEl.value.length != 0 ){
-          loginPwRealEl.value = sha256(loginPwEl.value);
+      let loginPwRealEl = '';
+        if (input.loginPwEl.length > 0 ){
+          loginPwRealEl = sha256(input.loginPwEl);
         }
         
-      }
-
-      const addressEl = addressElRef.value;
-      if(addressEl == null) {
-        return;
-      }
-
-      const cellPhoneNoEl = cellPhoneNoElRef.value;
-      if(cellPhoneNoEl == null) {
-        return;
-      }
-
-      const jobPositionEl = jobPositionElRef.value;
-      if(jobPositionEl == null) {
-        return;
-      }
-
-      const corpNameEl = corpNameElRef.value;
-      if(corpNameEl == null) {
-        return;
-      }
-
-    
       const startModify = () => {
 
-        if ( pdProfileImg != null ) {
-         modify(loginedMemberId.value, nameEl.value, loginPwRealEl.value, addressEl.value,  cellPhoneNoEl.value, jobPositionEl.value, corpNameEl.value, true ); 
-        }else {
-         modify(loginedMemberId.value, nameEl.value, loginPwRealEl.value, addressEl.value,  cellPhoneNoEl.value, jobPositionEl.value, corpNameEl.value, false );
+        if ( input.fileEl != null ) {
+          isFileUploaded = true;
         }
-         
-        if ( pdProfileImg != null ) {
+
+         modify(Util.toStringOrNull(globalState.loginedMember.id), input.nameEl, loginPwRealEl, input.addressEl,  input.cellPhoneNoEl, input.jobPositionEl, input.corpNameEl, isFileUploaded);
+
+        if ( input.fileEl != null ) {
           doFileUpload();
           return;
         }
       }
 
         function doFileUpload(){
-        if(loginedMemberId == null){
+        if(globalState.loginedMember.id == null){
           return;
         }
 
-        mainApi.common_pdGenFile_doUpload(pdProfileImg,loginedMemberId.value)
+        mainApi.common_pdGenFile_doUpload(input.fileEl, Util.toStringOrNull(globalState.loginedMember.id))
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
               alert(axiosResponse.data.msg);
               return;
             }
             else {
-              updatePd(loginedMemberId.value);
+              updatePd(Util.toStringOrNull(globalState.loginedMember.id));
             }
           });
         }
@@ -262,10 +231,9 @@ export default defineComponent({
     }
 
     return { 
-      loginedMemberIdRef,
+      input,
       nameElRef,
       loginPwElRef,
-      loginPwRealElRef,
       addressElRef,
       cellPhoneNoElRef,
       jobPositionElRef,

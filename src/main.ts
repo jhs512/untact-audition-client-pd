@@ -36,17 +36,10 @@ import { mainApi, mainApiSymbol } from './apis/'
 
 // 폰트어썸 불러오기
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret, fas, faBars, faHome, faSearch, faComment, faUser, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, fas, faBars, faHome, faSearch, faComment, faUser, faArrowLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add( faUserSecret );
-library.add( fas );
-library.add( faBars );
-library.add( faHome );
-library.add( faSearch );
-library.add( faComment );
-library.add( faUser );
-library.add( faArrowLeft );
+library.add( faUserSecret, fas, faBars, faHome, faSearch, faComment, faUser, faArrowLeft, faChevronLeft );
 
 const app = createApp(App);
 

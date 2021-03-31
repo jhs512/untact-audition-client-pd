@@ -3,9 +3,7 @@
   <ion-content :fullscreen="true">
   <div class="login-form flex flex-col relative min-h-screen mb-20">
 
-    <TitleBar title="로그인 비밀번호 찾기 페이지">
-      <div class="hisback absolute left-5" v-on:click="hisback"><ion-icon :icon="returnUpBackOutline"></ion-icon></div>
-    </TitleBar>
+    <TitleBar title="로그인 비밀번호 찾기 페이지" btn_back="true"></TitleBar>
 
 
     <div v-if="state.isFind == false" class=" w-60 mx-auto mt-8 flex flex-col">

@@ -5,8 +5,9 @@ import { RouteRecordRaw } from "vue-router";
 
 import * as Util from '../utils/';
 
-import WriteRecruitPage from '../pages/recruit/WriteRecruitPage.vue'
+import RecruitWritePage from '../pages/recruit/RecruitWritePage.vue'
 import RecruitDetailPage from '../pages/recruit/RecruitDetailPage.vue'
+import RecruitModifyPage from '../pages/recruit/RecruitModifyPage.vue'
 
 import JoinSelectPage from '../pages/pd/JoinSelectPage.vue'
 import JoinTosPage from '../pages/pd/JoinTosPage.vue'
@@ -43,33 +44,32 @@ const routes: Array<RouteRecordRaw>= [
   path: '/usr/member/joinTos',
   component: JoinTosPage,
   props: (route:any) => ({ globalState })
+},
+  {
+    path: '/usr/pd/info',
+    component: PdInfoPage,
+    props: (route:any) => ({ globalState })
   },
-    {
-      path: '/usr/pd/info',
-      component: PdInfoPage,
-      props: (route:any) => ({ globalState })
-    },
-    {
-      path: '/usr/pd/modify',
-      component: PdModifyPage,
-      props: (route:any) => ({ globalState })
+  {
+    path: '/usr/pd/modify',
+    component: PdModifyPage,
+    props: (route:any) => ({ globalState })
   },
   {
     path: '/usr/pd/join',
     component: JoinPdPage,
     props: (route:any) => ({ globalState })
-    },
-
+  },
   {
     path: '/usr/pd/emailCert',
     component: JoinPdEmailCertPage,
     props: (route:any) => ( { email:route.query.email, emailCertKey:route.query.key, globalState })
-    },
-    {
-      path: '/usr/pd/login',
-      component: LoginPdPage,
-      props: (route:any) => ({ globalState })
-    },
+  },
+  {
+    path: '/usr/pd/login',
+    component: LoginPdPage,
+    props: (route:any) => ({ globalState })
+  },
   {
     path: '/usr/pd/findSelect',
     component: FindSelectPage,
@@ -87,9 +87,14 @@ const routes: Array<RouteRecordRaw>= [
   },
   {
   path: '/usr/recruit/write',
-  component: WriteRecruitPage,
+  component: RecruitWritePage,
   props: (route:any) => ({ globalState })
   },
+  {
+    path: '/usr/recruit/modify',
+    component: RecruitModifyPage,
+    props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
+    },
   {
   path: '/usr/recruit/detail',
   component: RecruitDetailPage,

@@ -72,6 +72,7 @@ export const globalShare = () => {
 
 
 export const useGlobalShare = ():GlobalState => inject(globalShareSymbol) as GlobalState;
+
 export const useGlobalStateOnOutsideOfVue = globalShare;
 
 

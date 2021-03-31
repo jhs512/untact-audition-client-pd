@@ -3,49 +3,46 @@
   <ion-content :fullscreen="true">
   <div class="flex flex-col relative min-h-screen mb-20">
 
-    <TitleBar title="회원가입 페이지">
-      <div class="hisback absolute left-5" v-on:click="hisback"><ion-icon :icon="returnUpBackOutline"></ion-icon></div>
-    </TitleBar>
+    <TitleBar title="회원가입 페이지" btn_back="true"></TitleBar>
 
     <div class="w-60 mx-auto mt-8 flex flex-col flex-1">
       <form action="" v-on:submit.prevent="checkAndJoin">
         <FormRow title="이름:">
-          <input ref="nameElRef" type="text" class="p-1 w-full mt-2">
+          <ion-input v-model="input.nameEl" ref="nameElRef" type="text" placeholder="이름" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
 
         <FormRow title="주민등록번호:">
-          <div class="flex w-full mt-2">
-          <input type="text" ref="regNumberElRef" class="w-full text-center" maxlength="6">
+          <div class="flex items-center w-full mt-2">
+          <ion-input v-model="input.regNumber1El" type="text" ref="regNumber1ElRef" maxlength="6" inputmode="decimal" placeholder="앞 6자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
           <span class="mx-1">-</span>
-          <input type="text" ref="regNumber2ElRef" class="w-full text-center" maxlength="7">
+          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" maxlength="7" inputmode="decimal" placeholder="뒤 7자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
           </div>
         </FormRow>
 
         <FormRow title="휴대폰:">
-          <input ref="cellPhoneNoElRef" type="text" class="p-1 w-full mt-2">
+          <ion-input v-model="input.cellPhoneNoEl" ref="cellPhoneNoElRef" type="text" inputmode="decimal" placeholder="전화번호" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
 
         <FormRow title="이메일(아이디):">
-          <input ref="emailElRef" type="text" class="p-1 w-full mt-2" inputmode="email">
-          <div class="btn-cert text-10px right-0 mr-1 px-3 absolute" v-on:click="emailCert">인증하기</div>
+          <ion-input v-model="input.emailEl" ref="emailElRef" type="text" inputmode="email" placeholder="이메일(아이디)" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+          <div class="btn-cert text-10px right-0 mr-1 px-3 absolute z-50" v-on:click="emailCert">인증하기</div>
         </FormRow>
-        <div class="text-10px">회원가입 확인 메일이 확인 가능한 메일로 작성해주세요</div>
+        <div class="text-10px"></div>
 
         <FormRow title="주소:">
-          <input ref="addressElRef" type="text" class="p-1 w-full mt-2px mt-2">
+          <ion-input v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
 
         <FormRow title="직급:">
-          <input ref="jobPositionElRef" type="text" class="p-1 w-full mt-2">
+          <ion-input v-model="input.jobPositionEl" ref="jobPositionElRef" type="text" placeholder="직급" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
 
         <FormRow title="PASSWORD:">
-          <input type="hidden" ref="loginPwRealElRef">
-          <input ref="loginPwElRef" type="password" class="p-1 w-full mt-2">
+          <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password" placeholder="비밀번호" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
 
         <FormRow title="PASSWORD CONFIRM:">
-          <input ref="loginPwCfElRef" type="password" class="p-1 w-full mt-2">
+          <ion-input v-model="input.loginPwCfEl" ref="loginPwCfElRef" type="password" placeholder="비밀번호 확인" clear-input="true" required="true" enterkeyhint="done"></ion-input>
         </FormRow>
       <input type="submit" class="w-60 my-10 text-center btn-next text-xs text-white mx-auto p-2" value="완료">
       </form>
@@ -60,20 +57,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { IonPage, IonContent, IonIcon } from '@ionic/vue'
+import { defineComponent, reactive, ref } from 'vue'
+import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router';
 
 import { MainApi, useMainApi } from '../../apis'
-
+import * as Crypto from 'crypto-ts'
 import { sha256 } from 'js-sha256'
 export default defineComponent({
   name: 'JoinPdPage',
   components: {
     IonPage,
     IonContent,
-    IonIcon
+    IonIcon,
+    IonInput
   },
   props:{
 
@@ -82,36 +80,48 @@ export default defineComponent({
     
     const mainApi:MainApi = useMainApi();
 
-    const nameElRef = ref<HTMLInputElement>();
-    const regNumberElRef = ref<HTMLInputElement>();
-    const regNumber2ElRef = ref<HTMLInputElement>();
+    const nameElRef = ref<HTMLIonInputElement>();
+    const regNumber1ElRef = ref<HTMLIonInputElement>();
+    const regNumber2ElRef = ref<HTMLIonInputElement>();
     const cellPhoneNoElRef = ref<HTMLInputElement>();
-    const emailElRef = ref<HTMLInputElement>();
-    const addressElRef = ref<HTMLInputElement>();
-    const jobPositionElRef = ref<HTMLInputElement>();
-    const loginPwElRef = ref<HTMLInputElement>();
-    const loginPwCfElRef = ref<HTMLInputElement>();
-    const loginPwRealElRef = ref<HTMLInputElement>();
+    const emailElRef = ref<HTMLIonInputElement>();
+    const addressElRef = ref<HTMLIonInputElement>();
+    const jobPositionElRef = ref<HTMLIonInputElement>();
+    const loginPwElRef = ref<HTMLIonInputElement>();
+    const loginPwCfElRef = ref<HTMLIonInputElement>();
 
+    const input = reactive({
+      nameEl:'',
+      regNumber1El:'',
+      regNumber2El:'',
+      cellPhoneNoEl:'',
+      emailEl:'',
+      addressEl:'',
+      jobPositionEl:'',
+      loginPwEl:'',
+      loginPwCfEl:''
+    })
+
+    
     function emailCert() {
-      const emailEl = emailElRef.value;
-      
-      if( emailEl == null ){
+      if( input.emailEl == null ){
         alert("이메일을 입력해주세요.");
+        emailElRef.value?.focus();
         return;
       }
-      if( emailEl.value.length == 0 ){
+      if( input.emailEl.length == 0 ){
         alert("이메일을 입력해주세요.");
+        emailElRef.value?.focus();
         return;
       }
 
-       mainApi.pd_emailDupCheck(emailEl.value)
+       mainApi.pd_emailDupCheck(input.emailEl)
         .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
+          alert(axiosResponse.data.msg);
             return;
           }
-          sendMail(emailEl.value);
+          sendMail(input.emailEl);
         });
        
 
@@ -120,10 +130,11 @@ export default defineComponent({
     function sendMail(email:string){
       mainApi.pd_sendEmail(email)
         .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
+          alert(axiosResponse.data.msg);
             return;
           }
+          
           
         });
     }
@@ -132,82 +143,61 @@ export default defineComponent({
     
     function checkAndJoin() {
       // 이름 체크
-      if ( nameElRef.value == null ) {
-        return;
-      }
-
-      const nameEl = nameElRef.value;
-
-      if ( nameEl.value.length == 0 ) {
+      if ( input.nameEl.length == 0 ) {
         alert('이름을 입력해 주세요.');
-        nameEl.focus();
+        nameElRef.value?.focus();
         return;
       }
 
       // 주민등록번호 체크
-      if ( regNumberElRef.value == null ) {
+      if ( input.regNumber1El == null ) {
         return;
       }
 
-      const regNumberEl = regNumberElRef.value;
-
-      if ( regNumberEl.value.length == 0 ) {
+      if ( input.regNumber1El.length == 0 ) {
         alert('주민등록번호를 제대로 입력해 주세요.');
-        regNumberEl.focus();
+        regNumber1ElRef.value?.focus();
         return;
       }
 
-      if ( regNumber2ElRef.value == null ) {
-        return;
-      }
-
-      const regNumber2El = regNumber2ElRef.value;
-
-      if ( regNumber2El.value.length == 0 ) {
+      if ( input.regNumber2El.length == 0 ) {
         alert('주민등록번호를 입력해 주세요.');
-        regNumber2El.focus();
+        regNumber2ElRef.value?.focus();
         return;
       }
       let gender = '';
-      if ( regNumber2El.value.substring(1,1) == '1' || regNumber2El.value.substring(1,1) == '3') {
+      if ( input.regNumber2El.substring(1,1) == '1' || input.regNumber2El.substring(1,1) == '3') {
         gender = '남';
       } 
       else {
         gender = '여';
       }
 
-      const regNumber = regNumberEl.value + regNumber2El.value;  
+      const regNumberEl = input.regNumber1El + input.regNumber2El;  
+      const regNumber = Crypto.AES.encrypt(regNumberEl,'regKey');
+
       // 휴대폰 체크
       if ( cellPhoneNoElRef.value == null ) {
         return;
       }
-
-      const cellPhoneNoEl = cellPhoneNoElRef.value;
-
-      if ( cellPhoneNoEl.value.length == 0 ) {
+      if ( input.cellPhoneNoEl.length == 0 ) {
         alert('휴대폰번호를 입력해 주세요.');
-        cellPhoneNoEl.focus();
+        cellPhoneNoElRef.value.focus();
         return;
       }
       
       // 이메일(아이디) 체크
-      if ( emailElRef.value == null ) {
-        return;
-      }
-
-      const emailEl = emailElRef.value;
-
-      if ( emailEl.value.length == 0 ) {
+      if ( input.emailEl.length == 0 ) {
         alert('이메일을 입력해 주세요.');
-        emailEl.focus();
+        emailElRef.value?.focus();
         return;
       }
 
       
-       mainApi.pd_checkEmailCertificated(emailEl.value)
+       mainApi.pd_checkEmailCertificated(input.emailEl)
         .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
+          alert(axiosResponse.data.msg);
             return;
           }
           isEmailCert = true;  
@@ -219,11 +209,9 @@ export default defineComponent({
         return;
       }
 
-      const addressEl = addressElRef.value;
-
-      if ( addressEl.value.length == 0 ) {
+      if ( input.addressEl.length == 0 ) {
         alert('주소를 입력해 주세요.');
-        addressEl.focus();
+        addressElRef.value.focus();
         return;
       }
 
@@ -232,11 +220,9 @@ export default defineComponent({
         return;
       }
 
-      const jobPositionEl = jobPositionElRef.value;
-
-      if ( jobPositionEl.value.length == 0 ) {
+      if ( input.jobPositionEl.length == 0 ) {
         alert('직급을 입력해 주세요.');
-        jobPositionEl.focus();
+        jobPositionElRef.value.focus();
         return;
       }
 
@@ -245,11 +231,9 @@ export default defineComponent({
         return;
       }
 
-      const loginPwEl = loginPwElRef.value;
-
-      if ( loginPwEl.value.length == 0 ) {
+      if ( input.loginPwEl.length == 0 ) {
         alert('비밀번호를 입력해 주세요.');
-        loginPwEl.focus();
+        loginPwElRef.value.focus();
         return;
       }
       
@@ -258,29 +242,23 @@ export default defineComponent({
         return;
       }
 
-      const loginPwCfEl = loginPwCfElRef.value;
-      
-      if ( loginPwCfEl.value.length == 0 ) {
+      if ( input.loginPwCfEl.length == 0 ) {
         alert('비밀번호 확인을 입력해 주세요.');
-        loginPwCfEl.focus();
+        loginPwCfElRef.value.focus();
         return;
       }
 
-      if( loginPwCfEl.value != loginPwEl.value ) {
+      if( input.loginPwCfEl != input.loginPwEl ) {
         alert('비밀번호가 일치하지 않습니다.');
-        loginPwCfEl.focus();
+        loginPwCfElRef.value.focus();
         return;
       }
       
-      const loginPwReal = loginPwRealElRef.value;
-      if ( loginPwReal == null ){
-        return;
-      }
-      loginPwReal.value = sha256(loginPwEl.value);
+      const loginPwRealEl = sha256(input.loginPwEl);
 
       
 
-      join(nameEl.value, regNumber, gender, cellPhoneNoEl.value, emailEl.value, addressEl.value, jobPositionEl.value, loginPwReal.value);
+      join(input.nameEl, regNumber.toString() , gender, input.cellPhoneNoEl , input.emailEl, input.addressEl, input.jobPositionEl, loginPwRealEl );
       
     }
 
@@ -302,10 +280,11 @@ export default defineComponent({
      router.back();
     }
     return {
+    input,
     emailCert,
     checkAndJoin,
     nameElRef,
-    regNumberElRef,
+    regNumber1ElRef,
     regNumber2ElRef,
     cellPhoneNoElRef,
     emailElRef,
@@ -313,7 +292,6 @@ export default defineComponent({
     jobPositionElRef,
     loginPwElRef,
     loginPwCfElRef,
-    loginPwRealElRef,
     router,
     hisback,
     returnUpBackOutline
@@ -323,7 +301,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-input {
+input, ion-input {
   border:2px solid #D4D4D4;
 }
 .btn-cert{
@@ -334,7 +312,5 @@ input {
 .btn-next {
   background-color:#C4C4C4;
 }
-.regNumHidden{
-  letter-spacing: 4px;
-}
+
 </style>

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { inject, reactive } from 'vue';
+import { inject } from 'vue';
 import { IActingRole, IArtwork, IPd, IRecruit } from '../types';
 
 
@@ -147,14 +147,9 @@ export interface MainApi__recruit_write__IResponseBody extends Base__IResponseBo
     id: number
   };
 }
-export interface MainApi__recruit_writeArtwork__IResponseBody extends Base__IResponseBodyType1 {
+export interface MainApi__recruit_modify__IResponseBody extends Base__IResponseBodyType1 {
   body:{
-    id: number
-  };
-}
-export interface MainApi__recruit_writeActingRole__IResponseBody extends Base__IResponseBodyType1 {
-  body:{
-    id: number
+    recruit: IRecruit
   };
 }
 export interface MainApi__recruit_list__IResponseBody extends Base__IResponseBodyType1 {
@@ -165,16 +160,8 @@ export interface MainApi__recruit_list__IResponseBody extends Base__IResponseBod
 }
 export interface MainApi__recruit_detail__IResponseBody extends Base__IResponseBodyType1 {
   body:{
-    recruit: IRecruit
-  };
-}
-export interface MainApi__artwork_detail__IResponseBody extends Base__IResponseBodyType1 {
-  body:{
-    artwork: IArtwork
-  };
-}
-export interface MainApi__actingRole_detail__IResponseBody extends Base__IResponseBodyType1 {
-  body:{
+    recruit: IRecruit,
+    artwork: IArtwork,
     actingRole: IActingRole
   };
 }
@@ -183,6 +170,7 @@ export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__I
     genFileIdsStr: string,
   };
 }
+
 // 백엔드 와의 통신장치
 export class MainApi extends HttpClient {
   public constructor() {
@@ -250,30 +238,29 @@ export class MainApi extends HttpClient {
     return this.postByForm<MainApi__pd_doDelete__IResponseBody>(`/usr/pd/doDelete`,{ loginedMemberId });
   }
 
-  public recruit_write(memberId:number, boardId:number, title:String, body:String, roleType:string, location:string, period:string, deadline:string, manager:string,
+  public recruit_write(memberId:number, boardId:number,  title:String, body:String, roleType:string, location:string, period:string, deadline:string, manager:string,
+    artworkName:String, genre:String, corp:String, director:String, artworkEtc:String,
+    roleRealName:String, roleName:String, pay:String, roleAge:String, roleGender:String, roleJob:String, roleScript:String, roleScenesCount:String, roleShootingsCount:String, roleCharacter:String, actingRoleEtc:String, 
     genFileIdsStr:String) {
-    return this.postByForm<MainApi__recruit_write__IResponseBody>('/usr/recruit/write', {memberId, boardId, title, body, roleType, location, period, deadline, manager,
-      genFileIdsStr});
+    return this.postByForm<MainApi__recruit_write__IResponseBody>('/usr/recruit/write', {memberId, boardId, title, body, roleType, location, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
+      roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleScenesCount, roleShootingsCount, roleCharacter, actingRoleEtc, genFileIdsStr});
   }
-  public recruit_writeArtwork( newRecruitmentId:number,  artworkName:String, genre:String, corp:String, director:String, artworkEtc:String, ) {
-    return this.postByForm<MainApi__recruit_writeArtwork__IResponseBody>('/usr/recruit/writeArtwork', {newRecruitmentId, artworkName, genre, corp, director, artworkEtc });
+ 
+  public recruit_modify(recruitmentId:number,memberId:number, boardId:number,  title:String, body:String, roleType:string, location:string, period:string, deadline:string, manager:string,
+    artworkName:String, genre:String, corp:String, director:String, artworkEtc:String,
+    roleRealName:String, roleName:String, pay:String, roleAge:String, roleGender:String, roleJob:String, roleScript:String, roleScenesCount:String, roleShootingsCount:String, roleCharacter:String, actingRoleEtc:String, 
+     isFileUploaded:boolean) {
+    return this.postByForm<MainApi__recruit_modify__IResponseBody>('/usr/recruit/modify', { recruitmentId, memberId, boardId, title, body, roleType, location, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
+      roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleScenesCount, roleShootingsCount, roleCharacter, actingRoleEtc, isFileUploaded});
   }
-  public recruit_writeActingRole( newRecruitmentId:number,  roleRealName:String, roleName:String, pay:String, roleAge:String, roleGender:String, roleJob:String, roleScript:String, roleSceneCount:String, roleShootingCount:String, actingRoleEtc:String ) {
-    return this.postByForm<MainApi__recruit_writeActingRole__IResponseBody>('/usr/recruit/writeActingRole', {newRecruitmentId, roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleSceneCount, roleShootingCount, actingRoleEtc});
-  }
+  
   public recruit_list(limit:number) {
     return this.get<MainApi__recruit_list__IResponseBody>(`/usr/recruit/list?limit=${limit}`);
   }
   public recruit_detail(id:number) {
     return this.get<MainApi__recruit_detail__IResponseBody>(`/usr/recruit/detail?id=${id}`);
   }
-  public artwork_detail(recruitId:number) {
-    return this.get<MainApi__artwork_detail__IResponseBody>(`/usr/recruit/artwork?recruitmentId=${recruitId}`);
-  }
-  public actingRole_detail(recruitId:number) {
-    return this.get<MainApi__actingRole_detail__IResponseBody>(`/usr/recruit/actingRole?recruitmentId=${recruitId}`);
-  }
-
+  
   public common_genFile_doUpload(file:File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);
@@ -290,7 +277,13 @@ export class MainApi extends HttpClient {
     );
   }
 
-
+  public common_recruit_genFile_doUpload(file:any,id:string) {
+    const formDate = new FormData();
+    formDate.append("file__recruit__"+id+"__common__attachment__1", file);
+    return this.post<MainApi__common_genFile_doUpload__IResponseBody>(
+      `/common/genFile/doUpload`, formDate
+    );
+  }
 
 }
 
