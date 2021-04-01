@@ -2,9 +2,10 @@
 </template>
 
 <script lang="ts">
+import { useMainService } from '@/services';
 import { useGlobalShare } from '@/stores';
 import { defineComponent } from 'vue'
-
+import * as Util from '@/utils'
 import { MainApi, useMainApi } from '../../apis'
 
 export default defineComponent({
@@ -20,18 +21,17 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const mainApi:MainApi = useMainApi();
-    const globalState = useGlobalShare();
+    const mainApiService = useMainService();
     
-     mainApi.pd_emailCert(props.email,props.emailCertKey)
+    
+     mainApiService.pd_emailCert(props.email,props.emailCertKey)
         .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
+          Util.showAlert("알림",axiosResponse.data.msg,  window.close());
           if ( axiosResponse.data.fail ) {
-            window.close();
+          
             return;
-            
           }
-          window.close();
+          
         });
     
     return {

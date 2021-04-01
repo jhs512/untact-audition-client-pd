@@ -45,9 +45,7 @@ export default defineComponent({
   props:{
   },
   setup(props) {
-    const globalState = useGlobalShare();
     
-    const mainApi:MainApi = useMainApi();
     
     return {
       menuOutline

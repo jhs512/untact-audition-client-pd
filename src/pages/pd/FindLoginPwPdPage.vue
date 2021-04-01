@@ -9,13 +9,13 @@
     <div v-if="state.isFind == false" class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndFind">
         <FormRow title="이메일(아이디):">
-          <input ref="loginIdElRef" type="text" class="w-full mt-2px">
+          <ion-input v-model="input.loginIdEl" ref="loginIdElRef" type="text" class="w-full mt-2px"></ion-input>
         </FormRow>
         <FormRow title="주민등록번호:">
-          <div class="flex w-full mt-2">
-          <input type="text" ref="regNumberElRef" class="w-full text-center" maxlength="6">
+          <div class="flex items-center w-full mt-2">
+          <ion-input v-model="input.regNumber1El" type="text" ref="regNumberElRef" class="w-full text-center" maxlength="6"></ion-input>
           <span class="mx-1">-</span>
-          <input type="text" ref="regNumber2ElRef" class="w-full text-center" maxlength="7">
+          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" class="w-full text-center" maxlength="7"></ion-input>
           </div>
         </FormRow>
       <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="FIND">
@@ -37,72 +37,63 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue'
-import { IonPage, IonContent, IonIcon } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import { MainApi, useMainApi } from '../../apis'
+import * as Util from '@/utils'
 import router from '@/router'
-
+import { useMainService } from '@/services'
+import * as Crypto from 'crypto-ts'
 export default defineComponent({
   name: 'FindLoginPwPdPage',
   components: {
     IonPage,
     IonContent,
-    IonIcon
+    IonIcon,
+    IonInput
   },
   props: {
 
   },
   setup(props) {
     
-    const mainApi:MainApi = useMainApi();
+    const mainApiService = useMainService();
 
     const loginIdElRef = ref<HTMLInputElement>();
     const regNumberElRef = ref<HTMLInputElement>();
     const regNumber2ElRef = ref<HTMLInputElement>();
     
+    const input = reactive({
+      loginIdEl:'',
+      regNumber1El:'',
+      regNumber2El:''
+    })
 
     function checkAndFind() {
       // 이름 체크
-      if ( loginIdElRef.value == null ) {
-        return;
-      }
 
-      const loginIdEl = loginIdElRef.value;
-
-      if ( loginIdEl.value.length == 0 ) {
+      if ( input.loginIdEl.length == 0 ) {
         alert('이메일(아이디)을 입력해 주세요.');
-        loginIdEl.focus();
+        
         return;
       }
 
        // 주민등록번호 체크
-      if ( regNumberElRef.value == null ) {
-        return;
-      }
-
-      const regNumberEl = regNumberElRef.value;
-
-      if ( regNumberEl.value.length == 0 ) {
+      if ( input.regNumber1El.length == 0 ) {
         alert('주민등록번호를 제대로 입력해 주세요.');
-        regNumberEl.focus();
+        
         return;
       }
 
-      if ( regNumber2ElRef.value == null ) {
-        return;
-      }
-
-      const regNumber2El = regNumber2ElRef.value;
-
-      if ( regNumber2El.value.length == 0 ) {
+      if ( input.regNumber2El.length == 0 ) {
         alert('주민등록번호를 제대로 입력해 주세요.');
-        regNumber2El.focus();
+        
         return;
       }
       
-      const regNumber = regNumberEl.value + regNumber2El.value;
+      const regNumberEl = input.regNumber1El + input.regNumber2El;  
+      const regNumber = Crypto.AES.encrypt(regNumberEl,'regKey');
 
-      findLoginPw(loginIdEl.value, regNumber);
+      findLoginPw(input.loginIdEl, regNumber.toString());
     }
     
 
@@ -112,9 +103,9 @@ export default defineComponent({
     });
 
     function findLoginPw( email:String, regNumber:String) {
-       mainApi.pd_doFindLoginPw( email, regNumber )
+       mainApiService.pd_doFindLoginPw(email,regNumber)
         .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
+          Util.showAlert("알림",axiosResponse.data.msg,null);
           if ( axiosResponse.data.fail ) {
             return;
           }
@@ -123,18 +114,16 @@ export default defineComponent({
         });
     }
 
-    function hisback() {
-      router.back();
-    }
+    
 
     return {
     checkAndFind,
+    input,
     loginIdElRef,
     regNumberElRef,
     regNumber2ElRef,
     router,
     state,
-    hisback,
     returnUpBackOutline
    }
   },
@@ -147,7 +136,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-input {
+input, ion-input {
   border:2px solid #D4D4D4;
 }
 .login-form {

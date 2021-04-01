@@ -10,7 +10,7 @@
       <div class="text-lg font-coda font-normal">{{state.artwork.name}}</div>
       <div v-if="state.dateDiff >= 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
       <div v-if="state.dateDiff < 0" class="text-xs mt-2">기한 마감</div>
-      <router-link :to="`/usr/recruit/modify?id=${state.recruit.id}`">수정</router-link>
+      <router-link v-if="state.recruit.memberId == globalState.loginedMember.id" :to="`/usr/recruit/modify?id=${state.recruit.id}`">수정</router-link>
 
       <div v-if="state.recruit.extra != null && state.recruit.extra.file__common__attachment[0].fileExtTypeCode == 'img'" class="img-container mx-4 mb-4 p-4 mt-6">  
       <img :src="state.recruit.extra.file__common__attachment[0].forPrintUrl" class="detail_img mx-auto">
@@ -52,6 +52,7 @@ import router from '@/router'
 import { IRecruit, IArtwork, IActingRole } from '../../types'
 import { MainApi, useMainApi } from '../../apis'
 import { useGlobalShare } from '@/stores'
+import { useMainService } from '@/services'
 
 
 export default defineComponent({
@@ -69,7 +70,7 @@ export default defineComponent({
   },
   setup(props) {
       const globalState = useGlobalShare();
-      const mainApi:MainApi = useMainApi();
+      const mainApiService = useMainService();
       
       
       const state = reactive({
@@ -82,7 +83,7 @@ export default defineComponent({
     
 
     function loadRecruit(id:number) {
-      mainApi.recruit_detail(id)
+      mainApiService.recruit_detail(id)
       .then(axiosResponse => {
         state.recruit = axiosResponse.data.body.recruit;
         let today = new Date();
@@ -105,7 +106,8 @@ export default defineComponent({
     return {
       state,    
       hisback,
-      returnUpBackOutline
+      returnUpBackOutline,
+      globalState
     }
   }
 })

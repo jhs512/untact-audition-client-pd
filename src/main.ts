@@ -7,7 +7,7 @@ import BottomBar from './components/BottomBar.vue'
 
 import { IonicVue } from '@ionic/vue';
 
-import { globalShare, globalShareSymbol } from './stores';
+import { createGlobalState, globalShareSymbol } from './stores';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -31,13 +31,14 @@ import './theme/variables.css';
 import './index.css'
 
 // MainApi 불러오기
-import { mainApi, mainApiSymbol } from './apis/'
+import { createMainApi, mainApiSymbol } from './apis/'
 
 
 // 폰트어썸 불러오기
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret, fas, faBars, faHome, faSearch, faComment, faUser, faArrowLeft, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { createMainService, mainServiceSymbol } from './services'
 
 library.add( faUserSecret, fas, faBars, faHome, faSearch, faComment, faUser, faArrowLeft, faChevronLeft );
 
@@ -49,9 +50,10 @@ const app = createApp(App);
   app.component('FontAweSomeIcon', FontAwesomeIcon);
   app.use(IonicVue);
   app.use(router);
-  app.provide(globalShareSymbol,globalShare());
-  app.provide(mainApiSymbol, mainApi());
-
+  app.provide(globalShareSymbol, createGlobalState());
+  app.provide(mainApiSymbol, createMainApi());
+  app.provide(mainServiceSymbol, createMainService());
+  
   router.isReady().then(() => {
     app.mount('#app');
   });

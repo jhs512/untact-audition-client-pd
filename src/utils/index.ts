@@ -1,3 +1,5 @@
+import { alertController } from "@ionic/vue";
+
 export function isEmptyObject(param:{}) {
   return Object.keys(param).length === 0 && param.constructor === Object;
 }
@@ -43,4 +45,21 @@ export function getEmailCertKey(length:number){
   }
 
   return sb;
+}
+
+export async function showAlert(title:string,msg:string, method:any|null) {
+  const alert = await alertController
+  .create({
+    header: title,
+    message: msg,
+    buttons:[  
+    {
+      text: 'Okay',
+      handler: () => {
+        method
+    }
+  }
+  ]
+  });
+return alert.present();
 }

@@ -45,6 +45,7 @@ import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router'
 import { MainApi, useMainApi } from '../../apis'
 import { useGlobalShare } from '@/stores'
+import { useMainService } from '@/services'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -55,7 +56,7 @@ export default defineComponent({
   },
   setup(props) {
     const globalState = useGlobalShare();
-    const mainApi:MainApi = useMainApi();
+    const mainApiService = useMainService();
 
     const loginedMemberIdRef = ref<HTMLInputElement>();
 
@@ -67,7 +68,7 @@ export default defineComponent({
         return;
       }
 
-      mainApi.pd_doDelete( loginedMemberId.value )
+      mainApiService.pd_doDelete( loginedMemberId.value )
         .then(axiosResponse => {
           alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
@@ -76,15 +77,10 @@ export default defineComponent({
 
           globalState.logout();
           
-          router.replace('/');
+          location.replace('/');
     });
 
     }
-
-    function hisback() {
-      router.back();
-    }
-
 
       async function presentAlertConfirm(event:Event) {
       const alert = await alertController
@@ -115,7 +111,6 @@ export default defineComponent({
      deletePd,
      loginedMemberIdRef,
      returnUpBackOutline,
-     hisback,
      presentAlertConfirm,
      globalState
    }

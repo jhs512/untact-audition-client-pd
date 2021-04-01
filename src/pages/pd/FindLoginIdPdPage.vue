@@ -10,13 +10,13 @@
     <div v-if="state.isFind == false" class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndFind">
         <FormRow title="이름:">
-          <input ref="nameElRef" type="text" class="w-full mt-2px">
+          <ion-input v-model="input.nameEl" ref="nameElRef" type="text" class="w-full mt-2px"></ion-input>
         </FormRow>
         <FormRow title="주민등록번호:">
-          <div class="flex w-full mt-2">
-          <input type="text" ref="regNumberElRef" class="w-full text-center" maxlength="6">
+          <div class="flex items-center w-full mt-2">
+          <ion-input v-model="input.regNumber1El" type="text" ref="regNumberElRef" class="w-full text-center" maxlength="6"></ion-input>
           <span class="mx-1">-</span>
-          <input type="text" ref="regNumber2ElRef" class="w-full text-center" maxlength="7">
+          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" class="w-full text-center" maxlength="7"></ion-input>
           </div>
         </FormRow>
       <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="FIND">
@@ -38,77 +38,68 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue'
-import { IonPage, IonContent, IonIcon } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import { MainApi, useMainApi } from '../../apis'
+import * as Util from '@/utils'
 import router from '@/router'
-
+import { MainService, useMainService } from '@/services'
+import * as Crypto from 'crypto-ts'
 export default defineComponent({
   name: 'FindLoginIdPdPage',
   components: {
     IonPage,
     IonContent,
-    IonIcon
+    IonIcon,
+    IonInput
   },
   props: {
   },
   setup(props) {
     
-    const mainApi:MainApi = useMainApi();
+    const mainApiService = useMainService();
 
     const nameElRef = ref<HTMLInputElement>();
     const regNumberElRef = ref<HTMLInputElement>();
     const regNumber2ElRef = ref<HTMLInputElement>();
     
+    const input = reactive({
+      nameEl:'',
+      regNumber1El:'',
+      regNumber2El:''
+    })
 
     function checkAndFind() {
       // 이름 체크
-      if ( nameElRef.value == null ) {
-        return;
-      }
-
-      const nameEl = nameElRef.value;
-
-      if ( nameEl.value.length == 0 ) {
+      if ( input.nameEl.length == 0 ) {
         alert('이름을 입력해 주세요.');
-        nameEl.focus();
+        
         return;
       }
 
       // 주민등록번호 체크
-      if ( regNumberElRef.value == null ) {
-        return;
-      }
 
-      const regNumberEl = regNumberElRef.value;
-
-      if ( regNumberEl.value.length == 0 ) {
+      if ( input.regNumber1El.length == 0 ) {
         alert('주민등록번호를 제대로 입력해 주세요.');
-        regNumberEl.focus();
+        
         return;
       }
-
-      if ( regNumber2ElRef.value == null ) {
-        return;
-      }
-
-      const regNumber2El = regNumber2ElRef.value;
-
-      if ( regNumber2El.value.length == 0 ) {
+      if ( input.regNumber2El.length == 0 ) {
         alert('주민등록번호를 입력해 주세요.');
-        regNumber2El.focus();
+        
         return;
       }
       let gender = '';
-      if ( regNumber2El.value.substring(1,1) == '1' || regNumber2El.value.substring(1,1) == '3') {
+      if ( input.regNumber2El.substring(1,1) == '1' || input.regNumber2El.substring(1,1) == '3') {
         gender = '남';
       } 
       else {
         gender = '여';
       }
 
-      const regNumber = regNumberEl.value + regNumber2El.value;
-      findLoginId(nameEl.value, regNumber);
+      const regNumberEl = input.regNumber1El + input.regNumber2El;  
+      const regNumber = Crypto.AES.encrypt(regNumberEl,'regKey');
+
+      findLoginId(input.nameEl, regNumber.toString());
     }
     
 
@@ -118,9 +109,9 @@ export default defineComponent({
     });
 
     function findLoginId( name:String, regNumber:String) {
-       mainApi.pd_doFindLoginId( name, regNumber )
-        .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
+       mainApiService.pd_doFindLoginId(name,regNumber)
+       .then(axiosResponse => {
+          Util.showAlert("알림",axiosResponse.data.msg,null);
           if ( axiosResponse.data.fail ) {
             return;
           }
@@ -129,18 +120,15 @@ export default defineComponent({
         });
     }
 
-    function hisback() {
-     router.back();
-    }
 
     return {
     checkAndFind,
+    input,
     nameElRef,
     regNumberElRef,
     regNumber2ElRef,
     router,
     state,
-    hisback,
     returnUpBackOutline
    }
   }
@@ -150,7 +138,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-input {
+input, ion-input {
   border:2px solid #D4D4D4;
 }
 .login-form {

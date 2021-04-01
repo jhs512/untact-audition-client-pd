@@ -50,17 +50,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, ref } from 'vue'
+import { defineComponent, reactive, onMounted } from 'vue'
 import { IRecruit } from '../types/'
 import { MainApi, useMainApi } from '../apis/'
 import { IonContent, IonItem ,IonPage,IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue';
 import { menuOutline } from 'ionicons/icons'
 
 import Popover from './popover.vue'
-
+import * as Util from '@/utils'
 import './global.css'
-import router from '@/router';
+
 import { useGlobalShare } from '@/stores';
+import { useMainService } from '@/services';
 export default defineComponent({
   components: {
     IonContent,
@@ -83,9 +84,10 @@ export default defineComponent({
   name: 'MainPage',
   setup(props) {
     const globalState = useGlobalShare();
-    const mainApi:MainApi = useMainApi();
-      
-    let limit = 2;
+    
+    const mainService = useMainService();
+    
+    let limit = 5;
     let isAllLoaded = false;
 
       const state = reactive({
@@ -93,17 +95,17 @@ export default defineComponent({
       });
 
     function loadRecruits(limit:number) {
-      mainApi.recruit_list(limit)
+      mainService.recruit_list(limit)
       .then(axiosResponse => {
         state.recruits = axiosResponse.data.body.recruits;
-        if(axiosResponse.data.body.isAllLoaded == true){
+        if( axiosResponse.data.body.isAllLoaded == true ){
           isAllLoaded = true;
         }
-      });
+      })
     }
 
     onMounted(() => {
-      loadRecruits(2); 
+      loadRecruits(limit); 
     });
     
     
@@ -112,13 +114,14 @@ export default defineComponent({
     }
 
    async function loadData(event:any){
+     if ( isAllLoaded ) {
+        event.target.setAttribute('disabled' , 'true');
+      }
       await wait(500);
       event.target.complete();
       limit = limit + 2;
       addData(limit);
-      if ( isAllLoaded ) {
-        event.target.setAttribute('disabled' , 'true');
-      }
+      
     }
     
     function addData(limit:number){

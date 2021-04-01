@@ -25,11 +25,11 @@
 
         <FormRow title="이메일(아이디):">
           <ion-input v-model="input.emailEl" ref="emailElRef" type="text" inputmode="email" placeholder="이메일(아이디)" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-          <div class="btn-cert text-10px right-0 mr-1 px-3 absolute z-50" v-on:click="emailCert">인증하기</div>
+          <div class="btn-cert text-10px top-full right-0 px-3 py-1 mt-1 absolute z-50" v-on:click="emailCert">인증하기</div>
         </FormRow>
         <div class="text-10px"></div>
 
-        <FormRow title="주소:">
+        <FormRow class="mt-7" title="주소:">
           <ion-input v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
 
@@ -61,10 +61,10 @@ import { defineComponent, reactive, ref } from 'vue'
 import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router';
-
-import { MainApi, useMainApi } from '../../apis'
+import * as Util from '@/utils'
 import * as Crypto from 'crypto-ts'
 import { sha256 } from 'js-sha256'
+import { useMainService } from '@/services';
 export default defineComponent({
   name: 'JoinPdPage',
   components: {
@@ -78,7 +78,7 @@ export default defineComponent({
   },
   setup(props) {
     
-    const mainApi:MainApi = useMainApi();
+    const mainApiService = useMainService();
 
     const nameElRef = ref<HTMLIonInputElement>();
     const regNumber1ElRef = ref<HTMLIonInputElement>();
@@ -115,10 +115,10 @@ export default defineComponent({
         return;
       }
 
-       mainApi.pd_emailDupCheck(input.emailEl)
+       mainApiService.pd_emailDupCheck(input.emailEl)
         .then(axiosResponse => {
           if ( axiosResponse.data.fail ) {
-          alert(axiosResponse.data.msg);
+          Util.showAlert("알림",axiosResponse.data.msg,null);
             return;
           }
           sendMail(input.emailEl);
@@ -128,10 +128,10 @@ export default defineComponent({
     }
 
     function sendMail(email:string){
-      mainApi.pd_sendEmail(email)
+      mainApiService.pd_sendEmail(email)
         .then(axiosResponse => {
+          Util.showAlert("알림",axiosResponse.data.msg,null);
           if ( axiosResponse.data.fail ) {
-          alert(axiosResponse.data.msg);
             return;
           }
           
@@ -194,10 +194,10 @@ export default defineComponent({
       }
 
       
-       mainApi.pd_checkEmailCertificated(input.emailEl)
+       mainApiService.pd_checkEmailCertificated(input.emailEl)
         .then(axiosResponse => {
           if ( axiosResponse.data.fail ) {
-          alert(axiosResponse.data.msg);
+          Util.showAlert("알림",axiosResponse.data.msg,null);
             return;
           }
           isEmailCert = true;  
@@ -263,15 +263,16 @@ export default defineComponent({
     }
 
     function join(name:String, regNumber:String, gender:String, cellPhoneNo:String, email:String, address:String, jobPosition:String, loginPw:String) {
-       mainApi.pd_doJoin(name, regNumber, gender, cellPhoneNo, email, address, jobPosition, loginPw)
+       mainApiService.pd_doJoin(name, regNumber, gender, cellPhoneNo, email, address, jobPosition, loginPw)
         .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
+          Util.showAlert("알림",axiosResponse.data.msg,router.replace('/usr/pd/login'));
           if ( axiosResponse.data.fail ) {
             return;
           }
+          
           localStorage.removeItem("isEmailCert");
           localStorage.removeItem("certEmail");
-          router.replace('/');
+          
     
         });
     }
@@ -306,7 +307,6 @@ input, ion-input {
 }
 .btn-cert{
   background-color:#C4C4C4;
-  top:58%;
   cursor:pointer;
 }
 .btn-next {

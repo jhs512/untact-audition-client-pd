@@ -165,6 +165,7 @@ import { IonPage, IonContent, IonDatetime, IonItem, IonLabel, IonInput, IonTexta
 import router from '@/router'
 import { MainApi, useMainApi } from '../../apis'
 import { useGlobalShare } from '@/stores'
+import { useMainService } from '@/services'
 
 export default defineComponent({
   name: 'RecruitWritePage',
@@ -185,7 +186,7 @@ export default defineComponent({
   setup(props) {
     const globalState = useGlobalShare();
     
-    const mainApi:MainApi = useMainApi();
+    const mainApiService = useMainService();
 
     const titleElRef = ref<HTMLIonInputElement>();
     const bodyElRef = ref<HTMLIonInputElement>();
@@ -435,7 +436,7 @@ export default defineComponent({
           return;
         }
         
-        mainApi.common_genFile_doUpload(input.fileEl)
+        mainApiService.common_recruit_genFile_doUploadForAdd(input.fileEl)
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
               alert(axiosResponse.data.msg);
@@ -455,7 +456,7 @@ export default defineComponent({
     artworkName:String, genre:String, corp:String, director:String, artworkEtc:String,
     roleRealName:String, roleName:String, pay:String, roleAge:String, roleGender:String, roleJob:String, roleScript:String, roleScenesCount:String, roleShootingsCount:String, roleCharacter:String, actingRoleEtc:String, 
     genFileIdsStr:String) {
-       mainApi.recruit_write(memberId, boardId, title, body, roleType, location, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
+       mainApiService.recruit_write(memberId, boardId, title, body, roleType, location, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
     roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleScenesCount, roleShootingsCount, roleCharacter, actingRoleEtc, genFileIdsStr)
         .then(axiosResponse => {
           

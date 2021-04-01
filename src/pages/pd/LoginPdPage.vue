@@ -9,7 +9,7 @@
     <div class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndLogin">
         <FormRow title="이메일(아이디):">
-          <ion-input v-model="input.emailEl" ref="emailElRef" type="text" placeholder="아이디" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+          <ion-input v-model="input.emailEl" ref="emailElRef" autocomplete="email" inputmode="email" type="text" placeholder="아이디" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
         <FormRow title="PASSWORD:">
           <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password" clear-input="true" required="true" placeholder="비밀번호" enterkeyhint="done"></ion-input>
@@ -36,10 +36,11 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { IonContent,  IonPage, IonIcon, IonInput } from '@ionic/vue';
 import { returnUpBackOutline } from 'ionicons/icons'
-import { MainApi, useMainApi } from '../../apis'
+import * as Util from '@/utils'
 import { sha256 } from 'js-sha256'
 import { useGlobalShare } from '@/stores';
 import router from '@/router'
+import { useMainService } from '@/services';
 
 export default defineComponent({
   name: 'LoginPdPage',
@@ -56,7 +57,7 @@ export default defineComponent({
     
     const globalState = useGlobalShare();
     
-    const mainApi:MainApi = useMainApi();
+    const mainApiService = useMainService();
 
     const emailElRef = ref<HTMLIonInputElement>();
     const loginPwElRef = ref<HTMLIonInputElement>();
@@ -93,13 +94,13 @@ export default defineComponent({
     }
 
     function login( email:String,loginPw:String) {
-       mainApi.pd_doLogin( email, loginPw )
+       mainApiService.pd_doLogin( email, loginPw )
         .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
+          Util.showAlert("알림",axiosResponse.data.msg,location.replace('/main'));
           if ( axiosResponse.data.fail ) {
             return;
           }
-
+          
           const authKey = axiosResponse.data.body.authKey;
           const loginedPd = axiosResponse.data.body.pd;
           
@@ -112,22 +113,16 @@ export default defineComponent({
           localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
           localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
           localStorage.setItem("loginedMemberCorpType", loginedPd.corpType);
-          localStorage.setItem("loginedMemberProfileImgUrl", loginedPd.extra__thumbImg);
-          
-          location.replace('/main');
+          localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
     
         });
     }
-    function hisback() {
-     router.back();
-    }
-
+    
     return {
     checkAndLogin,
     emailElRef,
     loginPwElRef,
     router,
-    hisback,
     returnUpBackOutline,
     input
    }

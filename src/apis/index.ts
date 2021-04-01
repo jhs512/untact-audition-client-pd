@@ -176,7 +176,7 @@ export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://172.30.1.15:8024/',
+        baseURL:'http://192.168.0.17:8024/',
       })
     );
   }
@@ -261,7 +261,7 @@ export class MainApi extends HttpClient {
     return this.get<MainApi__recruit_detail__IResponseBody>(`/usr/recruit/detail?id=${id}`);
   }
   
-  public common_genFile_doUpload(file:File) {
+  public common_recruit_genFile_doUploadForAdd(file:File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);
     return this.post<MainApi__common_genFile_doUpload__IResponseBody>(
@@ -277,7 +277,7 @@ export class MainApi extends HttpClient {
     );
   }
 
-  public common_recruit_genFile_doUpload(file:any,id:string) {
+  public common_recruit_genFile_doUploadForModify(file:any,id:string) {
     const formDate = new FormData();
     formDate.append("file__recruit__"+id+"__common__attachment__1", file);
     return this.post<MainApi__common_genFile_doUpload__IResponseBody>(
@@ -288,10 +288,19 @@ export class MainApi extends HttpClient {
 }
 
 
+
 export const mainApiSymbol = Symbol('mainApiSymbol');
 
-export const mainApi = () => {
-  return new MainApi();
+class Singleton {
+  static mainApi:MainApi;
+}
+
+export const createMainApi = () => {
+  if( Singleton.mainApi == null ) {
+  Singleton.mainApi = new MainApi();
+  }
+  return Singleton.mainApi;
 }
 
 export const useMainApi = ():MainApi => inject(mainApiSymbol) as MainApi;
+export const getMainApi = createMainApi;

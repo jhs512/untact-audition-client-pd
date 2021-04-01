@@ -166,6 +166,7 @@ import router from '@/router'
 import { MainApi, useMainApi } from '../../apis'
 import { useGlobalShare } from '@/stores'
 import * as Util from '@/utils'
+import { useMainService } from '@/services'
 export default defineComponent({
   name: 'RecruitModifyPage',
   components: {
@@ -189,7 +190,7 @@ export default defineComponent({
     
     const globalState = useGlobalShare();
     
-    const mainApi:MainApi = useMainApi();
+    const mainApiService = useMainService();
 
     const titleElRef = ref<HTMLIonInputElement>();
     const bodyElRef = ref<HTMLIonInputElement>();
@@ -304,10 +305,6 @@ export default defineComponent({
       
       };
 
-      function doUpload(){
-
-      }
-
       startWrite();
 
     }
@@ -316,15 +313,15 @@ export default defineComponent({
     artworkName:String, genre:String, corp:String, director:String, artworkEtc:String,
     roleRealName:String, roleName:String, pay:String, roleAge:String, roleGender:String, roleJob:String, roleScript:String, roleScenesCount:String, roleShootingsCount:String, roleCharacter:String, actingRoleEtc:String,
     isFileUploaded:boolean) {
-       mainApi.recruit_modify(recruitmentId, memberId, boardId, title, body, roleType, locationEl, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
+       mainApiService.recruit_modify(recruitmentId, memberId, boardId, title, body, roleType, locationEl, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
       roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleScenesCount, roleShootingsCount, roleCharacter, actingRoleEtc, isFileUploaded)
         .then(axiosResponse => {
 
           if(input.fileEl != null){
-           mainApi.common_recruit_genFile_doUpload(input.fileEl, Util.toStringOrNull(props.id))
+           mainApiService.common_recruit_genFile_doUploadForModify(input.fileEl, Util.toStringOrNull(props.id))
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
-              alert(axiosResponse.data.msg);
+              Util.showAlert("알림",axiosResponse.data.msg,null);
               return;
             }
             else {

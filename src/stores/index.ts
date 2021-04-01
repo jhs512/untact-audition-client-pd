@@ -14,7 +14,7 @@ const cellPhoneNo = Util.toStringOrNull(localStorage.getItem("loginedMemberCellP
 const jobPosition = Util.toStringOrNull(localStorage.getItem("loginedMemberJobPosition"))
 const corpName = Util.toStringOrNull(localStorage.getItem("loginedMemberCorpName"))
 const corpType = Util.toStringOrNull(localStorage.getItem("loginedMemberCorpType"))
-const extra__thumbImg = Util.toStringOrNull(localStorage.getItem("loginedMemberProfileImgUrl"))
+const extra__thumbImg = Util.toStringOrNull(localStorage.getItem("loginedMemberExtra__thumbImg"))
 const authLevel = Util.toIntOrNull(localStorage.getItem("loginedMemberAuthLevel"))
 const regDate = Util.toIntOrNull(localStorage.getItem("loginedMemberRegDate"))
 const updateDate = Util.toIntOrNull(localStorage.getItem("loginedMemberUpdateDate"))
@@ -23,7 +23,7 @@ class Singleton {
   static globalState: GlobalState;
 }
 
-export const globalShare = () => {
+export const createGlobalState = () => {
   if( Singleton.globalState == null ) {
   const globalState: GlobalState = reactive({
     fullPath: '',
@@ -59,7 +59,7 @@ export const globalShare = () => {
       localStorage.removeItem("loginedMemberCorpType");
       localStorage.removeItem("loginedMemberJobPosition");
       localStorage.removeItem("loginedMemberAddress");
-      localStorage.removeItem("loginedMemberProfileImgUrl");
+      localStorage.removeItem("loginedMemberExtra__thumbImg");
       location.replace('/usr/pd/login');
     }
   });
@@ -73,6 +73,6 @@ export const globalShare = () => {
 
 export const useGlobalShare = ():GlobalState => inject(globalShareSymbol) as GlobalState;
 
-export const useGlobalStateOnOutsideOfVue = globalShare;
+export const useGlobalStateOnOutsideOfVue = createGlobalState;
 
 

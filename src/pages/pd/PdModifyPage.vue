@@ -53,6 +53,8 @@ import { MainApi, useMainApi } from '../../apis'
 import { sha256 } from 'js-sha256'
 import { useGlobalShare } from '@/stores'
 import * as Util from '@/utils'
+import { useMainService } from '@/services'
+import axios from 'axios'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -66,7 +68,7 @@ export default defineComponent({
 
   },
   setup(props) {
-    const mainApi:MainApi = useMainApi();
+    const mainApiService = useMainService();
     const globalState = useGlobalShare();
 
     
@@ -87,7 +89,7 @@ export default defineComponent({
       fileEl: new File([""],""),
     })
 
-
+  
    function setProfileImg(event:any){
         input.fileEl = event.target.children[0].files[0];
    }
@@ -102,93 +104,26 @@ export default defineComponent({
         
       const startModify = () => {
 
-        if ( input.fileEl != null ) {
+        if ( input.fileEl != null && input.fileEl.size > 0) {
           isFileUploaded = true;
         }
 
          modify(Util.toStringOrNull(globalState.loginedMember.id), input.nameEl, loginPwRealEl, input.addressEl,  input.cellPhoneNoEl, input.jobPositionEl, input.corpNameEl, isFileUploaded);
 
-        if ( input.fileEl != null ) {
-          doFileUpload();
-          return;
-        }
       }
 
-        function doFileUpload(){
-        if(globalState.loginedMember.id == null){
-          return;
-        }
+      startModify();
 
-        mainApi.common_pdGenFile_doUpload(input.fileEl, Util.toStringOrNull(globalState.loginedMember.id))
-          .then(axiosResponse => {
-            if ( axiosResponse.data.fail ) {
-              alert(axiosResponse.data.msg);
-              return;
-            }
-            else {
-              updatePd(Util.toStringOrNull(globalState.loginedMember.id));
-            }
-          });
-        }
-
-
-      startModify();     
-      
-    }  
-
-   
-         function updatePd(loginedMemberId:string){
-           if(loginedMemberId == null){
-              return;
-          }
-          mainApi.pd_update(loginedMemberId)
-          .then(axiosResponse => {
-            if ( axiosResponse.data.fail ) {
-              alert(axiosResponse.data.msg);
-              return;
-            }
-            else {
-          
-          const loginedPd = axiosResponse.data.body.pd;
-          
-          if( loginedPd.name != null ){
-              localStorage.removeItem("loginedMemberName");
-          }
-          if( loginedPd.cellPhoneNo != null ){
-              localStorage.removeItem("loginedMemberCellPhoneNo");
-          }
-          if( loginedPd.address != null ){
-              localStorage.removeItem("loginedMemberAddress");
-          }
-          if( loginedPd.jobPosition != null ){
-              localStorage.removeItem("loginedMemberJobPosition");
-          }
-          if( loginedPd.corpName != null ){
-              localStorage.removeItem("loginedMemberCorpName");
-          }
-          if( loginedPd.extra__thumbImg != null ){
-              localStorage.removeItem("loginedMemberProfileImgUrl");
-          }
-          
-          localStorage.setItem("loginedMemberId", loginedPd.id + "");
-          localStorage.setItem("loginedMemberName", loginedPd.name);
-          localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);
-          localStorage.setItem("loginedMemberAddress", loginedPd.address);
-          localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
-          localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
-          localStorage.setItem("loginedMemberProfileImgUrl", loginedPd.extra__thumbImg);
-
-          location.replace("/usr/pd/info");          
-  
-            }
-          });
     }
 
-
     function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string, isFileUploaded:boolean ){
-         mainApi.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName, isFileUploaded )
+         mainApiService.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName, isFileUploaded )
         .then(axiosResponse => {
-          alert(axiosResponse.data.msg);
+          Util.showAlert("알림",axiosResponse.data.msg, () => { 
+            if( !!!isFileUploaded ) { 
+              location.replace('/usr/pd/info'); 
+              }else { null } 
+            });
           if ( axiosResponse.data.fail ) {
             return;
           }
@@ -211,7 +146,7 @@ export default defineComponent({
               localStorage.removeItem("loginedMemberCorpName");
           }
           if( loginedPd.extra__thumbImg != null ){
-              localStorage.removeItem("loginedMemberProfileImgUrl");
+              localStorage.removeItem("loginedMemberExtra__thumbImg");
           }
           
           localStorage.setItem("loginedMemberId", loginedPd.id + "");
@@ -220,15 +155,67 @@ export default defineComponent({
           localStorage.setItem("loginedMemberAddress", loginedPd.address);
           localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
           localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
-          localStorage.setItem("loginedMemberProfileImgUrl", loginedPd.extra__thumbImg);
+          localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
           
-          updatePd(loginedMemberId);
+          if ( isFileUploaded ){
+            doFileUpload();
+          }
+          
     });
       }
 
-    function hisback(){
-      router.back();
-    }
+
+     function doFileUpload(){
+        if(globalState.loginedMember.id == null){
+          return;
+        }
+
+        mainApiService.common_pdGenFile_doUpload(input.fileEl, Util.toStringOrNull(globalState.loginedMember.id))
+          .then(axiosResponse => {
+            if ( axiosResponse.data.fail ) {
+              location.replace('/usr/pd/info');
+              return;
+            }
+
+            mainApiService.pd_update(Util.toStringOrNull(globalState.loginedMember.id))
+            .then( axiosResponse => {
+              if(axiosResponse.data.fail){
+                return;
+              }
+              const loginedPd = axiosResponse.data.body.pd;
+          
+          if( loginedPd.name != null ){
+              localStorage.removeItem("loginedMemberName");
+          }
+          if( loginedPd.cellPhoneNo != null ){
+              localStorage.removeItem("loginedMemberCellPhoneNo");
+          }
+          if( loginedPd.address != null ){
+              localStorage.removeItem("loginedMemberAddress");
+          }
+          if( loginedPd.jobPosition != null ){
+              localStorage.removeItem("loginedMemberJobPosition");
+          }
+          if( loginedPd.corpName != null ){
+              localStorage.removeItem("loginedMemberCorpName");
+          }
+          if( loginedPd.extra__thumbImg != null ){
+              localStorage.removeItem("loginedMemberExtra__thumbImg");
+          }
+          
+          localStorage.setItem("loginedMemberId", loginedPd.id + "");
+          localStorage.setItem("loginedMemberName", loginedPd.name);
+          localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);
+          localStorage.setItem("loginedMemberAddress", loginedPd.address);
+          localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
+          localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
+          localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
+          location.replace('/usr/pd/info');
+
+            })
+            
+          });
+        }
 
     return { 
       input,
@@ -240,7 +227,6 @@ export default defineComponent({
       corpNameElRef,
       checkAndModify,
       modify,
-      hisback,
       returnUpBackOutline,
       setProfileImg
     }
