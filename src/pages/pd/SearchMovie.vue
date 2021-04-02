@@ -41,14 +41,14 @@ export default defineComponent({
     function searchKeyword (event:any){
       mainApiService.searchMvList(event?.target.value)
     .then(axiosResponse => {
-
+      console.log(axiosResponse.data.movieListResult.movieList);
       list.arr.length = [] as any;
 
       if(event.target.value.length > 0){
         for( var i = 0 ; i < axiosResponse.data.movieListResult.movieList.length ; i++ ){
                 let isChecked = false;
                 for( var j = 0 ; j < selectedMovieList.movies.length ; j++ ){
-                  if ( selectedMovieList.movies[j].movieNm == axiosResponse.data.movieListResult.movieList[i].movieNm ){
+                  if ( selectedMovieList.movies[j].movieCd == axiosResponse.data.movieListResult.movieList[i].movieCd ){
                     isChecked = true;
                     break;
                   } else {
@@ -58,7 +58,7 @@ export default defineComponent({
 
                 if ( isChecked == false ) {
                   for ( var k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
-                      if ( pdFilmgraphy.movieList[k].movieNm == axiosResponse.data.movieListResult.movieList[i].movieNm ){
+                      if ( pdFilmgraphy.movieList[k].movieCd == axiosResponse.data.movieListResult.movieList[i].movieCd ){
                         isChecked = true;
                         break;
                       } else {
@@ -68,6 +68,7 @@ export default defineComponent({
                   }
                 
                 let movie = {
+                  movieCd: axiosResponse.data.movieListResult.movieList[i].movieCd,
                   movieNm: axiosResponse.data.movieListResult.movieList[i].movieNm,
                   isChecked: isChecked
                 }
@@ -90,13 +91,13 @@ export default defineComponent({
         pdFilmgraphy.movieList.push(item);
       } else {
         for(var i = 0 ; i < pdFilmgraphy.movieList.length ; i++){
-          if(item.movieNm == pdFilmgraphy.movieList[i].movieNm){
+          if(item.movieCd == pdFilmgraphy.movieList[i].movieCd){
             pdFilmgraphy.movieList.splice(i,1);
             break;
           }
         }
       }
-      
+      console.log(pdFilmgraphy.movieList);
     }
 
     const selectedMovieList = reactive ({
