@@ -274,7 +274,7 @@ export default defineComponent({
           localStorage.removeItem("isEmailCert");
           localStorage.removeItem("certEmail");
           
-          Util.showAlert("알림",axiosResponse.data.msg,() => router.replace('/usr/pd/login'));
+          Util.showAlert("알림",axiosResponse.data.msg,() => location.replace('/usr/pd/login'));
         });
     }
 

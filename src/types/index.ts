@@ -75,3 +75,25 @@ export interface IGenFile extends IEntity {
   character:string;
   etc:string;
 }
+
+export interface ISearchMovie {
+  movieList: movieInfo[];
+  source:string;
+  totCnt: number
+}
+
+interface movieInfo {
+companys: []
+directors: []
+genreAlt: string;
+movieCd: string;
+movieNm: string;
+movieNmEn: string;
+nationAlt: string;
+openDt: string;
+prdtStatNm: string;
+prdtYear: string;
+repGenreNm: string;
+repNationNm: string;
+typeNm: string;
+}

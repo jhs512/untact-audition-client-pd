@@ -116,7 +116,7 @@ export default defineComponent({
           localStorage.setItem("loginedMemberCorpType", loginedPd.corpType);
           localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
 
-          Util.showAlert("알림", axiosResponse.data.msg, () => location.replace('/main'));
+          Util.showAlert("알림", axiosResponse.data.msg, () => location.replace('/main/home'));
     
         });
     }

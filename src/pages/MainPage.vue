@@ -96,10 +96,6 @@ export default defineComponent({
 
     onMounted(() => {
       loadRecruits(limit); 
-      mainService.testApi()
-      .then(axiosResponse => {
-        console.log(axiosResponse.data.movieListResult);
-      });
     });
     
     
@@ -128,10 +124,7 @@ export default defineComponent({
       });
     }
 
-    mainService.testApi()
-    .then( axiosResponse => {
-      console.log(axiosResponse.data.movieListResult);
-    })
+  
     
   
     return {

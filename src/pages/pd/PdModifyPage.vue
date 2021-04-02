@@ -35,14 +35,14 @@
         <FormRow title="회사:">
           <ion-input v-model="input.corpNameEl" ref="corpNameElRef" type="text"></ion-input>
         </FormRow>
-
+        
         <FormRow title="작품:">
              <ion-button slots ="icon-only" fill="clear" color="dark" :onclick="openModal">
               검색
             </ion-button>
-             <ion-item-sliding v-bind:key="item" v-for="item in items.arr">
-              <ion-item>
-                <ion-label>{{item.title}}</ion-label>
+             <ion-item-sliding  v-bind:key="item" v-for="item in pdFilmgraphy.movieList">
+              <ion-item v-model="input.artworkEl" lines="none">
+                <ion-label>{{item.movieNm}}</ion-label>
               </ion-item>
               <ion-item-options side="end">
                 <ion-item-option @click="deleteItem(item)">Unread</ion-item-option>
@@ -68,7 +68,7 @@ import { returnUpBackOutline } from 'ionicons/icons'
 
 
 import { sha256 } from 'js-sha256'
-import { useGlobalShare } from '@/stores'
+import { pdFilmgraphy, useGlobalShare } from '@/stores'
 import * as Util from '@/utils'
 import { useMainService } from '@/services'
 
@@ -115,6 +115,7 @@ export default defineComponent({
       jobPositionEl:globalState.loginedMember.jobPosition,
       corpNameEl:globalState.loginedMember.corpName,
       fileEl: new File([""],""),
+      artworkEl: pdFilmgraphy.movieList
     })
 
   
@@ -122,9 +123,13 @@ export default defineComponent({
         input.fileEl = event.target.children[0].files[0];
    }
 
-  let isFileUploaded = false;
+    let isFileUploaded = false;
 
     function checkAndModify() {
+      input.artworkEl = pdFilmgraphy.movieList
+      pdFilmgraphy.movieList = pdFilmgraphy.movieList;
+      console.log(pdFilmgraphy.movieList);
+      return;
       let loginPwRealEl = '';
         if (input.loginPwEl.length > 0 ){
           loginPwRealEl = sha256(input.loginPwEl);
@@ -242,14 +247,11 @@ export default defineComponent({
           });
         }
 
-
+ 
         const items = reactive({
-          arr:[
-            {title:'a'},
-            {title:'b'},
-            {title:'c'}
-          ]
+          arr: pdFilmgraphy.movieList
         })
+
     function deleteItem(item:any){
       for(var i = 0; i < items.arr.length; i++) {
 
@@ -306,8 +308,8 @@ export default defineComponent({
       isOpenRef,
       setOpen,
       setClose,
-      openModal
-
+      openModal,
+      pdFilmgraphy
     }
   }
   

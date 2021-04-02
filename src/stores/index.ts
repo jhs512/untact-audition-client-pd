@@ -75,4 +75,8 @@ export const useGlobalShare = ():GlobalState => inject(globalShareSymbol) as Glo
 
 export const useGlobalStateOnOutsideOfVue = createGlobalState;
 
+export const pdFilmgraphy = reactive({
+  movieList:[] as any
+})
+
 

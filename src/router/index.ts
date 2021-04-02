@@ -88,7 +88,7 @@ const routes: Array<RouteRecordRaw>= [
     component: JoinPdPage
   },
   {
-    path: '/usr/pdlogin',
+    path: '/usr/pd/login',
     component: LoginPdPage
   },
   {

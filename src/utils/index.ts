@@ -54,7 +54,7 @@ export async function showAlert(title:string,msg:string, method:any|null) {
     message: msg,
     buttons:[  
     {
-      text: 'Okay',
+      text: '확인',
       handler: () => {
         method();
     }
@@ -63,3 +63,4 @@ export async function showAlert(title:string,msg:string, method:any|null) {
   });
 return alert.present();
 }
+

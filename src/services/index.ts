@@ -92,8 +92,8 @@ export class MainService {
     return this.mainApi.common_recruit_genFile_doUploadForModify(file,id);
   }
 
-  testApi() {
-    return this.mainApi.testApi();
+  searchMvList(searchKeyword:string) {
+    return this.mainApi.searchMvList(searchKeyword);
   }
 
 }

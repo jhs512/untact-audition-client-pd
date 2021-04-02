@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { inject } from 'vue';
-import { IActingRole, IArtwork, IPd, IRecruit } from '../types';
+import { IActingRole, IArtwork, IPd, IRecruit, ISearchMovie } from '../types';
 
 
 // API 원형
@@ -170,8 +170,10 @@ export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__I
     genFileIdsStr: string,
   };
 }
-export interface MainApi__testApi__IResponseBody extends Base__IResponseBodyType1 {
-  movieListResult:string;
+export interface MainApi__searchMvList__IResponseBody extends Base__IResponseBodyType1 {
+  
+  movieListResult: ISearchMovie;
+  
 }
 
 
@@ -180,7 +182,7 @@ export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://192.168.0.28:8024/',
+        baseURL:'http://172.30.1.15:8024/',
       })
     );
   }
@@ -289,8 +291,8 @@ export class MainApi extends HttpClient {
     );
   }
 
-  public testApi() {
-    return this.get<MainApi__testApi__IResponseBody>('/usr/pd/testApi');
+  public searchMvList(movieName:string) {
+    return this.get<MainApi__searchMvList__IResponseBody>(`/usr/pd/searchMvList?movieName=${movieName}`);
   }
 
 
