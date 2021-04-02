@@ -166,7 +166,7 @@ import router from '@/router'
 import { MainApi, useMainApi } from '../../apis'
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
-
+import * as Util from '@/utils'
 export default defineComponent({
   name: 'RecruitWritePage',
   components: {
@@ -459,11 +459,10 @@ export default defineComponent({
        mainApiService.recruit_write(memberId, boardId, title, body, roleType, location, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
     roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleScenesCount, roleShootingsCount, roleCharacter, actingRoleEtc, genFileIdsStr)
         .then(axiosResponse => {
-          
-          if ( axiosResponse.data.body.id ) {
-          
-            router.replace('/usr/recruit/detail?id='+axiosResponse.data.body.id);
+          if ( axiosResponse.data.fail ) {
+            Util.showAlert("알림", axiosResponse.data.msg, null);
           }
+          Util.showAlert("알림", axiosResponse.data.msg, () => router.replace('/usr/recruit/detail?id='+axiosResponse.data.body.id));
         });
     }
 

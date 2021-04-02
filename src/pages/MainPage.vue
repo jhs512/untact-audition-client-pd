@@ -2,9 +2,7 @@
 <ion-page>
   <ion-content :fullscreen="true">
     
-  <ion-refresher slot="fixed" @ionRefresh="doRefresh()">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+  <IonRefresherC></IonRefresherC>
 
     <div v-if="globalState.isLogined" class="flex flex-col min-h-screen">
     
@@ -38,22 +36,14 @@
       </ion-infinite-scroll>
 
 </ion-content>
-
-    <div class="w-full flex container mx-auto">
-    <BottomBar>
-    </BottomBar>
-    </div>
-    
-
 </ion-page>
-
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, onMounted } from 'vue'
 import { IRecruit } from '../types/'
 import { MainApi, useMainApi } from '../apis/'
-import { IonContent, IonItem ,IonPage,IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue';
+import { IonContent, IonItem ,IonPage, IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue';
 import { menuOutline } from 'ionicons/icons'
 
 import Popover from './popover.vue'
@@ -106,12 +96,14 @@ export default defineComponent({
 
     onMounted(() => {
       loadRecruits(limit); 
+      mainService.testApi()
+      .then(axiosResponse => {
+        console.log(axiosResponse.data.movieListResult);
+      });
     });
     
     
-     const doRefresh = () => {
-        window.location.reload();
-    }
+    
 
    async function loadData(event:any){
      if ( isAllLoaded ) {
@@ -135,11 +127,16 @@ export default defineComponent({
         }, time);
       });
     }
+
+    mainService.testApi()
+    .then( axiosResponse => {
+      console.log(axiosResponse.data.movieListResult);
+    })
+    
   
     return {
       state,
       menuOutline,
-      doRefresh,
       loadData,
       globalState
     }

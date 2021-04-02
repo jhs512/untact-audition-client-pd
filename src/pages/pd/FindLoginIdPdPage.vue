@@ -7,23 +7,23 @@
     </TitleBar>
 
 
-    <div v-if="state.isFind == false" class=" w-60 mx-auto mt-8 flex flex-col">
+    <div v-if="state.isFound == false" class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndFind">
         <FormRow title="이름:">
           <ion-input v-model="input.nameEl" ref="nameElRef" type="text" class="w-full mt-2px"></ion-input>
         </FormRow>
         <FormRow title="주민등록번호:">
           <div class="flex items-center w-full mt-2">
-          <ion-input v-model="input.regNumber1El" type="text" ref="regNumberElRef" class="w-full text-center" maxlength="6"></ion-input>
+          <ion-input v-model="input.regNumber1El" type="text" ref="regNumberElRef" inputmode="decimal" class="w-full text-center" maxlength="6"></ion-input>
           <span class="mx-1">-</span>
-          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" class="w-full text-center" maxlength="7"></ion-input>
+          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" inputmode="decimal" class="w-full text-center" maxlength="7"></ion-input>
           </div>
         </FormRow>
       <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="FIND">
       </form>
     </div>
 
-    <div v-if="state.isFind" class="w-60 mx-auto mt-8 text-center flex flex-col">
+    <div v-if="state.isFound" class="w-60 mx-auto mt-8 text-center flex flex-col">
        <div class="text-sm">회원님의 이메일(아이디)는</div>
        <div class="my-3 text-lg bg-gray-200">{{state.loginId}}</div>
        <div class="text-sm">입니다.</div>
@@ -88,14 +88,7 @@ export default defineComponent({
         
         return;
       }
-      let gender = '';
-      if ( input.regNumber2El.substring(1,1) == '1' || input.regNumber2El.substring(1,1) == '3') {
-        gender = '남';
-      } 
-      else {
-        gender = '여';
-      }
-
+     
       const regNumberEl = input.regNumber1El + input.regNumber2El;  
       const regNumber = Crypto.AES.encrypt(regNumberEl,'regKey');
 
@@ -105,18 +98,19 @@ export default defineComponent({
 
     const state = reactive({
       loginId: '',
-      isFind: false
+      isFound: false
     });
 
     function findLoginId( name:String, regNumber:String) {
        mainApiService.pd_doFindLoginId(name,regNumber)
        .then(axiosResponse => {
-          Util.showAlert("알림",axiosResponse.data.msg,null);
           if ( axiosResponse.data.fail ) {
+            Util.showAlert("알림",axiosResponse.data.msg,null);
             return;
           }
           state.loginId = axiosResponse.data.body.pd.loginId;
-          state.isFind = true;
+          state.isFound = true;
+          Util.showAlert("알림",axiosResponse.data.msg,null);
         });
     }
 

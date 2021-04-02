@@ -56,7 +56,7 @@ export async function showAlert(title:string,msg:string, method:any|null) {
     {
       text: 'Okay',
       handler: () => {
-        method
+        method();
     }
   }
   ]

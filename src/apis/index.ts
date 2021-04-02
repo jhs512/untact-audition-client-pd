@@ -170,13 +170,17 @@ export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__I
     genFileIdsStr: string,
   };
 }
+export interface MainApi__testApi__IResponseBody extends Base__IResponseBodyType1 {
+  movieListResult:string;
+}
+
 
 // 백엔드 와의 통신장치
 export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://192.168.0.17:8024/',
+        baseURL:'http://192.168.0.28:8024/',
       })
     );
   }
@@ -285,7 +289,13 @@ export class MainApi extends HttpClient {
     );
   }
 
+  public testApi() {
+    return this.get<MainApi__testApi__IResponseBody>('/usr/pd/testApi');
+  }
+
+
 }
+
 
 
 

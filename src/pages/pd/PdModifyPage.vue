@@ -1,6 +1,9 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
+    
+     
+          
   <div class="flex flex-col min-h-screen mb-20">
 
      <TitleBar title="Audictionary" btn_back="true"></TitleBar>
@@ -33,6 +36,20 @@
           <ion-input v-model="input.corpNameEl" ref="corpNameElRef" type="text"></ion-input>
         </FormRow>
 
+        <FormRow title="작품:">
+             <ion-button slots ="icon-only" fill="clear" color="dark" :onclick="openModal">
+              검색
+            </ion-button>
+             <ion-item-sliding v-bind:key="item" v-for="item in items.arr">
+              <ion-item>
+                <ion-label>{{item.title}}</ion-label>
+              </ion-item>
+              <ion-item-options side="end">
+                <ion-item-option @click="deleteItem(item)">Unread</ion-item-option>
+              </ion-item-options>
+            </ion-item-sliding>
+        </FormRow>  
+
         <FormRow title="프로필 이미지:">
             <ion-input v-model="input.fileEl" @ionChange="setProfileImg($event)" type="file" accept="image/*"></ion-input>
         </FormRow>
@@ -45,16 +62,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref } from 'vue'
-import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
+import { defineComponent, reactive, ref } from 'vue'
+import { IonPage, IonContent, IonIcon, IonInput, IonButton, IonLabel, IonItem, IonItemSliding, IonItemOption, IonItemOptions, IonPopover, IonModal, modalController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import router from '@/router'
-import { MainApi, useMainApi } from '../../apis'
+
+
 import { sha256 } from 'js-sha256'
 import { useGlobalShare } from '@/stores'
 import * as Util from '@/utils'
 import { useMainService } from '@/services'
-import axios from 'axios'
+
+import SearchMovie from './SearchMovie.vue'
+import '../global.css'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -62,7 +81,16 @@ export default defineComponent({
     IonPage,
     IonContent,
     IonIcon,
-    IonInput
+    IonInput,
+    IonButton, 
+    IonLabel, 
+    IonItem,
+    IonItemSliding, 
+    IonItemOption, 
+    IonItemOptions,
+    IonPopover,
+    IonModal,
+    SearchMovie
   },
   props: {
 
@@ -119,11 +147,6 @@ export default defineComponent({
     function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string, isFileUploaded:boolean ){
          mainApiService.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName, isFileUploaded )
         .then(axiosResponse => {
-          Util.showAlert("알림",axiosResponse.data.msg, () => { 
-            if( !!!isFileUploaded ) { 
-              location.replace('/usr/pd/info'); 
-              }else { null } 
-            });
           if ( axiosResponse.data.fail ) {
             return;
           }
@@ -159,6 +182,8 @@ export default defineComponent({
           
           if ( isFileUploaded ){
             doFileUpload();
+          }else{
+            Util.showAlert("알림",axiosResponse.data.msg, () => location.replace('/usr/pd/info'));
           }
           
     });
@@ -173,7 +198,6 @@ export default defineComponent({
         mainApiService.common_pdGenFile_doUpload(input.fileEl, Util.toStringOrNull(globalState.loginedMember.id))
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
-              location.replace('/usr/pd/info');
               return;
             }
 
@@ -210,14 +234,64 @@ export default defineComponent({
           localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
           localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
           localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
-          location.replace('/usr/pd/info');
+          
+          Util.showAlert("알림","회원정보수정",() => location.replace('/usr/pd/info'));
 
             })
             
           });
         }
 
+
+        const items = reactive({
+          arr:[
+            {title:'a'},
+            {title:'b'},
+            {title:'c'}
+          ]
+        })
+    function deleteItem(item:any){
+      for(var i = 0; i < items.arr.length; i++) {
+
+      if(items.arr[i] == item){
+        items.arr.splice(i, 1);
+      }
+
+    }
+    };
+
+     const isOpenRef = ref(false);
+    
+    const setOpen = (isOpened: boolean) => {
+      isOpenRef.value = isOpened;
+    }
+    const setClose = ( isOpened: boolean) => {
+      isOpenRef.value = isOpened;
+    }
+
+    
+     async function openModal() {
+      const modal = await modalController
+        .create({
+          component: SearchMovie,
+          cssClass: 'my-custom-class',
+          componentProps: {
+            title: 'New Title',
+            curmodal: modalController
+          },
+        })
+        
+      return modal.present();
+        
+    }
+    
+    
+  
+    
+
     return { 
+      items,
+      deleteItem,
       input,
       nameElRef,
       loginPwElRef,
@@ -228,7 +302,12 @@ export default defineComponent({
       checkAndModify,
       modify,
       returnUpBackOutline,
-      setProfileImg
+      setProfileImg,
+      isOpenRef,
+      setOpen,
+      setClose,
+      openModal
+
     }
   }
   

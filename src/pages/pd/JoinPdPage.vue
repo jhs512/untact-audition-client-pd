@@ -265,15 +265,16 @@ export default defineComponent({
     function join(name:String, regNumber:String, gender:String, cellPhoneNo:String, email:String, address:String, jobPosition:String, loginPw:String) {
        mainApiService.pd_doJoin(name, regNumber, gender, cellPhoneNo, email, address, jobPosition, loginPw)
         .then(axiosResponse => {
-          Util.showAlert("알림",axiosResponse.data.msg,router.replace('/usr/pd/login'));
+
           if ( axiosResponse.data.fail ) {
+            Util.showAlert("알림",axiosResponse.data.msg, null);
             return;
           }
           
           localStorage.removeItem("isEmailCert");
           localStorage.removeItem("certEmail");
           
-    
+          Util.showAlert("알림",axiosResponse.data.msg,() => router.replace('/usr/pd/login'));
         });
     }
 

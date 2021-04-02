@@ -22,84 +22,104 @@ import FindSelectPage from '../pages/pd/FindSelectPage.vue'
 import PdFindLoginIdPage from '../pages/pd/FindLoginIdPdPage.vue'
 import PdFindLoginPwPage from '../pages/pd/FindLoginPwPdPage.vue'
 
+import SearchPage from '../pages/search/SearchPage.vue'
+
 import MainPage from '../pages/MainPage.vue'
 import OpenPage from '../pages/OpenPage.vue'
 
 
+import BottomBar from '@/components/BottomBar.vue'
 
 const globalState = useGlobalStateOnOutsideOfVue();
 
 const routes: Array<RouteRecordRaw>= [
   {
   path: '/',
-  component: () => globalState.isLogined ? import ('@/pages/MainPage.vue') : import('@/pages/OpenPage.vue') ,
-  props: (route:any) => ({ globalState })
+  redirect: () => globalState.isLogined ?  '/main/home' :   '/land'
   },
   {
-    path: '/main',
-    component: () => globalState.isLogined ? import ('@/pages/MainPage.vue') : import('@/pages/OpenPage.vue'),
-    props: (route:any) => ({ globalState })
+    path: '/land',
+    component: OpenPage
   },
   {
-  path: '/usr/member/joinTos',
-  component: JoinTosPage,
-  props: (route:any) => ({ globalState })
-},
-  {
-    path: '/usr/pd/info',
-    component: PdInfoPage,
-    props: (route:any) => ({ globalState })
+    path: '/main/',
+    component: BottomBar,
+    children: [
+      {
+        path: 'home',
+        component: MainPage
+      }
+    ]
   },
   {
-    path: '/usr/pd/modify',
-    component: PdModifyPage,
-    props: (route:any) => ({ globalState })
+    path: '/usr/pd/',
+    component: BottomBar,
+    children: [
+
+  {
+    path: 'joinTos',
+    component: JoinTosPage
+    },
+    {
+      path: 'info',
+      component: PdInfoPage
+    },
+    {
+      path: 'emailCert',
+      component: JoinPdEmailCertPage,
+      props: (route:any) => ( { email:route.query.email, emailCertKey:route.query.key })
+    },
+    {
+      path: 'findSelect',
+      component: FindSelectPage
+    },
+    {
+      path: 'findLoginId',
+      component: PdFindLoginIdPage
+    },
+    {
+      path: 'findLoginPw',
+      component: PdFindLoginPwPage
+    }
+    ]
   },
   {
     path: '/usr/pd/join',
-    component: JoinPdPage,
+    component: JoinPdPage
+  },
+  {
+    path: '/usr/pdlogin',
+    component: LoginPdPage
+  },
+  {
+    path: '/usr/pd/modify',
+    component: PdModifyPage
+  },
+  {
+    path: '/usr/recruit/',
+    component: BottomBar,
+    children: [
+      {
+        path: 'detail',
+        component: RecruitDetailPage,
+        props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
+      },
+      {
+        path: 'search',
+        component: SearchPage
+      }
+    ]
+  },
+  {
+    path: '/usr/recruit/write',
+    component: RecruitWritePage,
     props: (route:any) => ({ globalState })
-  },
-  {
-    path: '/usr/pd/emailCert',
-    component: JoinPdEmailCertPage,
-    props: (route:any) => ( { email:route.query.email, emailCertKey:route.query.key, globalState })
-  },
-  {
-    path: '/usr/pd/login',
-    component: LoginPdPage,
-    props: (route:any) => ({ globalState })
-  },
-  {
-    path: '/usr/pd/findSelect',
-    component: FindSelectPage,
-    props: (route:any) => ({ globalState })
-  },
-  {
-    path: '/usr/pd/findLoginId',
-    component: PdFindLoginIdPage,
-    props: (route:any) => ({ globalState })
-  },
-  {
-    path: '/usr/pd/findLoginPw',
-    component: PdFindLoginPwPage,
-    props: (route:any) => ({ globalState })
-  },
-  {
-  path: '/usr/recruit/write',
-  component: RecruitWritePage,
-  props: (route:any) => ({ globalState })
   },
   {
     path: '/usr/recruit/modify',
     component: RecruitModifyPage,
     props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
-    },
-  {
-  path: '/usr/recruit/detail',
-  component: RecruitDetailPage,
-  props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
-  }
+  },
 ]
 
 const router = createRouter({

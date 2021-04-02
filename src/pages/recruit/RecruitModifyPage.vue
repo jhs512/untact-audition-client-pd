@@ -317,22 +317,22 @@ export default defineComponent({
       roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleScenesCount, roleShootingsCount, roleCharacter, actingRoleEtc, isFileUploaded)
         .then(axiosResponse => {
 
-          if(input.fileEl != null){
+          if(input.fileEl != null ){
            mainApiService.common_recruit_genFile_doUploadForModify(input.fileEl, Util.toStringOrNull(props.id))
           .then(axiosResponse => {
-            if ( axiosResponse.data.fail ) {
+            if ( axiosResponse.data.fail ) { 
               Util.showAlert("알림",axiosResponse.data.msg,null);
               return;
             }
             else {
-              location.replace('/usr/recruit/detail?id='+props.id);   
+              
             }
           });
           
           }else {
-            location.replace('/usr/recruit/detail?id='+axiosResponse.data.body.recruit.id); 
+            
           }
-          
+          Util.showAlert("알림",axiosResponse.data.msg,() => location.replace('/usr/recruit/detail?id='+props.id) );
         });
     }
 

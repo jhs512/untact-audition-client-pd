@@ -6,23 +6,23 @@
     <TitleBar title="로그인 비밀번호 찾기 페이지" btn_back="true"></TitleBar>
 
 
-    <div v-if="state.isFind == false" class=" w-60 mx-auto mt-8 flex flex-col">
+    <div v-if="state.isFound == false" class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndFind">
         <FormRow title="이메일(아이디):">
-          <ion-input v-model="input.loginIdEl" ref="loginIdElRef" type="text" class="w-full mt-2px"></ion-input>
+          <ion-input v-model="input.loginIdEl" ref="loginIdElRef" inputmode="email" type="text" class="w-full mt-2px"></ion-input>
         </FormRow>
         <FormRow title="주민등록번호:">
           <div class="flex items-center w-full mt-2">
-          <ion-input v-model="input.regNumber1El" type="text" ref="regNumberElRef" class="w-full text-center" maxlength="6"></ion-input>
+          <ion-input v-model="input.regNumber1El" type="text" ref="regNumberElRef" inputmode="decimal" class="w-full text-center" maxlength="6"></ion-input>
           <span class="mx-1">-</span>
-          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" class="w-full text-center" maxlength="7"></ion-input>
+          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" inputmode="decimal" class="w-full text-center" maxlength="7"></ion-input>
           </div>
         </FormRow>
       <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="FIND">
       </form>
     </div>
 
-    <div v-if="state.isFind" class="w-60 mx-auto mt-8 text-center flex flex-col">
+    <div v-if="state.isFound" class="w-60 mx-auto mt-8 text-center flex flex-col">
        <div class="text-sm">회원님의 비밀번호는</div>
        <div class="my-3 text-lg bg-gray-200">{{state.loginPw}}</div>
        <div class="text-sm">입니다.</div>
@@ -99,18 +99,19 @@ export default defineComponent({
 
     const state = reactive({
       loginPw: '',
-      isFind: false
+      isFound: false
     });
 
     function findLoginPw( email:String, regNumber:String) {
        mainApiService.pd_doFindLoginPw(email,regNumber)
         .then(axiosResponse => {
-          Util.showAlert("알림",axiosResponse.data.msg,null);
           if ( axiosResponse.data.fail ) {
+            Util.showAlert("알림",axiosResponse.data.msg,null);
             return;
           }
           state.loginPw = axiosResponse.data.body.loginPw;
-          state.isFind = true;
+          state.isFound = true;
+          Util.showAlert("알림",axiosResponse.data.msg,null);
         });
     }
 

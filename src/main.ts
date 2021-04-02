@@ -4,6 +4,7 @@ import App from './App.vue'
 import FormRow from './components/FormRow.vue'
 import TitleBar from './components/TitleBar.vue'
 import BottomBar from './components/BottomBar.vue'
+import IonRefresherC from './components/IonRefresherC.vue'
 
 import { IonicVue } from '@ionic/vue';
 
@@ -47,13 +48,14 @@ const app = createApp(App);
   app.component('FormRow', FormRow);
   app.component('TitleBar', TitleBar);
   app.component('BottomBar', BottomBar);
+  app.component('IonRefresherC', IonRefresherC);
   app.component('FontAweSomeIcon', FontAwesomeIcon);
   app.use(IonicVue);
   app.use(router);
   app.provide(globalShareSymbol, createGlobalState());
   app.provide(mainApiSymbol, createMainApi());
   app.provide(mainServiceSymbol, createMainService());
-  
+
   router.isReady().then(() => {
     app.mount('#app');
   });

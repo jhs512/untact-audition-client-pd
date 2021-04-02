@@ -26,12 +26,12 @@ export default defineComponent({
     
      mainApiService.pd_emailCert(props.email,props.emailCertKey)
         .then(axiosResponse => {
-          Util.showAlert("알림",axiosResponse.data.msg,  window.close());
-          if ( axiosResponse.data.fail ) {
           
+          if ( axiosResponse.data.fail ) {
+          Util.showAlert("알림",axiosResponse.data.msg, () => window.close());
             return;
           }
-          
+          Util.showAlert("알림",axiosResponse.data.msg, () => window.close());
         });
     
     return {

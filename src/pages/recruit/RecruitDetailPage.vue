@@ -39,8 +39,7 @@
   
 
 </ion-content>
-<BottomBar>
-  </BottomBar>
+
 </ion-page>
 </template>
 
@@ -86,6 +85,8 @@ export default defineComponent({
       mainApiService.recruit_detail(id)
       .then(axiosResponse => {
         state.recruit = axiosResponse.data.body.recruit;
+        state.artwork = axiosResponse.data.body.artwork;
+        state.actingRole = axiosResponse.data.body.actingRole;
         let today = new Date();
         let regDate = new Date(state.recruit.deadline);
       

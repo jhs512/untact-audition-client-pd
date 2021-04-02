@@ -13,7 +13,7 @@
   <div class="w-60 mx-auto flex flex-col items-center">
     <router-link to="/usr/pd/login" class="ml-auto"><div class=" w-26 text-xs">제작자로 로그인하기</div></router-link>
     <router-link to="" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-1">로그인</div></router-link>
-    <router-link to="/usr/member/joinTos" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-4">회원가입</div></router-link>
+    <router-link to="/usr/pd/joinTos" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-4">회원가입</div></router-link>
   </div>
 </div>
 <div class="bg-line-container h-32 flex items-center justify-center"><div class="bg-line"></div></div>
@@ -21,7 +21,6 @@
 </div>
 
   </ion-content>
-
 </ion-page>
 
 </template>

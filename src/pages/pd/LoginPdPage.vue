@@ -96,8 +96,9 @@ export default defineComponent({
     function login( email:String,loginPw:String) {
        mainApiService.pd_doLogin( email, loginPw )
         .then(axiosResponse => {
-          Util.showAlert("알림",axiosResponse.data.msg,location.replace('/main'));
+          
           if ( axiosResponse.data.fail ) {
+            Util.showAlert("알림",axiosResponse.data.msg, null);
             return;
           }
           
@@ -114,6 +115,8 @@ export default defineComponent({
           localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
           localStorage.setItem("loginedMemberCorpType", loginedPd.corpType);
           localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
+
+          Util.showAlert("알림", axiosResponse.data.msg, () => location.replace('/main'));
     
         });
     }

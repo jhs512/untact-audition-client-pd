@@ -1,58 +1,49 @@
 <template>
+<ion-page>
+  <ion-tabs>
+    <ion-tab-bar color="light" slot="bottom" class="flex w-full mx-auto">
 
-    <ion-tab-bar color="light" class="flex w-full mx-auto">
-
-        <ion-tab-button  tab="home" href="/main">
+        <ion-tab-button tab="Home" href="/main/home">
           <ion-icon :icon="homeOutline"></ion-icon>
         </ion-tab-button>
 
-
-        <ion-tab-button tab="search" href="">
+        <ion-tab-button tab="SearchPage" href="/usr/recruit/search">
           <ion-icon :icon="searchOutline"></ion-icon>          
         </ion-tab-button>
 
-
-        <ion-tab-button tab="ad" href="/main">
+        <ion-tab-button tab="MainPage" href="/usr/recruit/write">
           <ion-label>AD</ion-label>          
         </ion-tab-button>
-
-
-        <ion-tab-button tab="feed" href="">
-          <ion-icon :icon="newspaperOutline"></ion-icon>  
-        </ion-tab-button>
-
       
-        <ion-tab-button tab="usr" href="/usr/pd/info">
+        <ion-tab-button tab="PdInfoPage" href="/usr/pd/info">
           <ion-icon :icon="personOutline"></ion-icon>
         </ion-tab-button>
-      
 
       </ion-tab-bar>
-
+  </ion-tabs>
+</ion-page>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue'
+import { IonContent, IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue'
 import { calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline } from 'ionicons/icons'
 export default defineComponent({
+  name: 'BottomBar',
   props: {
-    globalShare: {
-      type: Object
-    },
-    title: {
-      type: String
-    }
+
   },
   components: {
-    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge
+    IonContent,  IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge
   },
   setup(){
+
+
     return {
-      calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline
+     calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline
     }
   },
-  name: 'BottomBar',
+  
 })
 </script>
 
