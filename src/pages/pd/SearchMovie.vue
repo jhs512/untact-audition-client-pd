@@ -3,12 +3,22 @@
     <ion-button :onclick="dismissModal">Close</ion-button>
     <ion-button :onclick="confirm">Confirm</ion-button>
     <ion-searchbar clear-icon="close-sharp" debounce="700" @ionChange="searchKeyword($event)"></ion-searchbar>
-             <ion-item lines="none" v-bind:key="item" v-for="item in list.arr">
-              <ion-label class="text-center">
-                {{item.movieNm}}
-              </ion-label>
-              <ion-checkbox :checked="item.isChecked" @ionChange="checkMovie(item, $event)"></ion-checkbox>
-            </ion-item>
+        <ion-card v-bind:key="item" v-for="item in list.arr" class="p-2 py-4">
+          
+          <img :src="item.image" class="mx-auto">
+               <ion-card-header>
+                <ion-card-title class="text-center">
+                  {{item.title}}
+                </ion-card-title>
+                <ion-card-subtitle class="text-center">
+                  {{item.subtitle}}
+                </ion-card-subtitle>
+               </ion-card-header>
+               <div class="mx-auto flex">
+            <ion-checkbox :checked="item.isChecked" @ionChange="checkMovie(item, $event)" class="mx-auto"></ion-checkbox>  
+               </div>
+          
+        </ion-card>
   </ion-content>
 </template>
 
@@ -16,13 +26,14 @@
 import { useMainService } from '@/services';
 import { pdFilmgraphy } from '@/stores';
 
-import { IonContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar } from '@ionic/vue';
+import { IonContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar, IonText, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/vue';
 
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, onMounted, reactive } from 'vue';
+import { text } from '@fortawesome/fontawesome-svg-core';
 
 export default defineComponent({
   name: 'SearchMovie',
-  components: { IonContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar },
+  components: { IonContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar, IonText, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle  },
   props:{
     title:{
       type:String
@@ -37,24 +48,16 @@ export default defineComponent({
     const mainApiService = useMainService();
 
     
-
+  /*
     function searchKeyword (event:any){
       mainApiService.searchMvList(event?.target.value)
     .then(axiosResponse => {
-      console.log(axiosResponse.data.movieListResult.movieList);
+      
       list.arr.length = [] as any;
 
       if(event.target.value.length > 0){
         for( var i = 0 ; i < axiosResponse.data.movieListResult.movieList.length ; i++ ){
                 let isChecked = false;
-                for( var j = 0 ; j < selectedMovieList.movies.length ; j++ ){
-                  if ( selectedMovieList.movies[j].movieCd == axiosResponse.data.movieListResult.movieList[i].movieCd ){
-                    isChecked = true;
-                    break;
-                  } else {
-                    isChecked = false;
-                  }
-                }
 
                 if ( isChecked == false ) {
                   for ( var k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
@@ -80,10 +83,61 @@ export default defineComponent({
       
     })
     }
+    */
+
+    function searchKeyword (event:any){
+      mainApiService.naverMovieApi(event?.target.value)
+    .then(axiosResponse => {
+      
+      list.arr.length = [] as any;
+
+      if(event.target.value.length > 0){
+        for( var i = 0 ; i < axiosResponse.data.items.length ; i++ ){
+          
+                let isChecked = false;
+
+                if ( isChecked == false ) {
+                  for ( var k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
+                      if ( pdFilmgraphy.movieList[k].image == axiosResponse.data.items[i].image ){
+                        isChecked = true;
+                        break;
+                      } else {
+                        isChecked = false;
+                      }
+                    }
+                  }
+                let title = axiosResponse.data.items[i].title.replaceAll("<b>","");
+                title = title.replaceAll("</b>","");
+                let subtitle = axiosResponse.data.items[i].subtitle.replaceAll("<b>","");
+                subtitle = subtitle.replaceAll("</b>","");
+                let movie = {
+                  title: title,
+                  subtitle: subtitle,
+                  director: axiosResponse.data.items[i].director,
+                  image: axiosResponse.data.items[i].image,
+                  isChecked: isChecked
+                }
+                list.arr.push(movie);
+              }
+      }
+      
+        
+      
+    })
+    }
 
     const list = reactive({
       arr: [] as any
     })
+
+    const initialMovieList = [] as any;
+
+      onMounted(() => {
+        for( var i = 0 ; i < pdFilmgraphy.movieList.length; i++) {
+           initialMovieList.push(pdFilmgraphy.movieList[i]);
+        }     
+      })
+    
 
     function checkMovie(item:any, event:any){
       if(event.detail.checked){
@@ -91,24 +145,23 @@ export default defineComponent({
         pdFilmgraphy.movieList.push(item);
       } else {
         for(var i = 0 ; i < pdFilmgraphy.movieList.length ; i++){
-          if(item.movieCd == pdFilmgraphy.movieList[i].movieCd){
+          if(item.title == pdFilmgraphy.movieList[i].title){
             pdFilmgraphy.movieList.splice(i,1);
             break;
           }
         }
       }
-      console.log(pdFilmgraphy.movieList);
+      console.log(initialMovieList);
     }
 
-    const selectedMovieList = reactive ({
-      movies: [] as any
-    })
-
+    
+  
     function confirm(){
       props.curmodal.dismiss();
     }
 
     function dismissModal() {
+      pdFilmgraphy.movieList = initialMovieList;
       props.curmodal.dismiss();
     }
 
@@ -117,8 +170,7 @@ export default defineComponent({
       checkMovie,
       dismissModal,
       confirm,
-      searchKeyword,
-      selectedMovieList
+      searchKeyword
     }
   }
 });

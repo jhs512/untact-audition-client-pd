@@ -27,6 +27,8 @@ import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
 
 import router from './router'
+
+
 /* Theme variables */
 import './theme/variables.css';
 import './index.css'

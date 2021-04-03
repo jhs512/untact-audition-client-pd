@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { inject } from 'vue';
-import { IActingRole, IArtwork, IPd, IRecruit, ISearchMovie } from '../types';
+import { IActingRole, IArtwork, IPd, IRecruit, ISearchMovie, naverMovieInfo } from '../types';
 
 
 // API 원형
@@ -171,11 +171,15 @@ export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__I
   };
 }
 export interface MainApi__searchMvList__IResponseBody extends Base__IResponseBodyType1 {
-  
-  movieListResult: ISearchMovie;
-  
+  movieListResult: ISearchMovie; 
 }
 
+export interface MainApi__naverApi__IResponseBody extends Base__IResponseBodyType1 {
+  items: naverMovieInfo[]; 
+}
+export interface MainApi__kakaoApi__IResponseBody extends Base__IResponseBodyType1 {
+  items: string; 
+}
 
 // 백엔드 와의 통신장치
 export class MainApi extends HttpClient {
@@ -293,6 +297,14 @@ export class MainApi extends HttpClient {
 
   public searchMvList(movieName:string) {
     return this.get<MainApi__searchMvList__IResponseBody>(`/usr/pd/searchMvList?movieName=${movieName}`);
+  }
+
+  public naverMovieApi(keyword:String) {
+    return this.get<MainApi__naverApi__IResponseBody>(`/usr/naver/movie?keyword=${keyword}`);
+  }
+
+  public kakaoLocalApi(keyword:string) {
+    return this.get<MainApi__kakaoApi__IResponseBody>(`/usr/kakao/localApi?keyword=${keyword}`);
   }
 
 

@@ -97,3 +97,14 @@ repGenreNm: string;
 repNationNm: string;
 typeNm: string;
 }
+
+export interface naverMovieInfo {
+  actor: string; 
+  director: string;
+  image: string;
+  link: string;
+  pubDate: string;
+  subtitle : string;
+  title: string;
+  userRating: string;
+  }

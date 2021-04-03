@@ -42,7 +42,8 @@
             </ion-button>
              <ion-item-sliding  v-bind:key="item" v-for="item in pdFilmgraphy.movieList">
               <ion-item v-model="input.artworkEl" lines="none">
-                <ion-label>{{item.movieNm}}</ion-label>
+                <ion-label>{{item.title}}</ion-label>
+                <img :src=item.image>
               </ion-item>
               <ion-item-options side="end">
                 <ion-item-option @click="deleteItem(item)">Unread</ion-item-option>
@@ -74,6 +75,7 @@ import { useMainService } from '@/services'
 
 import SearchMovie from './SearchMovie.vue'
 import '../global.css'
+import axios from 'axios'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -98,6 +100,8 @@ export default defineComponent({
   setup(props) {
     const mainApiService = useMainService();
     const globalState = useGlobalShare();
+
+    
 
     
     const nameElRef = ref<HTMLInputElement>();
@@ -128,8 +132,9 @@ export default defineComponent({
     function checkAndModify() {
       input.artworkEl = pdFilmgraphy.movieList
       pdFilmgraphy.movieList = pdFilmgraphy.movieList;
-      console.log(pdFilmgraphy.movieList);
+      console.log(input.artworkEl.length);
       return;
+      
       let loginPwRealEl = '';
         if (input.loginPwEl.length > 0 ){
           loginPwRealEl = sha256(input.loginPwEl);

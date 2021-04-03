@@ -96,6 +96,12 @@ export class MainService {
     return this.mainApi.searchMvList(searchKeyword);
   }
 
+  naverMovieApi(keyword:String){
+    return this.mainApi.naverMovieApi(keyword);
+  }
+  kakaoLocalApi(keyword:string){
+    return this.mainApi.kakaoLocalApi(keyword);
+  }
 }
 
 export const mainServiceSymbol = Symbol('globalstate');
