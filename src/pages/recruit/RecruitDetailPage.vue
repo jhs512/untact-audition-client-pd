@@ -49,7 +49,7 @@ import { IonPage, IonContent, IonIcon } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router'
 import { IRecruit, IArtwork, IActingRole } from '../../types'
-import { MainApi, useMainApi } from '../../apis'
+
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
 

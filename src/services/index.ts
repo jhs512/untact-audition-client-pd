@@ -33,8 +33,8 @@ export class MainService {
     return this.mainApi.pd_doLogin(email, loginPw);
   }
 
-  pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, isFileUploaded:boolean ) {
-    return this.mainApi.pd_doModify(loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, isFileUploaded );
+  pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, artwork:string, isFileUploaded:boolean ) {
+    return this.mainApi.pd_doModify(loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded );
   }
 
   pd_update(loginedMemberId:string) {
@@ -50,20 +50,22 @@ export class MainService {
     return this.mainApi.pd_doDelete(loginedMemberId);
   }
 
-  recruit_write(memberId:number, boardId:number,  title:String, body:String, roleType:string, location:string, period:string, deadline:string, manager:string,
-    artworkName:String, genre:String, corp:String, director:String, artworkEtc:String,
-    roleRealName:String, roleName:String, pay:String, roleAge:String, roleGender:String, roleJob:String, roleScript:String, roleScenesCount:String, roleShootingsCount:String, roleCharacter:String, actingRoleEtc:String, 
+  recruit_write(memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
+    awMedia:string, awName:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
+    arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
     genFileIdsStr:String) {
-    return this.mainApi.recruit_write(memberId, boardId, title, body, roleType, location, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
-      roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleScenesCount, roleShootingsCount, roleCharacter, actingRoleEtc, genFileIdsStr);
+    return this.mainApi.recruit_write(memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
+      awMedia, awName, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awEtc, 
+      arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, genFileIdsStr);
   }
  
-  recruit_modify(recruitmentId:number,memberId:number, boardId:number,  title:String, body:String, roleType:string, location:string, period:string, deadline:string, manager:string,
-    artworkName:String, genre:String, corp:String, director:String, artworkEtc:String,
-    roleRealName:String, roleName:String, pay:String, roleAge:String, roleGender:String, roleJob:String, roleScript:String, roleScenesCount:String, roleShootingsCount:String, roleCharacter:String, actingRoleEtc:String, 
+  recruit_modify(recruitmentId:number, memberId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
+    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
+    arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
      isFileUploaded:boolean) {
-    return this.mainApi.recruit_modify(recruitmentId, memberId, boardId, title, body, roleType, location, period, deadline, manager, artworkName, genre, corp, director, artworkEtc,
-      roleRealName, roleName, pay, roleAge, roleGender, roleJob, roleScript, roleScenesCount, roleShootingsCount, roleCharacter, actingRoleEtc, isFileUploaded);
+    return this.mainApi.recruit_modify(recruitmentId, memberId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
+      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awEtc, 
+      arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded );
   }
   
   recruit_list(limit:number) {

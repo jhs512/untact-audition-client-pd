@@ -16,7 +16,6 @@
 
         <div class="mt-2">
           <form action="" >
-            <input type="hidden" ref="loginedMemberIdRef" :value="globalState.loginedMember.id">
             <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)">
           </form>
           <div class="my-6" v-on:click="globalState.logout">로그아웃</div>
@@ -36,7 +35,7 @@
       <span class="font-roboto font-bold mt-1">Address. {{globalState.loginedMember.address}}</span>      
     </div>
     <div v-if="segment.value == `filmgraphy`">
-      11111111111
+      <ion-card></ion-card>
       </div>
   </div>
 
@@ -47,7 +46,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import { IonPage, IonContent, IonIcon, IonSegment, IonSegmentButton, alertController } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonSegment, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, alertController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
@@ -59,13 +58,16 @@ export default defineComponent({
     IonContent,
     IonIcon,
     IonSegment,
-    IonSegmentButton
+    IonSegmentButton,
+    IonCard, 
+    IonCardContent, 
+    IonCardHeader, 
+    IonCardSubtitle, 
+    IonCardTitle
   },
   setup(props) {
     const globalState = useGlobalShare();
     const mainApiService = useMainService();
-
-    const loginedMemberIdRef = ref<HTMLInputElement>();
 
     const segment = reactive({
       value:'profile'
@@ -77,13 +79,7 @@ export default defineComponent({
 
     function deletePd(){
 
-      const loginedMemberId = loginedMemberIdRef.value;
-
-      if( loginedMemberId == null ){
-        return;
-      }
-
-      mainApiService.pd_doDelete( loginedMemberId.value )
+      mainApiService.pd_doDelete( globalState.loginedMember.id )
         .then(axiosResponse => {
           alert(axiosResponse.data.msg);
           if ( axiosResponse.data.fail ) {
@@ -124,7 +120,6 @@ export default defineComponent({
    
    return {
      deletePd,
-     loginedMemberIdRef,
      returnUpBackOutline,
      presentAlertConfirm,
      segment,

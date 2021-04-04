@@ -115,6 +115,7 @@ export default defineComponent({
                   subtitle: subtitle,
                   director: axiosResponse.data.items[i].director,
                   image: axiosResponse.data.items[i].image,
+                  link: axiosResponse.data.items[i].link,
                   isChecked: isChecked
                 }
                 list.arr.push(movie);
@@ -151,7 +152,7 @@ export default defineComponent({
           }
         }
       }
-      console.log(initialMovieList);
+      
     }
 
     

@@ -28,36 +28,50 @@ export interface IPd extends IEntity {
 }
 
 export interface IRecruit extends IEntity {
-  memberId:number;
-  boardId:number;
-  title:string;
-  body:string;
-  location:string;
-  peorid:string;
-  deadline:string;
-  manager:string;
+delDate: string;
+delStatus: number;
+memberId: number;
+title: string;
+body: string;
+roleType: string;
+pay: string;
+location: string;
+period: string;
+deadline: string;
+gender: string;
+age: string;
+script: string;
+videoTime: string;
+etc: string;
 }
 
 export interface IArtwork extends IEntity {
-  recruitmentId:number;
-  name:string;
-  genre:string;
-  corp:string;
-  director:string;
-  etc:string;
+relTypeCode: string;
+relId: number;
+title: string;
+subtitle: string;
+media: string;
+genre: string;
+corp: string;
+director: string;
+producer: string;
+castingManager: string;
+story: string;
+image: string;
+link: string;
+etc: string;
 }
 
 export interface IActingRole extends IEntity {
   recruitmentId:number;
   realName:string;
   name:string;
-  pay:string;
   age:string;
   job:string;
-  scriptStatus:number;
   gender:string;
-  scenesCount:number;
-  shootingsCount:number;
+  scriptStatus:string;
+  scenesCount:string;
+  shootingsCount:string;
   character:string;
   etc:string;
 }

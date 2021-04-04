@@ -37,9 +37,7 @@
         </FormRow>
         
         <FormRow title="작품:">
-             <ion-button slots ="icon-only" fill="clear" color="dark" :onclick="openModal">
-              검색
-            </ion-button>
+             <ion-button color="light" :onclick="openModal">검색</ion-button>
              <ion-item-sliding  v-bind:key="item" v-for="item in pdFilmgraphy.movieList">
               <ion-item v-model="input.artworkEl" lines="none">
                 <ion-label>{{item.title}}</ion-label>
@@ -100,9 +98,6 @@ export default defineComponent({
   setup(props) {
     const mainApiService = useMainService();
     const globalState = useGlobalShare();
-
-    
-
     
     const nameElRef = ref<HTMLInputElement>();
     const loginPwElRef = ref<HTMLInputElement>();
@@ -130,10 +125,9 @@ export default defineComponent({
     let isFileUploaded = false;
 
     function checkAndModify() {
-      input.artworkEl = pdFilmgraphy.movieList
       pdFilmgraphy.movieList = pdFilmgraphy.movieList;
-      console.log(input.artworkEl.length);
-      return;
+      input.artworkEl = pdFilmgraphy.movieList
+      var artwork = JSON.stringify(input.artworkEl);
       
       let loginPwRealEl = '';
         if (input.loginPwEl.length > 0 ){
@@ -146,7 +140,8 @@ export default defineComponent({
           isFileUploaded = true;
         }
 
-         modify(Util.toStringOrNull(globalState.loginedMember.id), input.nameEl, loginPwRealEl, input.addressEl,  input.cellPhoneNoEl, input.jobPositionEl, input.corpNameEl, isFileUploaded);
+         modify(Util.toStringOrNull(globalState.loginedMember.id), input.nameEl, loginPwRealEl, input.addressEl,  input.cellPhoneNoEl, input.jobPositionEl, input.corpNameEl, artwork, isFileUploaded);
+
 
       }
 
@@ -154,8 +149,8 @@ export default defineComponent({
 
     }
 
-    function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string, isFileUploaded:boolean ){
-         mainApiService.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName, isFileUploaded )
+    function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string, artwork:string, isFileUploaded:boolean ){
+         mainApiService.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded )
         .then(axiosResponse => {
           if ( axiosResponse.data.fail ) {
             return;
