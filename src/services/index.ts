@@ -46,10 +46,12 @@ export class MainService {
   pd_doFindLoginPw( email:String, regNumber:String ) {
     return this.mainApi.pd_doFindLoginPw(email,regNumber);
   }
-  pd_doDelete( loginedMemberId:string ) {
+  pd_doDelete( loginedMemberId:number ) {
     return this.mainApi.pd_doDelete(loginedMemberId);
   }
-
+  pd_getArtwork( loginedMemberId:string ){
+    return this.mainApi.pd_getArtwork(loginedMemberId);
+  }
   recruit_write(memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
     awMedia:string, awName:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
     arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 

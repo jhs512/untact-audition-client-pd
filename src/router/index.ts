@@ -62,7 +62,8 @@ const routes: Array<RouteRecordRaw>= [
     },
     {
       path: 'info',
-      component: PdInfoPage
+      component: PdInfoPage,
+      props: (route:any) => ( { id: route.query.id, globalState })
     },
     {
       path: 'emailCert',

@@ -15,7 +15,7 @@
           <ion-label>AD</ion-label>          
         </ion-tab-button>
       
-        <ion-tab-button tab="PdInfoPage" href="/usr/pd/info">
+        <ion-tab-button tab="info" :onclick="movePdInfo">
           <ion-icon :icon="personOutline"></ion-icon>
         </ion-tab-button>
 
@@ -24,10 +24,12 @@
 </ion-page>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script lang="ts">
+import { defineComponent, getCurrentInstance } from 'vue'
 import { IonContent, IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue'
 import { calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline } from 'ionicons/icons'
+
+import { useGlobalShare } from '@/stores'
 export default defineComponent({
   name: 'BottomBar',
   props: {
@@ -37,10 +39,15 @@ export default defineComponent({
     IonContent,  IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge
   },
   setup(){
+    const globalState = useGlobalShare();
+    const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
 
+    function movePdInfo(){
+      router.replace("/usr/pd/info?id="+globalState.loginedMember.id);
+    }
 
     return {
-     calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline
+     globalState, calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline, movePdInfo
     }
   },
   

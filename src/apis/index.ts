@@ -142,6 +142,11 @@ export interface MainApi__pd_doDelete__IResponseBody extends Base__IResponseBody
     id: number
   };
 }
+export interface MainApi__pd_getArtwork__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    artworks: IArtwork
+  };
+}
 export interface MainApi__recruit_write__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     id: number
@@ -235,6 +240,10 @@ export class MainApi extends HttpClient {
     return this.postByForm<MainApi__pd_doModify__IResponseBody>(`/usr/pd/doModify`,{ loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded });
   }
 
+  public pd_getArtwork( loginedMemberId:string ) {
+    return this.get<MainApi__pd_getArtwork__IResponseBody>(`/usr/pd/getArtwork?loginedMemberId=${loginedMemberId}`);
+  }
+
   public pd_update(loginedMemberId:string) {
     return this.postByForm<MainApi__pd_doUpdate__IResponseBody>(`/usr/pd/update`, {loginedMemberId} );
   }
@@ -244,7 +253,7 @@ export class MainApi extends HttpClient {
   public pd_doFindLoginPw( email:String, regNumber:String ) {
     return this.postByForm<MainApi__pd_doFindLoginPw__IResponseBody>(`/usr/pd/doFindLoginPw`,{ email, regNumber });
   }
-  public pd_doDelete( loginedMemberId:string ) {
+  public pd_doDelete( loginedMemberId:number ) {
     return this.postByForm<MainApi__pd_doDelete__IResponseBody>(`/usr/pd/doDelete`,{ loginedMemberId });
   }
 

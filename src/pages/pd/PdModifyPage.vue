@@ -188,7 +188,7 @@ export default defineComponent({
           if ( isFileUploaded ){
             doFileUpload();
           }else{
-            Util.showAlert("알림",axiosResponse.data.msg, () => location.replace('/usr/pd/info'));
+            Util.showAlert("알림",axiosResponse.data.msg, () => location.replace('/usr/pd/info'+globalState.loginedMember.id));
           }
           
     });
@@ -240,7 +240,7 @@ export default defineComponent({
           localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
           localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
           
-          Util.showAlert("알림","회원정보수정",() => location.replace('/usr/pd/info'));
+          Util.showAlert("알림","회원정보수정",() => location.replace('/usr/pd/info?id='+globalState.loginedMember.id));
 
             })
             

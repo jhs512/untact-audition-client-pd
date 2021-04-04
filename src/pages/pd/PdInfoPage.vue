@@ -35,7 +35,17 @@
       <span class="font-roboto font-bold mt-1">Address. {{globalState.loginedMember.address}}</span>      
     </div>
     <div v-if="segment.value == `filmgraphy`">
-      <ion-card></ion-card>
+      <ion-card v-bind:key="artwork" v-for="artwork in state.artworks">
+        <img :src="artwork.image" class="mx-auto">
+               <ion-card-header>
+                <ion-card-title class="text-center">
+                  {{artwork.title}}
+                </ion-card-title>
+                <ion-card-subtitle class="text-center">
+                  {{artwork.subtitle}}
+                </ion-card-subtitle>
+               </ion-card-header>
+      </ion-card>
       </div>
   </div>
 
@@ -45,11 +55,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { IonPage, IonContent, IonIcon, IonSegment, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, alertController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
+import { IArtwork } from '@/types'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -65,9 +76,27 @@ export default defineComponent({
     IonCardSubtitle, 
     IonCardTitle
   },
+  props:{
+    id: {
+      type: String,
+      required: true
+    }
+  },
   setup(props) {
     const globalState = useGlobalShare();
     const mainApiService = useMainService();
+    
+    onMounted(() => {
+      mainApiService.pd_getArtwork(props.id)
+      .then(axiosResponse => {
+        state.artworks = axiosResponse.data.body.artworks
+      })
+    })
+
+    const state = reactive({
+      artworks: [] as any
+    })
+    
 
     const segment = reactive({
       value:'profile'
@@ -119,6 +148,7 @@ export default defineComponent({
     }
    
    return {
+     state,
      deletePd,
      returnUpBackOutline,
      presentAlertConfirm,
