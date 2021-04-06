@@ -8,7 +8,7 @@
     
     <TitleBar title="Audictionary" btn_menu="true"></TitleBar>    
    
-
+  
     <div id="list" class="flex flex-col font-roboto">
     <div class="recruit-list text-white container mx-auto" v-bind:key="recruit.id" v-for="recruit in state.recruits">
       <div class="ml-4 mt-2 text-xs">NEW 오디션 : 방금 올라온 공고</div>

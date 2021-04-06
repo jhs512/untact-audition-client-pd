@@ -55,11 +55,6 @@ const routes: Array<RouteRecordRaw>= [
     path: '/usr/pd/',
     component: BottomBar,
     children: [
-
-  {
-    path: 'joinTos',
-    component: JoinTosPage
-    },
     {
       path: 'info',
       component: PdInfoPage,
@@ -69,21 +64,25 @@ const routes: Array<RouteRecordRaw>= [
       path: 'emailCert',
       component: JoinPdEmailCertPage,
       props: (route:any) => ( { email:route.query.email, emailCertKey:route.query.key })
-    },
-    {
-      path: 'findSelect',
-      component: FindSelectPage
-    },
-    {
-      path: 'findLoginId',
-      component: PdFindLoginIdPage
-    },
-    {
-      path: 'findLoginPw',
-      component: PdFindLoginPwPage
     }
     ]
   },
+    {
+      path: '/usr/pd/findSelect',
+      component: FindSelectPage
+    },
+    {
+      path: '/usr/pd/findLoginId',
+      component: PdFindLoginIdPage
+    },
+    {
+      path: '/usr/pd/findLoginPw',
+      component: PdFindLoginPwPage
+    },
+  {
+    path: '/usr/pd/joinTos',
+    component: JoinTosPage
+    },
   {
     path: '/usr/pd/join',
     component: JoinPdPage

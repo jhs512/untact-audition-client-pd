@@ -137,6 +137,12 @@ export interface MainApi__pd_doFindLoginPw__IResponseBody extends Base__IRespons
     pd: IPd
   };
 }
+export interface MainApi__pd_doModifyPw__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    loginPw: string,
+    pd: IPd
+  };
+}
 export interface MainApi__pd_doDelete__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     id: number
@@ -221,11 +227,11 @@ export class MainApi extends HttpClient {
   }
 
   public pd_sendEmail(email:string) {
-    return this.get<MainApi__pd_sendEmail__IResponseBody>(`/usr/pd/sendEmail?email=${email}` );
+    return this.get<MainApi__pd_sendEmail__IResponseBody>(`/usr/pd/sendEmailForJoin?email=${email}` );
   }
   
   public pd_emailCert(email:string, key:string) {
-    return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/emailCert?email=${email}&key=${key}` );
+    return this.get<MainApi__pd_emailCert__IResponseBody>(`/usr/pd/emailCertForJoin?email=${email}&key=${key}` );
   }
 
   public pd_checkEmailCertificated(email:string) {
@@ -252,6 +258,9 @@ export class MainApi extends HttpClient {
   }
   public pd_doFindLoginPw( email:String, regNumber:String ) {
     return this.postByForm<MainApi__pd_doFindLoginPw__IResponseBody>(`/usr/pd/doFindLoginPw`,{ email, regNumber });
+  }
+  public pd_doModifyPw( email:String, key:String, loginPw:String ) {
+    return this.postByForm<MainApi__pd_doModifyPw__IResponseBody>(`/usr/pd/doModifyPw`,{ email, key, loginPw });
   }
   public pd_doDelete( loginedMemberId:number ) {
     return this.postByForm<MainApi__pd_doDelete__IResponseBody>(`/usr/pd/doDelete`,{ loginedMemberId });

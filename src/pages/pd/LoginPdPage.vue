@@ -19,7 +19,7 @@
       </form>
     </div>
     
-    <router-link to="/usr/member/joinTos" class="mx-auto mt-4"><div class="text-xs">아이디가 없으신가요?</div></router-link>
+    <router-link to="/usr/pd/joinTos" class="mx-auto mt-4"><div class="text-xs">아이디가 없으신가요?</div></router-link>
 
     <div class="flex w-60 items-center mx-auto mt-6">
       <div class="bg-line-sep w-full"></div>

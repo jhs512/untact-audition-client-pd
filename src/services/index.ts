@@ -46,6 +46,9 @@ export class MainService {
   pd_doFindLoginPw( email:String, regNumber:String ) {
     return this.mainApi.pd_doFindLoginPw(email,regNumber);
   }
+  pd_doModifyPw( email:String, regNumber:String, loginPw:String ) {
+    return this.mainApi.pd_doModifyPw(email,regNumber,loginPw);
+  }
   pd_doDelete( loginedMemberId:number ) {
     return this.mainApi.pd_doDelete(loginedMemberId);
   }

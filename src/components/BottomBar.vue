@@ -3,20 +3,28 @@
   <ion-tabs>
     <ion-tab-bar color="light" slot="bottom" class="flex w-full mx-auto">
 
-        <ion-tab-button tab="Home" href="/main/home">
+        <ion-tab-button tab="Home">
+          <ion-button color="light" router-link="/main/home">
           <ion-icon :icon="homeOutline"></ion-icon>
+          </ion-button>
         </ion-tab-button>
 
-        <ion-tab-button tab="SearchPage" href="/usr/recruit/search">
+        <ion-tab-button tab="SearchPage">
+          <ion-button color="light" router-link="/usr/recruit/search">
           <ion-icon :icon="searchOutline"></ion-icon>          
+          </ion-button>
         </ion-tab-button>
 
-        <ion-tab-button tab="MainPage" href="/usr/recruit/write">
+        <ion-tab-button tab="MainPage">
+          <ion-button color="light" router-link="/usr/recruit/write">
           <ion-label>AD</ion-label>          
+          </ion-button>
         </ion-tab-button>
       
-        <ion-tab-button tab="info" :onclick="movePdInfo">
+        <ion-tab-button tab="info">
+          <ion-button color="light" :router-link="`/usr/pd/info?id=${globalState.loginedMember.id}`">
           <ion-icon :icon="personOutline"></ion-icon>
+          </ion-button>
         </ion-tab-button>
 
       </ion-tab-bar>
@@ -26,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance } from 'vue'
-import { IonContent, IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue'
+import { IonContent, IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonButton } from '@ionic/vue'
 import { calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline } from 'ionicons/icons'
 
 import { useGlobalShare } from '@/stores'
@@ -36,18 +44,14 @@ export default defineComponent({
 
   },
   components: {
-    IonContent,  IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge
+    IonContent,  IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonButton
   },
   setup(){
     const globalState = useGlobalShare();
     const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
 
-    function movePdInfo(){
-      router.replace("/usr/pd/info?id="+globalState.loginedMember.id);
-    }
-
     return {
-     globalState, calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline, movePdInfo
+     globalState, calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline
     }
   },
   

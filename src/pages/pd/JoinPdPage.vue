@@ -101,17 +101,12 @@ export default defineComponent({
       loginPwEl:'',
       loginPwCfEl:''
     })
-
+    
+    let isEmailCert = false;
     
     function emailCert() {
-      if( input.emailEl == null ){
-        alert("이메일을 입력해주세요.");
-        emailElRef.value?.focus();
-        return;
-      }
       if( input.emailEl.length == 0 ){
         alert("이메일을 입력해주세요.");
-        emailElRef.value?.focus();
         return;
       }
 
@@ -130,16 +125,16 @@ export default defineComponent({
     function sendMail(email:string){
       mainApiService.pd_sendEmail(email)
         .then(axiosResponse => {
-          Util.showAlert("알림",axiosResponse.data.msg,null);
           if ( axiosResponse.data.fail ) {
             return;
           }
           
+          Util.showAlert("알림",axiosResponse.data.msg,null);
           
         });
     }
 
-    let isEmailCert = false;
+    
     
     function checkAndJoin() {
       // 이름 체크
@@ -193,17 +188,6 @@ export default defineComponent({
         return;
       }
 
-      
-       mainApiService.pd_checkEmailCertificated(input.emailEl)
-        .then(axiosResponse => {
-          if ( axiosResponse.data.fail ) {
-          Util.showAlert("알림",axiosResponse.data.msg,null);
-            return;
-          }
-          isEmailCert = true;  
-        });
-
-
       // 주소 체크
       if ( addressElRef.value == null ) {
         return;
@@ -256,9 +240,17 @@ export default defineComponent({
       
       const loginPwRealEl = sha256(input.loginPwEl);
 
-      
 
-      join(input.nameEl, regNumber.toString() , gender, input.cellPhoneNoEl , input.emailEl, input.addressEl, input.jobPositionEl, loginPwRealEl );
+          
+          mainApiService.pd_checkEmailCertificated(input.emailEl)
+            .then(axiosResponse => {
+              if ( axiosResponse.data.fail ) {
+              Util.showAlert("알림",axiosResponse.data.msg,null);
+                return;
+              }
+              isEmailCert = true;  
+               join(input.nameEl, regNumber.toString() , gender, input.cellPhoneNoEl , input.emailEl, input.addressEl, input.jobPositionEl, loginPwRealEl );
+            });
       
     }
 
@@ -270,9 +262,6 @@ export default defineComponent({
             Util.showAlert("알림",axiosResponse.data.msg, null);
             return;
           }
-          
-          localStorage.removeItem("isEmailCert");
-          localStorage.removeItem("certEmail");
           
           Util.showAlert("알림",axiosResponse.data.msg,() => location.replace('/usr/pd/login'));
         });

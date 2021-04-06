@@ -6,7 +6,7 @@
     <TitleBar title="로그인 비밀번호 찾기 페이지" btn_back="true"></TitleBar>
 
 
-    <div v-if="state.isFound == false" class=" w-60 mx-auto mt-8 flex flex-col">
+    <div class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndFind">
         <FormRow title="이메일(아이디):">
           <ion-input v-model="input.loginIdEl" ref="loginIdElRef" inputmode="email" type="text" class="w-full mt-2px"></ion-input>
@@ -22,13 +22,6 @@
       </form>
     </div>
 
-    <div v-if="state.isFound" class="w-60 mx-auto mt-8 text-center flex flex-col">
-       <div class="text-sm">회원님의 비밀번호는</div>
-       <div class="my-3 text-lg bg-gray-200">{{state.loginPw}}</div>
-       <div class="text-sm">입니다.</div>
-    </div>
-
-     <router-link v-if="state.isFind" to="/usr/pd/login"><div class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2">로그인하러 가기</div></router-link> 
   </div>
   </ion-content>
 </ion-page>
@@ -98,8 +91,7 @@ export default defineComponent({
     
 
     const state = reactive({
-      loginPw: '',
-      isFound: false
+      loginPw: ''
     });
 
     function findLoginPw( email:String, regNumber:String) {
@@ -110,7 +102,6 @@ export default defineComponent({
             return;
           }
           state.loginPw = axiosResponse.data.body.loginPw;
-          state.isFound = true;
           Util.showAlert("알림",axiosResponse.data.msg,null);
         });
     }

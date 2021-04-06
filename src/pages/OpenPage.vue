@@ -11,8 +11,7 @@
 
 <div class="container mx-auto flex flex-col justify-center h-42">
   <div class="w-60 mx-auto flex flex-col items-center">
-    <router-link to="/usr/pd/login" class="ml-auto"><div class=" w-26 text-xs">제작자로 로그인하기</div></router-link>
-    <router-link to="" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-1">로그인</div></router-link>
+    <router-link to="/usr/pd/login" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-1">로그인</div></router-link>
     <router-link to="/usr/pd/joinTos" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-4">회원가입</div></router-link>
   </div>
 </div>
@@ -27,12 +26,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { MainApi, useMainApi } from '../apis'
 import { IonContent, IonPage } from '@ionic/vue';
 import { menuOutline } from 'ionicons/icons'
 
-import router from '@/router';
-import { useGlobalShare } from '@/stores';
 
 
 export default defineComponent({

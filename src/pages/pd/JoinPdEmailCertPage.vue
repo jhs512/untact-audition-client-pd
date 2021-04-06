@@ -31,6 +31,7 @@ export default defineComponent({
           Util.showAlert("알림",axiosResponse.data.msg, () => window.close());
             return;
           }
+          localStorage.setItem("isEmailCert","true");
           Util.showAlert("알림",axiosResponse.data.msg, () => window.close());
         });
     
