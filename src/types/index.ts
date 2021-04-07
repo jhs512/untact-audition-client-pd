@@ -56,6 +56,7 @@ corp: string;
 director: string;
 producer: string;
 castingManager: string;
+wrtier: string;
 story: string;
 image: string;
 link: string;
@@ -75,6 +76,13 @@ export interface IActingRole extends IEntity {
   character:string;
   etc:string;
 }
+
+export interface IList {
+  recruits: IRecruit[],
+  artworks: IArtwork[],
+  actingRoles: IActingRole[]
+}
+
 export interface IGenFile extends IEntity {
   relTypeCode:string;
   relId:number;

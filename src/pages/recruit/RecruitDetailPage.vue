@@ -7,26 +7,161 @@
   
   <div class="font-roboto font-black detail-container container flex flex-col">
     <div class="w-full mx-auto mt-4 text-center">
-      <div class="text-lg font-coda font-normal">{{state.artwork.name}}</div>
+      <div class="text-lg font-coda font-bold">{{state.artwork.title}}</div>
       <div v-if="state.dateDiff >= 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
       <div v-if="state.dateDiff < 0" class="text-xs mt-2">기한 마감</div>
       <router-link v-if="state.recruit.memberId == globalState.loginedMember.id" :to="`/usr/recruit/modify?id=${state.recruit.id}`">수정</router-link>
 
-      <div v-if="state.recruit.extra != null && state.recruit.extra.file__common__attachment[0].fileExtTypeCode == 'img'" class="img-container mx-4 mb-4 p-4 mt-6">  
+      <div class="flex">
+      <div class="ml-auto mr-4 text-xs font-bold">{{state.artwork.media}}/{{state.artwork.genre}}</div>
+      </div>  
+
+      <div v-if="state.recruit.extra != null && state.recruit.extra.file__common__attachment[0].fileExtTypeCode == 'img'" class="img-container mx-4 mb-4 p-4 mt-1">  
       <img :src="state.recruit.extra.file__common__attachment[0].forPrintUrl" class="detail_img mx-auto">
       </div>
     </div>
 
     <div class="w-full text-xs mx-auto">
-      <div class="mx-4">감독: {{state.artwork.director}}</div>
-      <div class="mx-4 mt-2">배역: {{state.recruit.roleType}}</div>
+      <ion-grid class="mx-2">
+        <ion-row>
+      <div class="mx-auto">감독: {{state.artwork.director}}</div>
+        </ion-row>
+        <ion-row class="mt-2">
+          <ion-col>
+      <div>작가(원작). {{state.artwork.writer}}</div>
+          </ion-col>
+          <ion-col>
+          <div>제작사. {{state.artwork.corp}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+        <ion-col>
+      <div>프로듀서. {{state.artwork.producer}}</div>
+        </ion-col>
+        <ion-col>
+      <div>캐스팅담당자. {{state.artwork.castingManager}}</div>
+        </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
 
-    <div class="w-full mx-auto mt-6 font-black">
-      <div class="mx-4 text-sm">CASTING INFO</div>
-      <div class="mx-4 mt-2 text-xs">GENDER.  {{state.actingRole.gender}}</div>
-      <div class="mx-4 mt-2 text-xs">CHARACTER.  {{state.actingRole.character}}</div>
+    <div class="mx-4 mt-10">
+      <span>스토리 라인(줄거리).</span>
+      <div class="detail-box mt-2">{{state.artwork.story}}</div>
     </div>
+
+    <div class="mx-4 mt-10">
+      <span>기타사항.</span>
+      <div class="detail-box mt-2">{{state.artwork.etc}}</div>
+    </div>
+
+    <hr class="my-10 mx-4">
+
+    <div class="mx-auto text-center text-xl">
+      <span class="subtitle">배역 상세 내용</span>
+    </div>
+
+    <div class="mx-auto text-center text-lg mt-6">
+      <span>배역. {{state.actingRole.name}}</span>
+    </div>
+
+    <div class="w-full text-xs mx-auto">  
+      <ion-grid class="mx-2">
+        <ion-row>
+          <ion-col>
+      <div>배역나이. {{state.actingRole.age}}</div>
+          </ion-col>
+          <ion-col>
+      <div>배역성별. {{state.actingRole.gender}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+      <div>배역직업. {{state.actingRole.job}}</div>
+          </ion-col>
+          <ion-col>
+      <div>대사유무. {{state.actingRole.scriptStatus}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>  
+
+    <div class="mx-4 mt-6">
+      <span>배역 상세 설정.</span>
+      <div class="detail-box mt-2">{{state.actingRole.character}}</div>
+    </div>
+
+    <hr class="my-10 mx-4">
+
+    <div class="mx-auto text-center text-xl">
+      <span class="subtitle">촬영 설명</span>
+    </div>
+
+    <div class="w-full text-xs mx-auto mt-6">  
+      <ion-grid class="mx-2">
+        <ion-row>
+          <ion-col>
+      <div>촬영기간. {{state.recruit.period}}</div>
+          </ion-col>
+          <ion-col>
+      <div>촬영지역. {{state.recruit.location}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+      <div>장면 수. {{state.actingRole.scenesCount}}</div>
+          </ion-col>
+          <ion-col>
+      <div>촬영횟수. {{state.actingRole.shootingsCount}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>  
+
+    <hr class="my-10 mx-4">
+
+    <div class="mx-auto text-center text-xl">
+      <span class="subtitle">지원 자격</span>
+    </div>  
+
+     <div class="w-full text-xs mx-auto mt-6">  
+      <ion-grid class="mx-2">
+        <ion-row>
+          <ion-col>
+      <div>성별. {{state.recruit.gender}}</div>
+          </ion-col>
+          <ion-col>
+      <div>나이대. {{state.recruit.age}}</div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+      <div>우대사항. {{state.recruit.etc}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>  
+
+    <div class="mx-auto text-center text-xl mt-6">
+      <span class="subtitle">지원 필요 서류</span>
+    </div>  
+
+    <div class="mx-4 mt-6 flex justify-between"><span class="text-sm">현재 사진.</span><span class="text-xs font-normal">*일주일 내 찍은 사진만 가능</span></div>
+
+    <div class="mx-4 mt-4 flex justify-between"><span class="text-sm">연기 영상.</span><span class="text-xs font-normal">*직접 촬영만 가능</span></div>
+
+    <div class="mx-4 mt-2 text-sm">연기 촬영 시간. {{state.recruit.videoTime}}</div>
+
+    <div class="mx-4 mt-8">
+      <span>연기 대사.</span>
+      <div class="detail-box mt-2">{{state.recruit.script}}</div>
+    </div>
+
+    <div class="mx-4 mt-6">
+      <span>기타사항.</span>
+      <div class="detail-box mt-2">{{state.recruit.etc}}</div>
+    </div>
+
 
     <div class="flex w-full mx-auto mt-8 text-sm">
       <div class="btn-like py-1 px-10 bg-black text-white mx-auto">좋아요</div>
@@ -45,7 +180,7 @@
 
 <script lang="ts">
 import { defineComponent,  reactive, onMounted } from 'vue'
-import { IonPage, IonContent, IonIcon } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonGrid, IonCol, IonRow } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router'
 import { IRecruit, IArtwork, IActingRole } from '../../types'
@@ -58,7 +193,10 @@ export default defineComponent({
   components: { 
     IonPage,
     IonContent,
-    IonIcon
+    IonIcon,
+    IonGrid, 
+    IonCol, 
+    IonRow
     },
   name: 'RecruitDetailPage',
   props:{
@@ -129,5 +267,18 @@ export default defineComponent({
 .btn-apply {
   border:2px solid black;
   border-radius:6px;
+}
+.detail-box{
+  border:1px solid black;
+  border-radius:5px;
+  padding:5px;
+  min-height:50px;
+}
+hr {
+  height:1px;
+  background-color:rgba(0, 0, 0, 0.3);
+}
+.subtitle{
+background: linear-gradient(white 60%,rgba(200, 94, 94, 0.5) 40%);
 }
 </style>

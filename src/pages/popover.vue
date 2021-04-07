@@ -38,10 +38,10 @@ export default defineComponent({
 
 <style scoped>
 ion-content{
-  --background:#50555C;
+  --background: #C85E5E;
 }
 ion-item {
-  --background: #50555C;
+  --background: #C85E5E;
 }
 ion-item::after{
   content:'';

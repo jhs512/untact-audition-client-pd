@@ -8,8 +8,8 @@
 
     <div class="flex flex-col container mx-auto border-t border-b py-2">
       <div class="flex flex-col mx-auto text-center">
-      <div v-if="globalState.loginedMember.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
-        <img :src="globalState.loginedMember.extra__thumbImg" class="mx-auto">
+      <div v-if="state.pd.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
+        <img :src="state.pd.extra__thumbImg" class="mx-auto">
       </div>
 
         <router-link to="/usr/pd/modify"><div class="btn-modify border-2 mt-2 border-black text-xs">프로필 편집</div></router-link>
@@ -30,9 +30,9 @@
     </ion-segment>
 
     <div v-if="segment.value == `profile`" class="flex flex-col ml-3 mt-6">
-      <span class="font-roboto font-bold mt-1">Name.  {{globalState.loginedMember.name}}</span>
-      <span class="font-roboto font-bold mt-1">Email.  {{globalState.loginedMember.email}}</span>
-      <span class="font-roboto font-bold mt-1">Address. {{globalState.loginedMember.address}}</span>      
+      <span class="font-roboto font-bold mt-1">Name.  {{state.pd.name}}</span>
+      <span class="font-roboto font-bold mt-1">Email.  {{state.pd.email}}</span>
+      <span class="font-roboto font-bold mt-1">Address. {{state.pd.address}}</span>      
     </div>
     <div v-if="segment.value == `filmgraphy`">
       <ion-card v-bind:key="artwork" v-for="artwork in state.artworks">
@@ -60,7 +60,7 @@ import { IonPage, IonContent, IonIcon, IonSegment, IonSegmentButton, IonCard, Io
 import { returnUpBackOutline } from 'ionicons/icons'
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
-import { IArtwork } from '@/types'
+import { IArtwork, IPd } from '@/types'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -87,6 +87,12 @@ export default defineComponent({
     const mainApiService = useMainService();
     
     onMounted(() => {
+      mainApiService.pd_showDetail(props.id)
+      .then(axiosResponse => {
+        state.pd = axiosResponse.data.body.pd;
+      })
+
+
       mainApiService.pd_getArtwork(props.id)
       .then(axiosResponse => {
         state.artworks = axiosResponse.data.body.artworks
@@ -94,6 +100,7 @@ export default defineComponent({
     })
 
     const state = reactive({
+      pd: {} as IPd,
       artworks: [] as any
     })
     

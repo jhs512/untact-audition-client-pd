@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { inject } from 'vue';
-import { IActingRole, IArtwork, IPd, IRecruit, ISearchMovie, naverMovieInfo } from '../types';
+import { IActingRole, IArtwork, IList, IPd, IRecruit, ISearchMovie, naverMovieInfo } from '../types';
 
 
 // API 원형
@@ -148,6 +148,11 @@ export interface MainApi__pd_doDelete__IResponseBody extends Base__IResponseBody
     id: number
   };
 }
+export interface MainApi__pd_showDetail__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    pd: IPd
+  };
+}
 export interface MainApi__pd_getArtwork__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     artworks: IArtwork
@@ -166,6 +171,8 @@ export interface MainApi__recruit_modify__IResponseBody extends Base__IResponseB
 export interface MainApi__recruit_list__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     recruits: IRecruit[],
+    artworks: IArtwork[],
+    actingRoles: IActingRole[],
     isAllLoaded: boolean
   };
 }
@@ -244,6 +251,10 @@ export class MainApi extends HttpClient {
 
   public pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, artwork:string, isFileUploaded:boolean ) {
     return this.postByForm<MainApi__pd_doModify__IResponseBody>(`/usr/pd/doModify`,{ loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded });
+  }
+
+  public pd_showDetail( loginedMemberId:string ) {
+    return this.get<MainApi__pd_showDetail__IResponseBody>(`/usr/pd/showDetail?id=${loginedMemberId}`);
   }
 
   public pd_getArtwork( loginedMemberId:string ) {

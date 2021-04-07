@@ -1,5 +1,5 @@
 <template>
-  <div class="my-2 container flex items-center mx-auto">
+  <div class="my-4 container flex items-center mx-auto">
       <div class="mx-auto w-full flex justify-center items-center relative">
         <div class="font-coda w-full text-center flex items-center justify-center h-14 text-xl">{{title}}</div>
         <div v-if="btn_back == 'true'" class="hisback absolute left-5">

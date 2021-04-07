@@ -6,31 +6,40 @@
 
     <div v-if="globalState.isLogined" class="flex flex-col min-h-screen">
     
-    <TitleBar title="Audictionary" btn_menu="true"></TitleBar>    
+    <TitleBar title="Audictionary" btn_menu="true" class="border-b"></TitleBar>    
+
+    <div class="ml-auto mr-4">
+      <div class="text-xs font-bold flex items-center">필터<ion-icon :icon="filterOutline" class="ml-1"></ion-icon></div>
+    </div>
    
-  
-    <div id="list" class="flex flex-col font-roboto">
-    <div class="recruit-list text-white container mx-auto" v-bind:key="recruit.id" v-for="recruit in state.recruits">
-      <div class="ml-4 mt-2 text-xs">NEW 오디션 : 방금 올라온 공고</div>
-      <div class="mt-2 text-center text-xl">{{recruit.title}}</div>
-      <div class="mt-1 text-center text-xs">{{recruit.body}}</div>
-      <div class="flex my-8 justify-center">
-        <router-link :to="`/usr/recruit/detail?id=${recruit.id}`">
-        <ion-button  color="light" size="small" fill="outline">
-          공고보기
-        </ion-button>
-        </router-link>
+   <router-link :to="`/usr/recruit/detail?id=${recruit.id}`" v-bind:key="recruit" v-for="recruit in state.list">
+    <ion-card class="text-white py-4">
+     <ion-card-header class="text-center">
+       <ion-card-title>가제 : {{recruit.title}}</ion-card-title>
+       <ion-card-subtitle>감독 : {{recruit.director}}</ion-card-subtitle>
+       <ion-card-subtitle v-if="recruit.dateDiff > 0">기한 : {{recruit.dateDiff}}일</ion-card-subtitle>
+       <ion-card-subtitle v-if="recruit.dateDiff == 0">기한 : 오늘까지</ion-card-subtitle>
+       <ion-card-subtitle v-if="recruit.dateDiff < 0">기한 마감</ion-card-subtitle>
+     </ion-card-header>
+
+      <div v-if="recruit.extra != null" class="w-60 h-60 mx-auto">  
+      <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="w-60 h-60 object-contain mx-auto">
       </div>
 
-      <div v-if="recruit.extra != null" class="mx-4 mb-4">  
-      <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="object-contain mx-auto">
+    <div v-if="recruit.extra == null" class="w-60 h-60 mx-auto">  
+      <img src="/gen/Avatar.jpeg" alt="Avatar" class="w-60 h-60 object-contain mx-auto">
       </div>
-    </div>
-    </div>
+
+      <ion-card-header class="text-center">
+        <ion-card-subtitle>배역이름 : {{recruit.name}}</ion-card-subtitle>
+        <ion-card-subtitle>배역설명 : {{recruit.character}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    </router-link>
 
   </div>
 
-      <ion-infinite-scroll threshold="200px" id="infinite-scroll" @ionInfinite="loadData($event)" class='mt-4'>
+      <ion-infinite-scroll threshold="150px" id="infinite-scroll" @ionInfinite="loadData($event)" class='mt-4'>
         <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data...">
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
@@ -41,13 +50,11 @@
 
 <script lang="ts">
 import { defineComponent, reactive, onMounted } from 'vue'
-import { IRecruit } from '../types/'
-import { MainApi, useMainApi } from '../apis/'
-import { IonContent, IonItem ,IonPage, IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue';
-import { menuOutline } from 'ionicons/icons'
+
+import { IonContent, IonItem ,IonPage, IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/vue';
+import { menuOutline, filterOutline } from 'ionicons/icons'
 
 import Popover from './popover.vue'
-import * as Util from '@/utils'
 import './global.css'
 
 import { useGlobalShare } from '@/stores';
@@ -69,6 +76,11 @@ export default defineComponent({
     IonPopover,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
+    IonCard, 
+    IonCardContent, 
+    IonCardHeader, 
+    IonCardSubtitle, 
+    IonCardTitle,
     Popover
     },
   name: 'MainPage',
@@ -81,13 +93,25 @@ export default defineComponent({
     let isAllLoaded = false;
 
       const state = reactive({
-      recruits: [] as IRecruit[]
+      list: [] as any[]
       });
 
     function loadRecruits(limit:number) {
       mainService.recruit_list(limit)
       .then(axiosResponse => {
-        state.recruits = axiosResponse.data.body.recruits;
+        
+        state.list = axiosResponse.data.body.recruits;
+        for(var i = 0 ; i < axiosResponse.data.body.artworks.length; i++){
+          state.list[i].director = axiosResponse.data.body.artworks[i].director;
+          state.list[i].name = axiosResponse.data.body.actingRoles[i].name;
+          state.list[i].character = axiosResponse.data.body.actingRoles[i].character;
+          
+          let today = new Date();
+          let regDate = new Date(state.list[i].deadline);
+
+          state.list[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
+        }
+        
         if( axiosResponse.data.body.isAllLoaded == true ){
           isAllLoaded = true;
         }
@@ -97,7 +121,6 @@ export default defineComponent({
     onMounted(() => {
       loadRecruits(limit); 
     });
-    
     
     
 
@@ -131,7 +154,8 @@ export default defineComponent({
       state,
       menuOutline,
       loadData,
-      globalState
+      globalState,
+      filterOutline
     }
   }
 })
@@ -139,12 +163,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.recruit-list:nth-child(odd) {
-  background-color:#50555C;
-}
-.recruit-list:nth-child(even) {
-  background-color:#C4C4C4;
-}
 .btn-menu {
   transform:translateY(-50%);
 }
@@ -159,5 +177,13 @@ export default defineComponent({
   height:5px;
   width:135px;
   border-radius:10px;
+}
+ion-card {
+  border-radius:25px;
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.25);
+  border:2px solid #DADADA;
+}
+ion-icon {
+  --ionicon-stroke-width: 60px;
 }
 </style>

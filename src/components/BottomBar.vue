@@ -76,4 +76,8 @@ export default defineComponent({
 ion-tab-button{
   min-width:64px;
 }
+ion-button{
+  --border-width:0;
+  --box-shadow:0;
+}
 </style>

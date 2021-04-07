@@ -52,6 +52,9 @@ export class MainService {
   pd_doDelete( loginedMemberId:number ) {
     return this.mainApi.pd_doDelete(loginedMemberId);
   }
+  pd_showDetail( loginedMemberId:string ){
+    return this.mainApi.pd_showDetail(loginedMemberId);
+  }
   pd_getArtwork( loginedMemberId:string ){
     return this.mainApi.pd_getArtwork(loginedMemberId);
   }

@@ -188,7 +188,7 @@ export default defineComponent({
           if ( isFileUploaded ){
             doFileUpload();
           }else{
-            Util.showAlert("알림",axiosResponse.data.msg, () => location.replace('/usr/pd/info'+globalState.loginedMember.id));
+            Util.showAlert("알림",axiosResponse.data.msg, () => location.replace('/usr/pd/info?id='+globalState.loginedMember.id));
           }
           
     });
