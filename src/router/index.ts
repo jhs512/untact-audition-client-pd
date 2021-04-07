@@ -8,6 +8,7 @@ import * as Util from '../utils/';
 import RecruitWritePage from '../pages/recruit/RecruitWritePage.vue'
 import RecruitDetailPage from '../pages/recruit/RecruitDetailPage.vue'
 import RecruitModifyPage from '../pages/recruit/RecruitModifyPage.vue'
+import RecruitListPage from '../pages/recruit/RecruitListPage.vue'
 
 import JoinSelectPage from '../pages/pd/JoinSelectPage.vue'
 import JoinTosPage from '../pages/pd/JoinTosPage.vue'
@@ -24,8 +25,9 @@ import PdFindLoginPwPage from '../pages/pd/FindLoginPwPdPage.vue'
 
 import SearchPage from '../pages/search/SearchPage.vue'
 
-import MainPage from '../pages/MainPage.vue'
-import OpenPage from '../pages/OpenPage.vue'
+
+import LandingPage from '../pages/main/LandingPage.vue'
+import OpenPage from '../pages/main/OpenPage.vue'
 
 
 import BottomBar from '@/components/BottomBar.vue'
@@ -47,7 +49,7 @@ const routes: Array<RouteRecordRaw>= [
     children: [
       {
         path: 'home',
-        component: MainPage
+        component: LandingPage
       }
     ]
   },
@@ -107,6 +109,10 @@ const routes: Array<RouteRecordRaw>= [
       {
         path: 'search',
         component: SearchPage
+      },
+      {
+        path: 'list',
+        component: RecruitListPage
       }
     ]
   },

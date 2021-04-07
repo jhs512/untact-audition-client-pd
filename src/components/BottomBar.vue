@@ -16,7 +16,7 @@
         </ion-tab-button>
 
         <ion-tab-button tab="MainPage">
-          <ion-button color="light" router-link="/usr/recruit/write">
+          <ion-button color="light" router-link="/usr/recruit/list">
           <ion-label>AD</ion-label>          
           </ion-button>
         </ion-tab-button>

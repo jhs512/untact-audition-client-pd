@@ -5,7 +5,7 @@
 
     <TitleBar title="회원가입 페이지" btn_back="true"></TitleBar>
 
-    <div class="w-60 mx-auto mt-8 flex flex-col flex-1">
+    <div class="mx-4 mt-8 flex flex-col flex-1">
       <form action="" v-on:submit.prevent="checkAndJoin">
         <FormRow title="이름:">
           <ion-input v-model="input.nameEl" ref="nameElRef" type="text" placeholder="이름" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
@@ -30,8 +30,16 @@
         <div class="text-10px"></div>
 
         <FormRow class="mt-7" title="주소:">
-          <ion-input v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+          <ion-input readonly="true" v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" required="true" enterkeyhint="next" class="relative">
+            <ion-button color="light" class="absolute right-0" @click="openApi">검색</ion-button>
+          </ion-input>
+          <div v-if="api.isTrue" class="my-4">
+          <VueDaumPostcode @complete="confirm"/>
+        </div>
+          <ion-input readonly="true" v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" required="true" enterkeyhint="next" class="mt-2"></ion-input>
         </FormRow>
+
+        
 
         <FormRow title="직급:">
           <ion-input v-model="input.jobPositionEl" ref="jobPositionElRef" type="text" placeholder="직급" clear-input="true" required="true" enterkeyhint="next"></ion-input>
@@ -58,20 +66,25 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonInput, IonButton } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router';
 import * as Util from '@/utils'
 import * as Crypto from 'crypto-ts'
 import { sha256 } from 'js-sha256'
 import { useMainService } from '@/services';
+import  AddressApi  from './AddressApi.vue'
+
 export default defineComponent({
   name: 'JoinPdPage',
   components: {
     IonPage,
     IonContent,
     IonIcon,
-    IonInput
+    IonInput,
+    IonButton,
+    AddressApi
+
   },
   props:{
 
@@ -97,6 +110,7 @@ export default defineComponent({
       cellPhoneNoEl:'',
       emailEl:'',
       addressEl:'',
+      address2El:'',
       jobPositionEl:'',
       loginPwEl:'',
       loginPwCfEl:''
@@ -267,10 +281,27 @@ export default defineComponent({
         });
     }
 
-    function hisback() {
-     router.back();
+    const api = reactive({
+      isTrue:false
+    })
+
+    function openApi(){
+      if( api.isTrue ){
+        api.isTrue = false;
+      } else {
+        api.isTrue = true;
+      }
     }
+
+    function confirm(result:any){
+      input.addressEl = result.address;
+      api.isTrue = false;
+    }
+
     return {
+    api,
+    openApi,
+    confirm,
     input,
     emailCert,
     checkAndJoin,
@@ -284,7 +315,6 @@ export default defineComponent({
     loginPwElRef,
     loginPwCfElRef,
     router,
-    hisback,
     returnUpBackOutline
    }
   }

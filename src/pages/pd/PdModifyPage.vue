@@ -320,4 +320,9 @@ export default defineComponent({
 input, ion-input {
   border:2px solid #D4D4D4;
 }
+ion-card {
+  border-radius:25px;
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.25);
+  border:2px solid #DADADA;
+}
 </style>

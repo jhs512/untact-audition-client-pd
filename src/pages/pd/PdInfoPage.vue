@@ -36,7 +36,7 @@
     </div>
     <div v-if="segment.value == `filmgraphy`">
       <ion-card v-bind:key="artwork" v-for="artwork in state.artworks">
-        <img :src="artwork.image" class="mx-auto">
+        <img :src="artwork.image" class="mx-auto mt-8">
                <ion-card-header>
                 <ion-card-title class="text-center">
                   {{artwork.title}}
@@ -171,5 +171,10 @@ export default defineComponent({
 .btn-modify {
   padding:0 3px;
   border-radius: 6px;
+}
+ion-card {
+  border-radius:25px;
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.25);
+  border:2px solid #DADADA;
 }
 </style>

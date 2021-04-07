@@ -8,12 +8,12 @@
     
     <TitleBar title="Audictionary" btn_menu="true" class="border-b"></TitleBar>    
 
-    <div class="ml-auto mr-4">
+    <div class="ml-auto mr-4 mb-4">
       <div class="text-xs font-bold flex items-center">필터<ion-icon :icon="filterOutline" class="ml-1"></ion-icon></div>
     </div>
    
    <router-link :to="`/usr/recruit/detail?id=${recruit.id}`" v-bind:key="recruit" v-for="recruit in state.list">
-    <ion-card class="text-white py-4">
+    <ion-card class="text-white py-4 mb-2 mt-0">
      <ion-card-header class="text-center">
        <ion-card-title>가제 : {{recruit.title}}</ion-card-title>
        <ion-card-subtitle>감독 : {{recruit.director}}</ion-card-subtitle>
@@ -54,8 +54,8 @@ import { defineComponent, reactive, onMounted } from 'vue'
 import { IonContent, IonItem ,IonPage, IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/vue';
 import { menuOutline, filterOutline } from 'ionicons/icons'
 
-import Popover from './popover.vue'
-import './global.css'
+import Popover from '../main/popover.vue'
+import '../global.css'
 
 import { useGlobalShare } from '@/stores';
 import { useMainService } from '@/services';
@@ -83,7 +83,7 @@ export default defineComponent({
     IonCardTitle,
     Popover
     },
-  name: 'MainPage',
+  name: 'RecruitListPage',
   setup(props) {
     const globalState = useGlobalShare();
     

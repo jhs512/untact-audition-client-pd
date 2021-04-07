@@ -8,6 +8,8 @@ import IonRefresherC from './components/IonRefresherC.vue'
 
 import { IonicVue } from '@ionic/vue';
 
+import VueDaumPostcode from 'vue-daum-postcode'
+
 import { createGlobalState, globalShareSymbol } from './stores';
 
 /* Core CSS required for Ionic components to work properly */
@@ -52,6 +54,7 @@ const app = createApp(App);
   app.component('BottomBar', BottomBar);
   app.component('IonRefresherC', IonRefresherC);
   app.component('FontAweSomeIcon', FontAwesomeIcon);
+  app.use(VueDaumPostcode);
   app.use(IonicVue);
   app.use(router);
   app.provide(globalShareSymbol, createGlobalState());
