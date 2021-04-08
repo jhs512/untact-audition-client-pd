@@ -76,8 +76,8 @@ export class MainService {
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded );
   }
   
-  recruit_list(limit:number) {
-    return this.mainApi.recruit_list(limit);
+  recruit_list(limit:number,keyword:[]|null) {
+    return this.mainApi.recruit_list(limit,keyword);
   }
 
   recruit_detail(id:number) {

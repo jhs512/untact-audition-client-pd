@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref } from 'vue'
-import { IonPage, IonContent, IonIcon, IonSegment, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, alertController } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonSegment, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonThumbnail, IonImg, IonAvatar, alertController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
@@ -74,7 +74,10 @@ export default defineComponent({
     IonCardContent, 
     IonCardHeader, 
     IonCardSubtitle, 
-    IonCardTitle
+    IonCardTitle,
+    IonThumbnail, 
+    IonImg, 
+    IonAvatar 
   },
   props:{
     id: {

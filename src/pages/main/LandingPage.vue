@@ -67,7 +67,7 @@ import { defineComponent, reactive, onMounted } from 'vue'
 import { IonContent, IonItem ,IonPage, IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/vue';
 import { menuOutline, filterOutline, arrowForwardOutline } from 'ionicons/icons'
 
-import Popover from './popover.vue'
+
 import '../global.css'
 
 import { useGlobalShare } from '@/stores';
@@ -93,8 +93,7 @@ export default defineComponent({
     IonCardContent, 
     IonCardHeader, 
     IonCardSubtitle, 
-    IonCardTitle,
-    Popover
+    IonCardTitle
     },
   name: 'LadingPage',
   setup(props) {
@@ -108,8 +107,8 @@ export default defineComponent({
       list: [] as any[]
       });
 
-    function loadRecruits(limit:number) {
-      mainService.recruit_list(limit)
+    function loadRecruits(limit:number,keyword:[]|null) {
+      mainService.recruit_list(limit,keyword)
       .then(axiosResponse => {
         
         state.list = axiosResponse.data.body.recruits;
@@ -128,8 +127,9 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      loadRecruits(limit); 
+      loadRecruits(limit,null); 
     });
+    
     
     
   

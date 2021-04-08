@@ -295,8 +295,8 @@ export class MainApi extends HttpClient {
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded });
   }
   
-  public recruit_list(limit:number) {
-    return this.get<MainApi__recruit_list__IResponseBody>(`/usr/recruit/list?limit=${limit}`);
+  public recruit_list(limit:number,filter:[]|null) {
+    return this.get<MainApi__recruit_list__IResponseBody>(`/usr/recruit/list?limit=${limit}&filter=${filter}`);
   }
   public recruit_detail(id:number) {
     return this.get<MainApi__recruit_detail__IResponseBody>(`/usr/recruit/detail?id=${id}`);

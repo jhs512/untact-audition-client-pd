@@ -30,13 +30,13 @@
         <div class="text-10px"></div>
 
         <FormRow class="mt-7" title="주소:">
-          <ion-input readonly="true" v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" required="true" enterkeyhint="next" class="relative">
+          <ion-input readonly="true" v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" required="true" enterkeyhint="next" class="input-address relative pr-10">
             <ion-button color="light" class="absolute right-0" @click="openApi">검색</ion-button>
           </ion-input>
           <div v-if="api.isTrue" class="my-4">
           <VueDaumPostcode @complete="confirm"/>
         </div>
-          <ion-input readonly="true" v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" required="true" enterkeyhint="next" class="mt-2"></ion-input>
+          <ion-input v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" required="true" enterkeyhint="next" class="mt-2"></ion-input>
         </FormRow>
 
         
@@ -73,7 +73,7 @@ import * as Util from '@/utils'
 import * as Crypto from 'crypto-ts'
 import { sha256 } from 'js-sha256'
 import { useMainService } from '@/services';
-import  AddressApi  from './AddressApi.vue'
+
 
 export default defineComponent({
   name: 'JoinPdPage',
@@ -82,9 +82,7 @@ export default defineComponent({
     IonContent,
     IonIcon,
     IonInput,
-    IonButton,
-    AddressApi
-
+    IonButton
   },
   props:{
 
@@ -294,8 +292,14 @@ export default defineComponent({
     }
 
     function confirm(result:any){
-      input.addressEl = result.address;
+      if(result.buildingName.length > 0 ){
+        input.addressEl = result.address + " ("+result.buildingName +")";
+      } else {
+        input.addressEl = result.address;
+      }
+      
       api.isTrue = false;
+      console.log(result);
     }
 
     return {
@@ -331,6 +335,9 @@ input, ion-input {
 }
 .btn-next {
   background-color:#C4C4C4;
+}
+.input-address{
+  --padding-end:70px;
 }
 
 </style>

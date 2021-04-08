@@ -21,7 +21,7 @@
 import { defineComponent, ref } from 'vue'
 import { IonList, IonItemOptions, IonItemOption, IonItem, IonItemSliding, IonLabel, IonButton, IonButtons, IonBackButton, IonPopover } from '@ionic/vue'
 
-import Popover from '../pages/main/popover.vue'
+import Popover from '../pages/main/TitleMenuPopover.vue'
 import '../pages/global.css'
 import router  from '@/router'
 

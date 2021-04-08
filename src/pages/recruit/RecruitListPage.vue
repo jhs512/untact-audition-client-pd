@@ -7,9 +7,16 @@
     <div v-if="globalState.isLogined" class="flex flex-col min-h-screen">
     
     <TitleBar title="Audictionary" btn_menu="true" class="border-b"></TitleBar>    
-
-    <div class="ml-auto mr-4 mb-4">
-      <div class="text-xs font-bold flex items-center">필터<ion-icon :icon="filterOutline" class="ml-1"></ion-icon></div>
+    <div class="ml-auto mr-4 mb-8" >
+      <div class="text-xs font-bold flex items-center" @click="setOpen(true, $event)">필터<ion-icon :icon="filterOutline" class="ml-1"></ion-icon></div>
+      <ion-popover mode="md" :is-open="isOpenRef" :translucent="true" :onDidDismiss="setClose(false)">
+        <ion-content>
+          <div class="p-4">
+            <ion-chip outline :class="`chip_${item}`" @click="filterAdd(item,$event)" v-bind:key="item" v-for="item in filterItems">{{item}}</ion-chip>
+          </div>
+          <ion-button @click="filterSave">저장하기</ion-button>
+        </ion-content>
+      </ion-popover>
     </div>
    
    <router-link :to="`/usr/recruit/detail?id=${recruit.id}`" v-bind:key="recruit" v-for="recruit in state.list">
@@ -22,13 +29,13 @@
        <ion-card-subtitle v-if="recruit.dateDiff < 0">기한 마감</ion-card-subtitle>
      </ion-card-header>
 
-      <div v-if="recruit.extra != null" class="w-60 h-60 mx-auto">  
-      <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="w-60 h-60 object-contain mx-auto">
-      </div>
+      <ion-thumbnail v-if="recruit.extra != null" class="w-60 h-60 mx-auto">  
+      <ion-img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="object-contain mx-auto"></ion-img>
+      </ion-thumbnail>
 
-    <div v-if="recruit.extra == null" class="w-60 h-60 mx-auto">  
-      <img src="/gen/Avatar.jpeg" alt="Avatar" class="w-60 h-60 object-contain mx-auto">
-      </div>
+      <ion-thumbnail v-if="recruit.extra == null" class="w-60 h-60 mx-auto">  
+      <ion-img src="/gen/Avatar.jpeg" alt="Avatar" class="object-contain mx-auto"></ion-img>
+      </ion-thumbnail>
 
       <ion-card-header class="text-center">
         <ion-card-subtitle>배역이름 : {{recruit.name}}</ion-card-subtitle>
@@ -49,12 +56,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from 'vue'
+import { defineComponent, reactive, onMounted, ref } from 'vue'
 
-import { IonContent, IonItem ,IonPage, IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/vue';
+import { IonContent, IonItem ,IonPage, IonButton, IonInput, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonThumbnail, IonImg, IonAvatar, IonChip, popoverController } from '@ionic/vue';
 import { menuOutline, filterOutline } from 'ionicons/icons'
 
-import Popover from '../main/popover.vue'
+import $ from 'jquery'
 import '../global.css'
 
 import { useGlobalShare } from '@/stores';
@@ -68,6 +75,7 @@ export default defineComponent({
     IonTabs,
     IonTabBar,
     IonIcon,
+    IonInput,
     IonTabButton,
     IonLabel,
     IonBadge,
@@ -81,7 +89,10 @@ export default defineComponent({
     IonCardHeader, 
     IonCardSubtitle, 
     IonCardTitle,
-    Popover
+    IonThumbnail,
+    IonAvatar,
+    IonImg,
+    IonChip
     },
   name: 'RecruitListPage',
   setup(props) {
@@ -96,8 +107,8 @@ export default defineComponent({
       list: [] as any[]
       });
 
-    function loadRecruits(limit:number) {
-      mainService.recruit_list(limit)
+    function loadRecruits(limit:number,keyword:[]) {
+      mainService.recruit_list(limit,keyword)
       .then(axiosResponse => {
         
         state.list = axiosResponse.data.body.recruits;
@@ -119,7 +130,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      loadRecruits(limit); 
+      loadRecruits(limit,filter); 
     });
     
     
@@ -136,7 +147,7 @@ export default defineComponent({
     }
     
     function addData(limit:number){
-      loadRecruits(limit);
+      loadRecruits(limit,filter);
     }
 
     async function wait(time:any) {
@@ -149,13 +160,68 @@ export default defineComponent({
 
   
     
+    const isOpenRef = ref(false);
+    
+    const setOpen = (isOpened: boolean) => {
+      isOpenRef.value = isOpened;
+    }
+    const setClose = ( isOpened: boolean) => {
+      isOpenRef.value = isOpened;
+    }
+
+    
+    const filterItems = [
+      "영화",
+      "드라마",
+      "연극",
+      "독립영화",
+      "현재 진행중인 공고",
+      "남자 캐스팅",
+      "여자 캐스팅",
+      "성별 무관 캐스팅",
+      "영유아 캐스팅",
+      "10대 캐스팅",
+      "20대 캐스팅",
+      "30대 캐스팅",
+      "40-50대 캐스팅",
+      "60대 이상 캐스팅",
+    ] as any
+
+    const filter = [
+
+    ] as any
+    
+    function filterAdd (item:string,event:any) {
+      if(filter.indexOf(item) < 0 ){
+        filter.push(item);
+        $('.chip_'+item).css("background-color","#C4C4C4");
+      } else {
+        filter.splice(filter.indexOf(item), 1);
+        $('.chip_'+item).css("background-color","white");
+      }
+    }
+
+  
+    function filterSave(){
+      limit = 5;
+      loadRecruits(limit,filter);
+      const pc = popoverController;
+      pc.dismiss();
+      isOpenRef.value = false;
+    }
   
     return {
       state,
       menuOutline,
       loadData,
       globalState,
-      filterOutline
+      filterOutline,
+      isOpenRef,
+      setOpen,
+      setClose,
+      filterItems,
+      filterAdd,
+      filterSave
     }
   }
 })
@@ -185,5 +251,9 @@ ion-card {
 }
 ion-icon {
   --ionicon-stroke-width: 60px;
+}
+ion-chip{
+  color:black;
+  border:1px solid black;
 }
 </style>

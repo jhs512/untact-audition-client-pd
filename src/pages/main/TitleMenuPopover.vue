@@ -31,7 +31,7 @@ import { IonContent, IonItem, IonLabel } from '@ionic/vue';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'Popover',
+  name: 'TitleMenuPopover',
   components: { IonContent, IonItem, IonLabel }
 });
 </script>

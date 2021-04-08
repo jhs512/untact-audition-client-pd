@@ -9,7 +9,7 @@
     <div class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndLogin">
         <FormRow title="이메일(아이디):">
-          <ion-input v-model="input.emailEl" ref="emailElRef" autocomplete="email" inputmode="email" type="text" placeholder="아이디" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+          <ion-input v-model="input.emailEl" ref="emailElRef" inputmode="email" type="text" placeholder="아이디" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
         <FormRow title="PASSWORD:">
           <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password" clear-input="true" required="true" placeholder="비밀번호" enterkeyhint="done"></ion-input>

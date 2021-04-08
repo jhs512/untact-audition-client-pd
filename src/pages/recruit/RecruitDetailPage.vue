@@ -5,7 +5,7 @@
    
   <TitleBar title="Audictionary" btn_back="true"></TitleBar>    
   
-  <div class="font-roboto font-black detail-container container flex flex-col">
+  <div class="font-roboto font-black detail-container container flex flex-col mx-auto">
     <div class="w-full mx-auto mt-4 text-center">
       <div class="text-lg font-coda font-bold">{{state.artwork.title}}</div>
       <div v-if="state.dateDiff >= 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
@@ -19,6 +19,10 @@
       <div v-if="state.recruit.extra != null && state.recruit.extra.file__common__attachment[0].fileExtTypeCode == 'img'" class="img-container mx-4 mb-4 p-4 mt-1">  
       <img :src="state.recruit.extra.file__common__attachment[0].forPrintUrl" class="detail_img mx-auto">
       </div>
+
+      <ion-thumbnail v-if="state.recruit.extra == null" class="w-60 h-60 mx-auto">  
+      <ion-img src="/gen/Avatar.jpeg" alt="Avatar" class="w-60 h-60 object-contain mx-auto"></ion-img>
+      </ion-thumbnail>
     </div>
 
     <div class="w-full text-xs mx-auto">
@@ -180,7 +184,7 @@
 
 <script lang="ts">
 import { defineComponent,  reactive, onMounted } from 'vue'
-import { IonPage, IonContent, IonIcon, IonGrid, IonCol, IonRow } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonGrid, IonCol, IonRow, IonThumbnail, IonImg, IonAvatar  } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router'
 import { IRecruit, IArtwork, IActingRole } from '../../types'
@@ -196,7 +200,10 @@ export default defineComponent({
     IonIcon,
     IonGrid, 
     IonCol, 
-    IonRow
+    IonRow,
+    IonThumbnail, 
+    IonImg, 
+    IonAvatar 
     },
   name: 'RecruitDetailPage',
   props:{
