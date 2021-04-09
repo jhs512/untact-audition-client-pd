@@ -12,7 +12,7 @@
       <ion-popover mode="md" :is-open="isOpenRef" :translucent="true" :onDidDismiss="setClose(false)">
         <ion-content>
           <div class="p-4">
-            <ion-chip outline :class="`chip_${item}`" @click="filterAdd(item,$event)" v-bind:key="item" v-for="item in filterItems">{{item}}</ion-chip>
+            <ion-chip outline :class="`chip_${index}`" @click="filterAdd(item,$event)" v-bind:key="item" v-for="(item,index) in filterItems">{{item}}</ion-chip>
           </div>
           <ion-button @click="filterSave">저장하기</ion-button>
         </ion-content>
@@ -136,6 +136,9 @@ export default defineComponent({
     
 
    async function loadData(event:any){
+     if( isAllLoaded == false){
+        event.target.removeAttribute('disable');
+     }
      if ( isAllLoaded ) {
         event.target.setAttribute('disabled' , 'true');
       }
@@ -161,9 +164,19 @@ export default defineComponent({
   
     
     const isOpenRef = ref(false);
+
+    const isChecked = ref('')
     
     const setOpen = (isOpened: boolean) => {
       isOpenRef.value = isOpened;
+      setTimeout(() => {
+         for(var i = 0 ; i < filterItems.length ; i ++){
+        if (filter.indexOf(filterItems[i]) >= 0 ) {
+          $('.chip_'+i).css("background-color","#C4C4C4");
+        }
+      }
+      }, 100);
+     
     }
     const setClose = ( isOpened: boolean) => {
       isOpenRef.value = isOpened;
@@ -192,18 +205,21 @@ export default defineComponent({
     ] as any
     
     function filterAdd (item:string,event:any) {
+      
       if(filter.indexOf(item) < 0 ){
         filter.push(item);
-        $('.chip_'+item).css("background-color","#C4C4C4");
+        $('.chip_'+filterItems.indexOf(item)).css("background-color","#C4C4C4");
       } else {
         filter.splice(filter.indexOf(item), 1);
-        $('.chip_'+item).css("background-color","white");
+        $('.chip_'+filterItems.indexOf(item)).css("background-color","white");
       }
     }
 
   
     function filterSave(){
       limit = 5;
+      isAllLoaded = false;
+      $('ion-infinite-scroll').removeAttr('disabled'); 
       loadRecruits(limit,filter);
       const pc = popoverController;
       pc.dismiss();
@@ -217,6 +233,7 @@ export default defineComponent({
       globalState,
       filterOutline,
       isOpenRef,
+      isChecked,
       setOpen,
       setClose,
       filterItems,
