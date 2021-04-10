@@ -176,6 +176,14 @@ export interface MainApi__recruit_list__IResponseBody extends Base__IResponseBod
     isAllLoaded: boolean
   };
 }
+export interface MainApi__recruit_search__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    recruits: IRecruit[],
+    artworks: IArtwork[],
+    actingRoles: IActingRole[],
+    isAllLoaded: boolean
+  };
+}
 export interface MainApi__recruit_detail__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     recruit: IRecruit,
@@ -201,6 +209,7 @@ export interface MainApi__kakaoApi__IResponseBody extends Base__IResponseBodyTyp
 
 // 백엔드 와의 통신장치
 export class MainApi extends HttpClient {
+  
   public constructor() {
     super(
       axios.create({
@@ -301,7 +310,9 @@ export class MainApi extends HttpClient {
   public recruit_detail(id:number) {
     return this.get<MainApi__recruit_detail__IResponseBody>(`/usr/recruit/detail?id=${id}`);
   }
-  
+  public recruitByKeyword(keyword:string) {
+    return this.get<MainApi__recruit_search__IResponseBody>(`/usr/recruit/search?keyword=${keyword}`);
+  }
   public common_recruit_genFile_doUploadForAdd(file:File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);

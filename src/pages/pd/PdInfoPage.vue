@@ -34,7 +34,7 @@
       <span class="font-roboto font-bold mt-1">Email.  {{state.pd.email}}</span>
       <span class="font-roboto font-bold mt-1">Address. {{state.pd.address}}</span>      
     </div>
-    <div v-if="segment.value == `filmgraphy`">
+    <div v-if="segment.value == `filmgraphy` && state.artworks.length > 0">
       <ion-card v-bind:key="artwork" v-for="artwork in state.artworks">
         <img :src="artwork.image" class="mx-auto mt-8">
                <ion-card-header>
@@ -98,7 +98,10 @@ export default defineComponent({
 
       mainApiService.pd_getArtwork(props.id)
       .then(axiosResponse => {
-        state.artworks = axiosResponse.data.body.artworks
+        if( !!!axiosResponse.data.fail ){
+          state.artworks = axiosResponse.data.body.artworks
+        }
+        
       })
     })
 

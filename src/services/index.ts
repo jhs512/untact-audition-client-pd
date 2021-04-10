@@ -79,7 +79,9 @@ export class MainService {
   recruit_list(limit:number,keyword:[]|null) {
     return this.mainApi.recruit_list(limit,keyword);
   }
-
+  recruitByKeyword(keyword:string){
+    return this.mainApi.recruitByKeyword(keyword);
+  }
   recruit_detail(id:number) {
     return this.mainApi.recruit_detail(id);
   }
