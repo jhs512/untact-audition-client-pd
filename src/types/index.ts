@@ -47,6 +47,7 @@ etc: string;
 extra__aw_media: string;
 extra__aw_title: string;
 extra__aw_subtitle: string;
+extra__aw_genre: string;
 extra__aw_director: string;
 extra__aw_writer: string;
 extra__aw_corp: string;

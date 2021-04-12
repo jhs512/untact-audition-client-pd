@@ -1,21 +1,25 @@
 <template>
-  <ion-page>
-    <ion-content>
-     <img :src="state.applications.extra.file__common__attachment[1].forPrintUrl" alt="">
+    <ion-content fullscreen class="ion-padding" scroll-y="false">
+       <ion-slides pager="true" :options="slideOpts">
+         <ion-slide v-bind:key="application.id" v-for="application in state.applications">
+           {{application}}
+        </ion-slide>
+      </ion-slides>
     </ion-content>
-  </ion-page>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive } from 'vue'
-import { IonContent, IonPage } from '@ionic/vue';
+import { IonContent, IonPage, IonSlide, IonSlides } from '@ionic/vue';
 import { useMainService } from '@/services';
 import { IApplication } from '@/types';
 export default defineComponent({
   name: 'ApplicationgListPage',
   components:{
     IonContent,
-    IonPage
+    IonPage,
+    IonSlide, 
+    IonSlides
   },
   props:{
     id:{
@@ -28,13 +32,20 @@ export default defineComponent({
     const mainService = useMainService();
 
     const state = reactive({
-      applications:[] as IApplication[]
+      applications:[] as any
     })
 
+     
+    const slideOpts = {
+      initialSlide: 0,
+      speed: 400
+    };
+
     onMounted(() => {
+      loadApplicationList();      
       
     })
-loadApplicationList();
+
     function loadApplicationList(){
       mainService.application_list(props.id)
     .then(axiosResponse => {
@@ -44,11 +55,17 @@ loadApplicationList();
     
 
     return {
-      state
+      state,
+      slideOpts
     }
   }
 })
 </script>
 
 <style scoped>
+
+    ion-slides {
+      height: 100%;
+    }
+
 </style>
