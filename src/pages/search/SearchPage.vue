@@ -5,11 +5,11 @@
    <ion-searchbar debounce="1000" @ionChange="searchKeyword($event)"></ion-searchbar>
 
    
-    <router-link :to="`/usr/recruit/detail?id=${recruit.id}`" v-bind:key="recruit" v-for="(recruit,index) in state.recruits">
+    <router-link :to="`/usr/recruit/detail?id=${recruit.id}`" v-bind:key="recruit" v-for="recruit in state.recruits">
     <ion-card class="text-white py-4 mb-2 mt-0">
      <ion-card-header class="text-center">
        <ion-card-title>가제 : {{recruit.title}}</ion-card-title>
-       <ion-card-subtitle>감독 : {{state.artworks[index].director}}</ion-card-subtitle>
+       <ion-card-subtitle>감독 : {{recruit.extra__aw_director}}</ion-card-subtitle>
        <ion-card-subtitle v-if="recruit.dateDiff > 0">기한 : {{recruit.dateDiff}}일</ion-card-subtitle>
        <ion-card-subtitle v-if="recruit.dateDiff == 0">기한 : 오늘까지</ion-card-subtitle>
        <ion-card-subtitle v-if="recruit.dateDiff < 0">기한 마감</ion-card-subtitle>
@@ -25,8 +25,8 @@
 
       <ion-card-header class="text-center">
         
-        <ion-card-subtitle>배역이름 : {{state.actingRoles[index].name}}</ion-card-subtitle>
-        <ion-card-subtitle>배역설명 : {{state.actingRoles[index].character}}</ion-card-subtitle>
+        <ion-card-subtitle>배역이름 : {{recruit.extra__ar_name}}</ion-card-subtitle>
+        <ion-card-subtitle>배역설명 : {{recruit.extra__ar_character}}</ion-card-subtitle>
       </ion-card-header>
     </ion-card>
     </router-link>
@@ -66,9 +66,7 @@ export default defineComponent({
     const mainService = useMainService();
 
     const state = reactive({
-      recruits:[] as any[],
-      artworks:[] as IArtwork[],
-      actingRoles:[] as IActingRole[]
+      recruits:[] as any[]
     })
 
     function searchKeyword(event:any){
@@ -79,8 +77,6 @@ export default defineComponent({
         
 
         state.recruits = axiosResponse.data.body.recruits;
-        state.artworks = axiosResponse.data.body.artworks;
-        state.actingRoles = axiosResponse.data.body.actingRoles;
 
         for(var i = 0 ; i < state.recruits.length ; i++ ){
         let today = new Date();

@@ -23,7 +23,7 @@
     <ion-card class="text-white py-4 mb-2 mt-0">
      <ion-card-header class="text-center">
        <ion-card-title>가제 : {{recruit.title}}</ion-card-title>
-       <ion-card-subtitle>감독 : {{recruit.director}}</ion-card-subtitle>
+       <ion-card-subtitle>감독 : {{recruit.extra__aw_director}}</ion-card-subtitle>
        <ion-card-subtitle v-if="recruit.dateDiff > 0">기한 : {{recruit.dateDiff}}일</ion-card-subtitle>
        <ion-card-subtitle v-if="recruit.dateDiff == 0">기한 : 오늘까지</ion-card-subtitle>
        <ion-card-subtitle v-if="recruit.dateDiff < 0">기한 마감</ion-card-subtitle>
@@ -38,8 +38,8 @@
       </ion-thumbnail>
 
       <ion-card-header class="text-center">
-        <ion-card-subtitle>배역이름 : {{recruit.name}}</ion-card-subtitle>
-        <ion-card-subtitle>배역설명 : {{recruit.character}}</ion-card-subtitle>
+        <ion-card-subtitle>배역이름 : {{recruit.extra__ar_name}}</ion-card-subtitle>
+        <ion-card-subtitle>배역설명 : {{recruit.extra__ar_character}}</ion-card-subtitle>
       </ion-card-header>
     </ion-card>
     </router-link>
@@ -113,9 +113,6 @@ export default defineComponent({
         
         state.list = axiosResponse.data.body.recruits;
         for(var i = 0 ; i < axiosResponse.data.body.artworks.length; i++){
-          state.list[i].director = axiosResponse.data.body.artworks[i].director;
-          state.list[i].name = axiosResponse.data.body.actingRoles[i].name;
-          state.list[i].character = axiosResponse.data.body.actingRoles[i].character;
           
           let today = new Date();
           let regDate = new Date(state.list[i].deadline);

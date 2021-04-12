@@ -85,7 +85,9 @@ export class MainService {
   recruit_detail(id:number) {
     return this.mainApi.recruit_detail(id);
   }
-  
+  application_list(id:number){
+    return this.mainApi.application_list(id);
+  }
   common_recruit_genFile_doUploadForAdd(file:File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);

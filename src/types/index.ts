@@ -43,6 +43,27 @@ age: string;
 script: string;
 videoTime: string;
 etc: string;
+
+extra__aw_media: string;
+extra__aw_title: string;
+extra__aw_subtitle: string;
+extra__aw_director: string;
+extra__aw_writer: string;
+extra__aw_corp: string;
+extra__aw_producer: string;
+extra__aw_castingManager: string;
+extra__aw_story: string;
+extra__aw_etc: string;
+
+extra__ar_realName: string;
+extra__ar_name: string;
+extra__ar_age: string;
+extra__ar_gender: string;
+extra__ar_scriptStatus : string;
+extra__ar_scenesCount: number;
+extra__ar_shootingsCount: number;
+extra__ar_character: string;
+extra__ar_etc: string;
 }
 
 export interface IArtwork extends IEntity {
@@ -129,4 +150,10 @@ export interface naverMovieInfo {
   subtitle : string;
   title: string;
   userRating: string;
+  }
+
+  export interface IApplication extends IEntity {
+    memberId: number;
+    recruitId: number;
+    exp : number;
   }

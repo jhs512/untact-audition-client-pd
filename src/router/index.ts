@@ -25,10 +25,10 @@ import PdFindLoginPwPage from '../pages/pd/FindLoginPwPdPage.vue'
 
 import SearchPage from '../pages/search/SearchPage.vue'
 
+import ApplicationListPage from '../pages/application/ApplicationListPage.vue'
 
 import LandingPage from '../pages/main/LandingPage.vue'
 import OpenPage from '../pages/main/OpenPage.vue'
-
 
 import BottomBar from '@/components/BottomBar.vue'
 
@@ -61,13 +61,13 @@ const routes: Array<RouteRecordRaw>= [
       path: 'info',
       component: PdInfoPage,
       props: (route:any) => ( { id: route.query.id, globalState })
-    },
-    {
-      path: 'emailCert',
-      component: JoinPdEmailCertPage,
-      props: (route:any) => ( { email:route.query.email, emailCertKey:route.query.key })
     }
     ]
+  },
+  {
+    path: '/usr/pd/emailCert',
+    component: JoinPdEmailCertPage,
+    props: (route:any) => ( { email:route.query.email, emailCertKey:route.query.key })
   },
     {
       path: '/usr/pd/findSelect',
@@ -102,11 +102,6 @@ const routes: Array<RouteRecordRaw>= [
     component: BottomBar,
     children: [
       {
-        path: 'detail',
-        component: RecruitDetailPage,
-        props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
-      },
-      {
         path: 'search',
         component: SearchPage
       },
@@ -115,6 +110,11 @@ const routes: Array<RouteRecordRaw>= [
         component: RecruitListPage
       }
     ]
+  },
+  {
+    path: '/usr/recruit/detail',
+    component: RecruitDetailPage,
+    props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
   },
   {
     path: '/usr/recruit/write',
@@ -126,6 +126,17 @@ const routes: Array<RouteRecordRaw>= [
     component: RecruitModifyPage,
     props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
   },
+  {
+    path: '/usr/application/',
+    component: BottomBar,
+    children:[
+      {
+        path:'list',
+        component: ApplicationListPage,
+        props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
+      }
+    ]
+  }
 ]
 
 const router = createRouter({

@@ -7,13 +7,13 @@
   
   <div class="font-roboto font-black detail-container container flex flex-col mx-auto">
     <div class="w-full mx-auto mt-4 text-center">
-      <div class="text-lg font-coda font-bold">{{state.artwork.title}}</div>
+      <div class="text-lg font-coda font-bold">{{state.recruit.extra__aw_title}}</div>
       <div v-if="state.dateDiff >= 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
       <div v-if="state.dateDiff < 0" class="text-xs mt-2">기한 마감</div>
       <router-link v-if="state.recruit.memberId == globalState.loginedMember.id" :to="`/usr/recruit/modify?id=${state.recruit.id}`">수정</router-link>
 
       <div class="flex">
-      <div class="ml-auto mr-4 text-xs font-bold">{{state.artwork.media}}/{{state.artwork.genre}}</div>
+      <div class="ml-auto mr-4 text-xs font-bold">{{state.recruit.extra__aw_media}}/{{state.recruit.extra__aw_genre}}</div>
       </div>  
 
       <div v-if="state.recruit.extra != null && state.recruit.extra.file__common__attachment[0].fileExtTypeCode == 'img'" class="img-container mx-4 mb-4 p-4 mt-1">  
@@ -28,22 +28,22 @@
     <div class="w-full text-xs mx-auto">
       <ion-grid class="mx-2">
         <ion-row>
-      <div class="mx-auto">감독: {{state.artwork.director}}</div>
+      <div class="mx-auto">감독: {{state.recruit.extra__aw_director}}</div>
         </ion-row>
         <ion-row class="mt-2">
           <ion-col>
-      <div>작가(원작). {{state.artwork.writer}}</div>
+      <div>작가(원작). {{state.recruit.extra__aw_writer}}</div>
           </ion-col>
           <ion-col>
-          <div>제작사. {{state.artwork.corp}}</div>
+          <div>제작사. {{state.recruit.extra__aw_corp}}</div>
           </ion-col>
         </ion-row>
         <ion-row>
         <ion-col>
-      <div>프로듀서. {{state.artwork.producer}}</div>
+      <div>프로듀서. {{state.recruit.extra__aw_producer}}</div>
         </ion-col>
         <ion-col>
-      <div>캐스팅담당자. {{state.artwork.castingManager}}</div>
+      <div>캐스팅담당자. {{state.recruit.extra__aw_castingManager}}</div>
         </ion-col>
         </ion-row>
       </ion-grid>
@@ -51,12 +51,12 @@
 
     <div class="mx-4 mt-10">
       <span>스토리 라인(줄거리).</span>
-      <div class="detail-box mt-2">{{state.artwork.story}}</div>
+      <div class="detail-box mt-2">{{state.recruit.extra__aw_story}}</div>
     </div>
 
     <div class="mx-4 mt-10">
       <span>기타사항.</span>
-      <div class="detail-box mt-2">{{state.artwork.etc}}</div>
+      <div class="detail-box mt-2">{{state.recruit.extra__aw_etc}}</div>
     </div>
 
     <hr class="my-10 mx-4">
@@ -66,25 +66,25 @@
     </div>
 
     <div class="mx-auto text-center text-lg mt-6">
-      <span>배역. {{state.actingRole.name}}</span>
+      <span>배역. {{state.recruit.extra__ar_name}}</span>
     </div>
 
     <div class="w-full text-xs mx-auto">  
       <ion-grid class="mx-2">
         <ion-row>
           <ion-col>
-      <div>배역나이. {{state.actingRole.age}}</div>
+      <div>배역나이. {{state.recruit.extra__ar_age}}</div>
           </ion-col>
           <ion-col>
-      <div>배역성별. {{state.actingRole.gender}}</div>
+      <div>배역성별. {{state.recruit.extra__ar_gender}}</div>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-      <div>배역직업. {{state.actingRole.job}}</div>
+      <div>배역직업. {{state.recruit.extra__ar_job}}</div>
           </ion-col>
           <ion-col>
-      <div>대사유무. {{state.actingRole.scriptStatus}}</div>
+      <div>대사유무. {{state.recruit.extra__ar_scriptStatus}}</div>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -92,7 +92,7 @@
 
     <div class="mx-4 mt-6">
       <span>배역 상세 설정.</span>
-      <div class="detail-box mt-2">{{state.actingRole.character}}</div>
+      <div class="detail-box mt-2">{{state.recruit.extra__ar_character}}</div>
     </div>
 
     <hr class="my-10 mx-4">
@@ -113,10 +113,10 @@
         </ion-row>
         <ion-row>
           <ion-col>
-      <div>장면 수. {{state.actingRole.scenesCount}}</div>
+      <div>장면 수. {{state.recruit.extra__ar_scenesCount}}</div>
           </ion-col>
           <ion-col>
-      <div>촬영횟수. {{state.actingRole.shootingsCount}}</div>
+      <div>촬영횟수. {{state.recruit.extra__ar_shootingsCount}}</div>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -219,8 +219,6 @@ export default defineComponent({
       
       const state = reactive({
       recruit: {} as IRecruit,
-      artwork: {} as IArtwork,
-      actingRole: {} as IActingRole,
       dateDiff: 0
       });
 
@@ -230,8 +228,6 @@ export default defineComponent({
       mainApiService.recruit_detail(id)
       .then(axiosResponse => {
         state.recruit = axiosResponse.data.body.recruit;
-        state.artwork = axiosResponse.data.body.artwork;
-        state.actingRole = axiosResponse.data.body.actingRole;
         let today = new Date();
         let regDate = new Date(state.recruit.deadline);
       

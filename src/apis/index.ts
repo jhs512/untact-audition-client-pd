@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { inject } from 'vue';
-import { IActingRole, IArtwork, IList, IPd, IRecruit, ISearchMovie, naverMovieInfo } from '../types';
+import { IActingRole, IApplication, IArtwork, IList, IPd, IRecruit, ISearchMovie, naverMovieInfo } from '../types';
 
 
 // API 원형
@@ -191,6 +191,11 @@ export interface MainApi__recruit_detail__IResponseBody extends Base__IResponseB
     actingRole: IActingRole
   };
 }
+export interface MainApi__application_list__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    applications: IApplication[]
+  }
+}
 export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     genFileIdsStr: string,
@@ -213,7 +218,7 @@ export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://172.30.1.15:8024/',
+        baseURL:'http://172.30.12.215:8024/',
       })
     );
   }
@@ -312,6 +317,9 @@ export class MainApi extends HttpClient {
   }
   public recruitByKeyword(keyword:string) {
     return this.get<MainApi__recruit_search__IResponseBody>(`/usr/recruit/search?keyword=${keyword}`);
+  }
+  public application_list(id:number){
+    return this.get<MainApi__application_list__IResponseBody>(`/usr/application/list?id=${id}`)
   }
   public common_recruit_genFile_doUploadForAdd(file:File) {
     const formDate = new FormData();

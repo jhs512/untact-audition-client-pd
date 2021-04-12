@@ -112,6 +112,7 @@ export default defineComponent({
       .then(axiosResponse => {
         
         state.list = axiosResponse.data.body.recruits;
+        
         for(var i = 0 ; i < axiosResponse.data.body.artworks.length; i++){
           state.list[i].director = axiosResponse.data.body.artworks[i].director;
           state.list[i].name = axiosResponse.data.body.actingRoles[i].name;
