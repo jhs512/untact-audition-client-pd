@@ -10,8 +10,8 @@
         </ion-tab-button>
 
         <ion-tab-button tab="SearchPage">
-          <ion-button color="light" router-link="/usr/recruit/search">
-          <ion-icon :icon="searchOutline"></ion-icon>          
+          <ion-button color="light" router-link="/usr/recruit/write">
+          <ion-icon :icon="duplicateOutline"></ion-icon>       
           </ion-button>
         </ion-tab-button>
 
@@ -35,7 +35,7 @@
 <script lang="ts">
 import { defineComponent, getCurrentInstance } from 'vue'
 import { IonContent, IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonButton } from '@ionic/vue'
-import { calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline } from 'ionicons/icons'
+import { calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline, duplicateOutline } from 'ionicons/icons'
 
 import { useGlobalShare } from '@/stores'
 export default defineComponent({
@@ -51,7 +51,7 @@ export default defineComponent({
     const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
 
     return {
-     globalState, calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline
+     globalState, calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline, duplicateOutline
     }
   },
   

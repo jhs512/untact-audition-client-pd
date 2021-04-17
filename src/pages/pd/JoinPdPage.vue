@@ -221,6 +221,7 @@ export default defineComponent({
         jobPositionElRef.value.focus();
         return;
       }
+      input.addressEl = input.addressEl + input.address2El;
 
       // 패스워드 체크
       if ( loginPwElRef.value == null ) {

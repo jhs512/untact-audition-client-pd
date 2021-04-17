@@ -9,18 +9,22 @@
     <div class="flex flex-col container mx-auto border-t border-b py-2">
       <div class="flex flex-col mx-auto text-center">
       <div v-if="state.pd.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
-        <img :src="state.pd.extra__thumbImg" class="mx-auto">
+        <img :src="state.pd.extra__thumbImg" class="mx-auto w-60 h-60 object-contain">
+        <ion-button :onclick="deleteProfileImg">프로필 이미지 삭제</ion-button>
+      </div>
+      <div v-if="state.pd.extra__thumbImg == null" class="img-container mx-4 mb-4 p-4 mt-6">  
+        <div class="flex justify-center items-center mx-auto w-60 h-60 border"><span>프로필 이미지</span></div>
       </div>
 
-        <router-link to="/usr/pd/modify"><div class="btn-modify border-2 mt-2 border-black text-xs">프로필 편집</div></router-link>
+        <router-link to="/usr/pd/modify"><div class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs">프로필 편집</div></router-link>
 
         <div class="mt-2">
           <form action="" >
             <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)">
           </form>
           <div class="my-6" v-on:click="globalState.logout">로그아웃</div>
-
         </div>
+
       </div>
     </div>
 
@@ -56,7 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref } from 'vue'
-import { IonPage, IonContent, IonIcon, IonSegment, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonThumbnail, IonImg, IonAvatar, alertController } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonSegment, IonButton, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonThumbnail, IonImg, IonAvatar, alertController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
@@ -68,6 +72,7 @@ export default defineComponent({
     IonPage,
     IonContent,
     IonIcon,
+    IonButton,
     IonSegment,
     IonSegmentButton,
     IonCard, 
@@ -159,6 +164,13 @@ export default defineComponent({
         });
       return alert.present();
     }
+
+    function deleteProfileImg(){
+      mainApiService.pd_deleteProfileImg(props.id)
+      .then(axiosReponse => {
+        state.pd.extra__thumbImg = '';
+      })
+    }
    
    return {
      state,
@@ -167,6 +179,7 @@ export default defineComponent({
      presentAlertConfirm,
      segment,
      globalState,
+     deleteProfileImg,
      changeSegmentValue
    }
   }

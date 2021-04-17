@@ -36,7 +36,9 @@ export class MainService {
   pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, artwork:string, isFileUploaded:boolean ) {
     return this.mainApi.pd_doModify(loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded );
   }
-
+  pd_deleteProfileImg ( loginedMemberId:string ) {
+    return this.mainApi.pd_deleteProfileImg(loginedMemberId);
+  }
   pd_update(loginedMemberId:string) {
     return this.mainApi.pd_update(loginedMemberId);
   }

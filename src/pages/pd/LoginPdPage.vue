@@ -42,6 +42,7 @@ import { useGlobalShare } from '@/stores';
 import router from '@/router'
 import { useMainService } from '@/services';
 
+
 export default defineComponent({
   name: 'LoginPdPage',
   components: {

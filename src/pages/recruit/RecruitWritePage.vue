@@ -148,7 +148,7 @@
         </FormRow>
 
         <FormRow title="관련이미지(포스터):">
-          <ion-input v-model="input.awFileEl" ref="awFileElRef" type="file" accept="image/*" class="p-1 w-full mt-2px" v-on:change="setThumbnail"></ion-input>
+          <input ref="awFileElRef" type="file" accept="image/*" class="p-1 w-full mt-2px" v-on:change="setThumbnail">
         </FormRow>
         <div id="image_container" class="mx-auto my-6">
           <img v-if="fileType.type.startsWith('image')" src="" alt="" class="mx-auto">
@@ -295,7 +295,7 @@ export default defineComponent({
     const rmGenderFElRef = ref<HTMLInputElement>();
     const rmGenderXElRef = ref<HTMLInputElement>();
 
-    const awFileElRef = ref<HTMLIonInputElement>();
+    const awFileElRef = ref<HTMLInputElement>();
 
     const arGenderMElRef = ref<HTMLInputElement>();
     const arGenderFElRef = ref<HTMLInputElement>();
@@ -345,7 +345,6 @@ export default defineComponent({
       awManagerEl:'',
       awGenreEl:'',
       awStoryEl:'',
-      awFileEl: new File([''],''),
       awEtcEl:'',
 
       arRealNameEl:'',
@@ -372,6 +371,8 @@ export default defineComponent({
     }
 
     function checkAndWrite() {
+      let isFileUploaded = false;
+      
       // 제목 체크
       if ( input.rmTitleEl.length == 0 ) {
         alert('제목을 입력해 주세요.');
@@ -613,7 +614,13 @@ export default defineComponent({
         alert('배역 설명을 입력해 주세요.');
         return;
       }
-      
+
+      // 파일업로드 체크
+      if( awFileElRef.value?.files != null ){
+        if ( awFileElRef.value?.files.length > 0 ){
+          isFileUploaded = true;
+        } 
+      }
       
       const startWrite = (genFileIdsStr:string) => {
       
@@ -626,12 +633,12 @@ export default defineComponent({
       };
 
       const startFileUpload = (onSuccess:Function) => {
-        if ( input.awFileEl == null || input.awFileEl.size == 0 ) {
+        if ( isFileUploaded == false ) {
           onSuccess("");
           return;
         }
-        
-        mainApiService.common_recruit_genFile_doUploadForAdd(input.awFileEl)
+        if ( awFileElRef?.value?.files != null ){
+            mainApiService.common_recruit_genFile_doUploadForAdd(awFileElRef.value.files[0])
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
               alert(axiosResponse.data.msg);
@@ -641,6 +648,8 @@ export default defineComponent({
               onSuccess(axiosResponse.data.body.genFileIdsStr);
             }
           });
+        }
+       
       };
       
       startFileUpload(startWrite);
@@ -696,12 +705,8 @@ export default defineComponent({
         }; 
         
         reader.readAsDataURL(event.target.files[0]);
-        input.awFileEl = event.target.files[0];
       }
 
-      function hisback() {
-        router.back();
-    }
 
     
     return {

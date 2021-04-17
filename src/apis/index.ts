@@ -193,7 +193,7 @@ export interface MainApi__recruit_detail__IResponseBody extends Base__IResponseB
 }
 export interface MainApi__application_list__IResponseBody extends Base__IResponseBodyType1 {
   body:{
-    applications: IApplication[]
+    applications: any[]
   }
 }
 export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__IResponseBodyType1 {
@@ -265,6 +265,10 @@ export class MainApi extends HttpClient {
 
   public pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, artwork:string, isFileUploaded:boolean ) {
     return this.postByForm<MainApi__pd_doModify__IResponseBody>(`/usr/pd/doModify`,{ loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded });
+  }
+
+  public pd_deleteProfileImg( loginedMemberId:string ) {
+    return this.get<MainApi__pd_doDelete__IResponseBody>(`/usr/pd/deleteProfileImg?id=${loginedMemberId}`);
   }
 
   public pd_showDetail( loginedMemberId:string ) {
