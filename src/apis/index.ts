@@ -196,6 +196,11 @@ export interface MainApi__application_list__IResponseBody extends Base__IRespons
     applications: any[]
   }
 }
+export interface MainApi__ap_select__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    id: number;
+  }
+}
 export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     genFileIdsStr: string,
@@ -325,6 +330,10 @@ export class MainApi extends HttpClient {
   public application_list(id:number){
     return this.get<MainApi__application_list__IResponseBody>(`/usr/application/list?id=${id}`)
   }
+  public ap_select(applicationId:number, memberId:number){
+    return this.get<MainApi__ap_select__IResponseBody>(`/usr/ap/select?applicationId=${applicationId}&memberId=${memberId}`)
+  }
+
   public common_recruit_genFile_doUploadForAdd(file:File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);

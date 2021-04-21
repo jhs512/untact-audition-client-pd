@@ -1,4 +1,4 @@
-import { useGlobalStateOnOutsideOfVue } from "@/stores";
+import { applicationList, useGlobalStateOnOutsideOfVue } from "@/stores";
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 
@@ -9,6 +9,7 @@ import RecruitWritePage from '../pages/recruit/RecruitWritePage.vue'
 import RecruitDetailPage from '../pages/recruit/RecruitDetailPage.vue'
 import RecruitModifyPage from '../pages/recruit/RecruitModifyPage.vue'
 import RecruitListPage from '../pages/recruit/RecruitListPage.vue'
+import RecruitAdmPage from '../pages/recruit/RecruitAdmPage.vue'
 
 import JoinSelectPage from '../pages/pd/JoinSelectPage.vue'
 import JoinTosPage from '../pages/pd/JoinTosPage.vue'
@@ -31,6 +32,9 @@ import LandingPage from '../pages/main/LandingPage.vue'
 import OpenPage from '../pages/main/OpenPage.vue'
 
 import BottomBar from '@/components/BottomBar.vue'
+import { useMainService } from "@/services";
+import { getMainApi } from "@/apis";
+import { reactive } from "vue";
 
 const globalState = useGlobalStateOnOutsideOfVue();
 
@@ -108,6 +112,10 @@ const routes: Array<RouteRecordRaw>= [
       {
         path: 'list',
         component: RecruitListPage
+      },
+      {
+        path: 'adm',
+        component: RecruitAdmPage
       }
     ]
   },
@@ -145,9 +153,23 @@ const router = createRouter({
   routes // short for `routes: routes`
 })
 
+
 router.beforeEach((to, from, next) => {
   globalState.fullPath = to.fullPath;
-  next();
+  if(to.path == '/usr/application/list'){
+    const mainService = getMainApi();
+    const id = Util.toIntOrNull(to.query.id);
+    
+    mainService.application_list(id)
+    .then(axiosResponse => {
+      applicationList.list = axiosResponse.data.body.applications;
+
+      next();
+    })  
+  } else {
+    next();
+  }
+  
 });
 
 router.afterEach(() => {

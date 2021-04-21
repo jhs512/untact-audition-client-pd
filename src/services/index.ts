@@ -90,6 +90,9 @@ export class MainService {
   application_list(id:number){
     return this.mainApi.application_list(id);
   }
+  ap_select(applicationId:number, memberId:number){
+    return this.mainApi.ap_select(applicationId, memberId);
+  }
   common_recruit_genFile_doUploadForAdd(file:File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);

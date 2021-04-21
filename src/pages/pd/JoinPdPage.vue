@@ -39,8 +39,6 @@
           <ion-input v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" required="true" enterkeyhint="next" class="mt-2"></ion-input>
         </FormRow>
 
-        
-
         <FormRow title="직급:">
           <ion-input v-model="input.jobPositionEl" ref="jobPositionElRef" type="text" placeholder="직급" clear-input="true" required="true" enterkeyhint="next"></ion-input>
         </FormRow>
@@ -173,7 +171,7 @@ export default defineComponent({
         return;
       }
       let gender = '';
-      if ( input.regNumber2El.substring(1,1) == '1' || input.regNumber2El.substring(1,1) == '3') {
+      if ( input.regNumber2El.substring(0,1) == '1' || input.regNumber2El.substring(0,1) == '3') {
         gender = '남';
       } 
       else {
@@ -211,6 +209,8 @@ export default defineComponent({
         return;
       }
 
+      const addressEl = input.addressEl + input.address2El;
+
       // 직급 체크
       if ( jobPositionElRef.value == null ) {
         return;
@@ -221,7 +221,7 @@ export default defineComponent({
         jobPositionElRef.value.focus();
         return;
       }
-      input.addressEl = input.addressEl + input.address2El;
+      
 
       // 패스워드 체크
       if ( loginPwElRef.value == null ) {
@@ -253,8 +253,6 @@ export default defineComponent({
       
       const loginPwRealEl = sha256(input.loginPwEl);
 
-
-          
           mainApiService.pd_checkEmailCertificated(input.emailEl)
             .then(axiosResponse => {
               if ( axiosResponse.data.fail ) {
@@ -262,7 +260,7 @@ export default defineComponent({
                 return;
               }
               isEmailCert = true;  
-               join(input.nameEl, regNumber.toString() , gender, input.cellPhoneNoEl , input.emailEl, input.addressEl, input.jobPositionEl, loginPwRealEl );
+               join(input.nameEl, regNumber.toString() , gender, input.cellPhoneNoEl , input.emailEl, addressEl, input.jobPositionEl, loginPwRealEl );
             });
       
     }
@@ -298,9 +296,7 @@ export default defineComponent({
       } else {
         input.addressEl = result.address;
       }
-      
       api.isTrue = false;
-      console.log(result);
     }
 
     return {

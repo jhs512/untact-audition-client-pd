@@ -69,8 +69,6 @@ export const createGlobalState = () => {
   return Singleton.globalState;
 };
 
-
-
 export const useGlobalShare = ():GlobalState => inject(globalShareSymbol) as GlobalState;
 
 export const useGlobalStateOnOutsideOfVue = createGlobalState;
@@ -79,4 +77,7 @@ export const pdFilmgraphy = reactive({
   movieList:[] as any
 })
 
+export const applicationList = reactive({
+  list:[] as any
+})
 

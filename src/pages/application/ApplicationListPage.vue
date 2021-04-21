@@ -1,30 +1,32 @@
 <template>
 <ion-page>
     <ion-content :fullscreen="true">
-       <ion-slides :options="slideOpts" class="min-h-screen mb-20">
-         <!--
-         <ion-slide v-bind:key="application" v-for="application in state.list">
+       <ion-slides :options="slideOpts" class="min-h-height mb-20">
+         <ion-slide v-bind:key="application" v-for="application in list">
            <div class="flex flex-col">
-            <div class="w-72 h-72">
-           <img :src="application.extra.file__common__attachment[1].forPrintUrl" alt="">
+            <div class="w-72 h-72 mt-4 flex justify-center items-center">
+              <img :src="application.extra.file__common__attachment[1].forPrintUrl" alt="" class="mt-auto">
             </div>
-            <div class="w-72 h-72">
-           <img :src="application.extra.file__common__attachment[2].forPrintUrl" alt="">
+            <div class="w-72 h-72 mt-4 flex justify-center items-center">
+              <img :src="application.extra.file__common__attachment[2].forPrintUrl" alt="">
             </div>
-            <div class="w-72 h-72">
-           <video controls :src="application.extra.file__common__attachment[3].forPrintUrl"></video>
+            <div class="w-72 h-72 mt-4 flex justify-center items-center">
+              <video controls :src="application.extra.file__common__attachment[3].forPrintUrl"></video>
+            </div>
+            <div class="mt-4">
+              <ion-button @click="select(application)">asd</ion-button>
             </div>
            </div>
         </ion-slide>
-        -->
       </ion-slides>
     </ion-content>
 </ion-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue'
-import { IonContent, IonPage, IonSlide, IonSlides } from '@ionic/vue';
+import { defineComponent } from 'vue'
+import { IonContent, IonPage, IonSlide, IonSlides, IonButton } from '@ionic/vue';
+import { applicationList } from '@/stores';
 import { useMainService } from '@/services';
 
 
@@ -35,7 +37,8 @@ export default defineComponent({
     IonContent,
     IonPage,
     IonSlide, 
-    IonSlides
+    IonSlides,
+    IonButton
   },
   props:{
     id:{
@@ -44,68 +47,32 @@ export default defineComponent({
     }
   },
   setup(props){
-    
-    const mainService = useMainService();
 
-    const state = reactive({
-      list: [] as any[]
-    })
- 
-    setTimeout(() => {
-      
-      
-    }, 1000);
-     
+    const mainService = useMainService();
+    
+    const list = applicationList.list;
+    
     const slideOpts = {
-      initialSlide: 1,
+      initialSlide: 0,
       speed: 400
     };
 
-    onMounted(() => {
-     loadApplicationList();
-    })
+    function select(application:any){
+      mainService.ap_select(application.id, application.memberId)
+      .then(axiosResponse => {
 
-    function loadApplicationList(){
-      mainService.application_list(props.id)
-    .then(axiosResponse => {
-      
-    // state.list = axiosResponse.data.body.applications;
-
-    for(var i = 0 ; i <  axiosResponse.data.body.applications.length; i++){
-          const s = document.createElement('ion-slide');  
-          s.innerHTML = `<ion-slide>
-           <div class="flex flex-col">
-            <div class="w-72 h-72">
-           <img src="${axiosResponse.data.body.applications[i].extra.file__common__attachment[1].forPrintUrl}" alt="">
-            </div>
-            <div class="w-72 h-72">
-           <img src="${axiosResponse.data.body.applications[i].extra.file__common__attachment[2].forPrintUrl}" alt="">
-            </div>
-            <div class="w-72 h-72">
-           <video controls src="${axiosResponse.data.body.applications[i].extra.file__common__attachment[3].forPrintUrl}"></video>
-            </div>
-           </div>
-        </ion-slide>`;
-          document.querySelector('.swiper-wrapper')?.appendChild(s);
+      });
     }
-
-     
-    })
-    }
-    
 
     return {
-      state,
+      list,
       slideOpts,
+      select
     }
   }
 })
 </script>
 
 <style scoped>
-
-    ion-slides {
-      height: 100%;
-    }
 
 </style>

@@ -23,7 +23,6 @@ import { IonList, IonItemOptions, IonItemOption, IonItem, IonItemSliding, IonLab
 
 import Popover from '../pages/main/TitleMenuPopover.vue'
 import '../pages/global.css'
-import router  from '@/router'
 
 export default defineComponent({
   props: {
