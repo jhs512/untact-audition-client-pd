@@ -48,4 +48,21 @@ font-family: 'Coda', cursive;
 .mt-2px {
   margin-top:2px;
 }
+ion-button.color-red{
+--background:#C85E5E;
+}
+ion-button.outline-red{
+--background:white;
+--border-color:#C85E5E;
+--border-style:solid;
+--border-width:2px;
+--color:#C85E5E;
+}
+ion-button.ion-outline-black{
+--background:white;
+--border-color:black;
+--border-style:solid;
+--border-width:2px;
+--color:black;
+}
 </style>

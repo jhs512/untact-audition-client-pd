@@ -9,7 +9,8 @@ import RecruitWritePage from '../pages/recruit/RecruitWritePage.vue'
 import RecruitDetailPage from '../pages/recruit/RecruitDetailPage.vue'
 import RecruitModifyPage from '../pages/recruit/RecruitModifyPage.vue'
 import RecruitListPage from '../pages/recruit/RecruitListPage.vue'
-import RecruitAdmPage from '../pages/recruit/RecruitAdmPage.vue'
+import RecruitAdmListPage from '../pages/recruit/RecruitAdmListPage.vue'
+import RecruitAdmDetailPage from '../pages/recruit/RecruitAdmDetailPage.vue'
 
 import JoinSelectPage from '../pages/pd/JoinSelectPage.vue'
 import JoinTosPage from '../pages/pd/JoinTosPage.vue'
@@ -114,8 +115,13 @@ const routes: Array<RouteRecordRaw>= [
         component: RecruitListPage
       },
       {
-        path: 'adm',
-        component: RecruitAdmPage
+        path: 'admList',
+        component: RecruitAdmListPage
+      },
+      {
+        path: 'admDetail',
+        component: RecruitAdmDetailPage,
+        props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
       }
     ]
   },

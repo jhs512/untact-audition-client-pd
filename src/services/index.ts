@@ -78,8 +78,11 @@ export class MainService {
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded );
   }
   
-  recruit_list(limit:number,keyword:[]|null) {
+  recruit_list(limit:number|null,keyword:[]|null) {
     return this.mainApi.recruit_list(limit,keyword);
+  }
+  recruit_listByMemberId(id:number){
+    return this.mainApi.recruit_listByMemberId(id);
   }
   recruitByKeyword(keyword:string){
     return this.mainApi.recruitByKeyword(keyword);
@@ -90,9 +93,19 @@ export class MainService {
   application_list(id:number){
     return this.mainApi.application_list(id);
   }
-  ap_select(applicationId:number, memberId:number){
-    return this.mainApi.ap_select(applicationId, memberId);
+  application_select(applicationId:number){
+    return this.mainApi.application_select(applicationId);
   }
+  application_fail(applicationId:number){
+    return this.mainApi.application_fail(applicationId);
+  }
+  application_like(applicationId:number, memberId:number){
+    return this.mainApi.application_like(applicationId, memberId);
+  }
+  ap_list(recruitId:number){
+    return this.mainApi.ap_list(recruitId);
+  }
+
   common_recruit_genFile_doUploadForAdd(file:File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);

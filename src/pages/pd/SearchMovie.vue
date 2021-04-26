@@ -4,7 +4,6 @@
     <ion-button :onclick="confirm">Confirm</ion-button>
     <ion-searchbar clear-icon="close-sharp" debounce="700" @ionChange="searchKeyword($event)"></ion-searchbar>
         <ion-card v-bind:key="item" v-for="item in list.arr" class="p-2 py-4">
-          
           <img :src="item.image" class="mx-auto">
                <ion-card-header>
                 <ion-card-title class="text-center">

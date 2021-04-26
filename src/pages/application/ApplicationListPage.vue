@@ -1,20 +1,27 @@
 <template>
 <ion-page>
     <ion-content :fullscreen="true">
-       <ion-slides :options="slideOpts" class="min-h-height mb-20">
-         <ion-slide v-bind:key="application" v-for="application in list">
+       <ion-slides :options="slideOpts" class="min-h-height mb-20 mt-4">
+         <ion-slide v-bind:key="application" v-for="application,index in list">
            <div class="flex flex-col">
-            <div class="w-72 h-72 mt-4 flex justify-center items-center">
-              <img :src="application.extra.file__common__attachment[1].forPrintUrl" alt="" class="mt-auto">
+             <span>{{index+1}}. {{application.extra__ap_name}}</span>
+             <span class="mt-8">현재 사진</span>
+            <div class="w-72 h-72 flex flex-col justify-center items-center">
+              <img :src="application.extra.file__common__attachment[1].forPrintUrl" alt="">
             </div>
-            <div class="w-72 h-72 mt-4 flex justify-center items-center">
+            <span class="mt-8">프로필 사진</span>
+            <div class="w-72 h-72 flex flex-col justify-center items-center">
               <img :src="application.extra.file__common__attachment[2].forPrintUrl" alt="">
             </div>
-            <div class="w-72 h-72 mt-4 flex justify-center items-center">
+            <span class="mt-8">연기 영상</span>
+            <div class="w-72 h-72 flex flex-col justify-center items-center">
               <video controls :src="application.extra.file__common__attachment[3].forPrintUrl"></video>
             </div>
-            <div class="mt-4">
-              <ion-button @click="select(application)">asd</ion-button>
+            <div class="flex justify-between mt-8">
+              <ion-button @click="fail(application)" color="medium">탈락하기</ion-button>
+              <div class="flex-1"></div>
+              <ion-button fill="outline" @click="like(application)" color="danger">LIKE</ion-button>
+              <ion-button @click="select(application)" color="danger">1차 통과</ion-button>
             </div>
            </div>
         </ion-slide>
@@ -26,8 +33,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { IonContent, IonPage, IonSlide, IonSlides, IonButton } from '@ionic/vue';
-import { applicationList } from '@/stores';
-import { useMainService } from '@/services';
+import { applicationList, useGlobalShare } from '@/stores';
+import { mainServiceSymbol, useMainService } from '@/services';
 
 
 
@@ -48,6 +55,7 @@ export default defineComponent({
   },
   setup(props){
 
+    const globalState = useGlobalShare();
     const mainService = useMainService();
     
     const list = applicationList.list;
@@ -58,16 +66,31 @@ export default defineComponent({
     };
 
     function select(application:any){
-      mainService.ap_select(application.id, application.memberId)
+      mainService.application_select(application.id)
       .then(axiosResponse => {
 
       });
     }
 
+    function fail(application:any){
+      mainService.application_fail(application.id)
+      .then(axiosResponse => {
+
+      })
+    }
+
+    function like(application:any){
+      mainService.application_like(application.id, globalState.loginedMember.id)
+      .then(axiosResponse => {
+        
+      })
+    }
     return {
       list,
       slideOpts,
-      select
+      select,
+      fail,
+      like
     }
   }
 })

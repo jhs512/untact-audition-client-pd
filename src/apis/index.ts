@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { inject } from 'vue';
-import { IActingRole, IApplication, IArtwork, IList, IPd, IRecruit, ISearchMovie, naverMovieInfo } from '../types';
+import { IActingRole, IApplication, IArtwork, IList, IPd, IAp, IRecruit, ISearchMovie, naverMovieInfo } from '../types';
 
 
 // API 원형
@@ -201,6 +201,11 @@ export interface MainApi__ap_select__IResponseBody extends Base__IResponseBodyTy
     id: number;
   }
 }
+export interface MainApi__ap_list__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    aps: IAp[];
+  }
+}
 export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     genFileIdsStr: string,
@@ -223,7 +228,7 @@ export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://172.30.1.15:8024/',
+        baseURL:'http://172.30.13.218:8024/',
       })
     );
   }
@@ -318,8 +323,11 @@ export class MainApi extends HttpClient {
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded });
   }
   
-  public recruit_list(limit:number,filter:[]|null) {
+  public recruit_list(limit:number|null,filter:[]|null) {
     return this.get<MainApi__recruit_list__IResponseBody>(`/usr/recruit/list?limit=${limit}&filter=${filter}`);
+  }
+  public recruit_listByMemberId(id:number){
+    return this.get<MainApi__recruit_list__IResponseBody>(`/usr/recruit/listByMemberId?id=${id}`);
   }
   public recruit_detail(id:number) {
     return this.get<MainApi__recruit_detail__IResponseBody>(`/usr/recruit/detail?id=${id}`);
@@ -327,13 +335,24 @@ export class MainApi extends HttpClient {
   public recruitByKeyword(keyword:string) {
     return this.get<MainApi__recruit_search__IResponseBody>(`/usr/recruit/search?keyword=${keyword}`);
   }
+  public recruit_showList_orderBy_deadline(){
+    return this.get<MainApi__recruit_list__IResponseBody>(`/usr/recruit/listOrderByDeadline`)
+  }
   public application_list(id:number){
     return this.get<MainApi__application_list__IResponseBody>(`/usr/application/list?id=${id}`)
   }
-  public ap_select(applicationId:number, memberId:number){
-    return this.get<MainApi__ap_select__IResponseBody>(`/usr/ap/select?applicationId=${applicationId}&memberId=${memberId}`)
+  public application_select(applicationId:number){
+    return this.get<MainApi__ap_select__IResponseBody>(`/usr/application/select?applicationId=${applicationId}`)
   }
-
+  public application_fail(applicationId:number){
+    return this.get<MainApi__ap_select__IResponseBody>(`/usr/application/fail?applicationId=${applicationId}`)
+  }
+  public application_like(applicationId:number, memberId:number){
+    return this.get<MainApi__ap_select__IResponseBody>(`/usr/application/like?applicationId=${applicationId}&memberId=${memberId}`)
+  }
+  public ap_list(recruitId:number){
+    return this.get<MainApi__ap_list__IResponseBody>(`/usr/ap/list?id=${recruitId}`)
+  }
   public common_recruit_genFile_doUploadForAdd(file:File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);

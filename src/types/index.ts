@@ -27,6 +27,30 @@ export interface IPd extends IEntity {
   extra__thumbImg:string;
 }
 
+export interface IAp extends IEntity {
+  authKey:string;
+  loginId:string, 
+  name:string, 
+  nickName:string, 
+  engName:string, 
+  gender:string, 
+  regNumber:string, 
+  address:string, 
+  cellPhoneNo:string, 
+  feet:number, 
+  weight:number, 
+  skinTone:string, 
+  eyelid:number, 
+  feature:string, 
+  filmgraphy:string, 
+  jobArea:string, 
+  corp:string,
+  authLevel:number,
+  authStatus:number,
+  extra__thumbImg:string,
+  extra__fileType:string
+}
+
 export interface IRecruit extends IEntity {
 delDate: string;
 delStatus: number;
