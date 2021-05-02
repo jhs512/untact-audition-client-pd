@@ -28,14 +28,16 @@ import PdFindLoginPwPage from '../pages/pd/FindLoginPwPdPage.vue'
 import SearchPage from '../pages/search/SearchPage.vue'
 
 import ApplicationListPage from '../pages/application/ApplicationListPage.vue'
+import ApplicationDetailPage from '../pages/application/ApplicationDetailPage.vue'
 
 import LandingPage from '../pages/main/LandingPage.vue'
 import OpenPage from '../pages/main/OpenPage.vue'
 
 import BottomBar from '@/components/BottomBar.vue'
-import { useMainService } from "@/services";
+
 import { getMainApi } from "@/apis";
-import { reactive } from "vue";
+import { watch } from "@vue/runtime-core";
+
 
 const globalState = useGlobalStateOnOutsideOfVue();
 
@@ -116,14 +118,15 @@ const routes: Array<RouteRecordRaw>= [
       },
       {
         path: 'admList',
-        component: RecruitAdmListPage
-      },
-      {
-        path: 'admDetail',
-        component: RecruitAdmDetailPage,
+        component: RecruitAdmListPage,
         props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
       }
     ]
+  },
+  {
+    path: '/usr/recruit/admDetail',
+    component: RecruitAdmDetailPage,
+    props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
   },
   {
     path: '/usr/recruit/detail',
@@ -150,6 +153,11 @@ const routes: Array<RouteRecordRaw>= [
         props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
       }
     ]
+  },
+  {
+    path: '/usr/application/detail',
+    component: ApplicationDetailPage,
+    props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
   }
 ]
 
@@ -169,17 +177,17 @@ router.beforeEach((to, from, next) => {
     mainService.application_list(id)
     .then(axiosResponse => {
       applicationList.list = axiosResponse.data.body.applications;
-
-      next();
+    next();  
     })  
   } else {
     next();
-  }
+   }
   
 });
 
 router.afterEach(() => {
-  window.scrollTo({top:0, left:0});
+  
 })
+
 
 export default router

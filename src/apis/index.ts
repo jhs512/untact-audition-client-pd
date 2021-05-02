@@ -150,7 +150,8 @@ export interface MainApi__pd_doDelete__IResponseBody extends Base__IResponseBody
 }
 export interface MainApi__pd_showDetail__IResponseBody extends Base__IResponseBodyType1 {
   body:{
-    pd: IPd
+    pd: IPd,
+    aps: any[]
   };
 }
 export interface MainApi__pd_getArtwork__IResponseBody extends Base__IResponseBodyType1 {
@@ -196,6 +197,17 @@ export interface MainApi__application_list__IResponseBody extends Base__IRespons
     applications: any[]
   }
 }
+export interface MainApi__application_detail__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    application: any[],
+    ap: IAp
+  }
+}
+export interface MainApi__application_select__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    id: number;
+  }
+}
 export interface MainApi__ap_select__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     id: number;
@@ -203,7 +215,11 @@ export interface MainApi__ap_select__IResponseBody extends Base__IResponseBodyTy
 }
 export interface MainApi__ap_list__IResponseBody extends Base__IResponseBodyType1 {
   body:{
-    aps: IAp[];
+    apListAll: any[];
+    apListLike: any[];
+    apList1Pass: any[];
+    apList2Pass: any[];
+    apList3Pass: any[];
   }
 }
 export interface MainApi__common_genFile_doUpload__IResponseBody extends Base__IResponseBodyType1 {
@@ -228,7 +244,7 @@ export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://172.30.13.218:8024/',
+        baseURL:'http://172.30.1.15:8024/',
       })
     );
   }
@@ -341,6 +357,9 @@ export class MainApi extends HttpClient {
   public application_list(id:number){
     return this.get<MainApi__application_list__IResponseBody>(`/usr/application/list?id=${id}`)
   }
+  public application_detail(id:number){
+    return this.get<MainApi__application_detail__IResponseBody>(`/usr/application/detail?id=${id}`)
+  }
   public application_select(applicationId:number){
     return this.get<MainApi__ap_select__IResponseBody>(`/usr/application/select?applicationId=${applicationId}`)
   }
@@ -349,6 +368,9 @@ export class MainApi extends HttpClient {
   }
   public application_like(applicationId:number, memberId:number){
     return this.get<MainApi__ap_select__IResponseBody>(`/usr/application/like?applicationId=${applicationId}&memberId=${memberId}`)
+  }
+  public application_cancelLike(loginedMemberId:string, applicationId:number, memberId:number){
+    return this.get<MainApi__application_list__IResponseBody>(`/usr/application/cancelLike?id=${loginedMemberId}&applicationId=${applicationId}&memberId=${memberId}`)
   }
   public ap_list(recruitId:number){
     return this.get<MainApi__ap_list__IResponseBody>(`/usr/ap/list?id=${recruitId}`)

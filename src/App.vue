@@ -65,4 +65,14 @@ ion-button.ion-outline-black{
 --border-width:2px;
 --color:black;
 }
+
+.bg-underline{
+  border-bottom:1px solid rgba(0,0,0,0.3);
+}
+.seperate-line{
+  height:1px;
+  background:rgba(0,0,0,0.3);
+  margin-top:20px;
+  margin-bottom:20px;
+}
 </style>

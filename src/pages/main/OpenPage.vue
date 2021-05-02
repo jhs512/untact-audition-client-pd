@@ -15,6 +15,7 @@
     <router-link to="/usr/pd/joinTos" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-4">회원가입</div></router-link>
   </div>
 </div>
+
 <div class="bg-line-container h-32 flex items-center justify-center"><div class="bg-line"></div></div>
 
 </div>

@@ -16,13 +16,15 @@
         <div class="flex justify-center items-center mx-auto w-60 h-60 border"><span>프로필 이미지</span></div>
       </div>
 
-        <router-link to="/usr/pd/modify"><div class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs">프로필 편집</div></router-link>
+        <span class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs"><router-link class="w-full block" to="/usr/pd/modify">프로필 편집</router-link></span>
 
         <div class="mt-2">
-          <form action="" >
+          <form class="my-2" action="" >
             <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)">
           </form>
-          <div class="my-6" v-on:click="globalState.logout">로그아웃</div>
+          <div class="my-2">
+            <span v-on:click="globalState.logout">로그아웃</span>
+          </div>
         </div>
 
       </div>
@@ -30,15 +32,10 @@
 
     <ion-segment v-model="segment.value" mode="md" color="dark" @ionChange="changeSegmentValue($event)">
       <ion-segment-button value="profile" class="font-roboto font-bold">profile</ion-segment-button>
-      <ion-segment-button value="filmgraphy" class="font-roboto font-bold">filmgraphy</ion-segment-button>
+      <ion-segment-button value="like" class="font-roboto font-bold">like</ion-segment-button>
     </ion-segment>
 
-    <div v-if="segment.value == `profile`" class="flex flex-col ml-3 mt-6">
-      <span class="font-roboto font-bold mt-1">Name.  {{state.pd.name}}</span>
-      <span class="font-roboto font-bold mt-1">Email.  {{state.pd.email}}</span>
-      <span class="font-roboto font-bold mt-1">Address. {{state.pd.address}}</span>      
-    </div>
-    <div v-if="segment.value == `filmgraphy` && state.artworks.length > 0">
+    <div v-if="segment.value == `profile` && state.artworks.length > 0">
       <ion-card v-bind:key="artwork" v-for="artwork in state.artworks">
         <img :src="artwork.image" class="mx-auto mt-8">
                <ion-card-header>
@@ -51,6 +48,26 @@
                </ion-card-header>
       </ion-card>
       </div>
+
+    <div v-if="segment.value == `like`" class="flex flex-col mx-4 mt-6">
+         <div class="">
+           <ion-item-sliding class="flex" v-bind:key="ap" v-for="ap in state.likeApList">
+             <ion-item lines="none" class="w-full">
+             <div class="w-20 h-16" v-if="ap.extra != null && ap.extra.file__profile__attachment != null">
+               <img class="w-20 h-16 object-cover rounded-3xl" :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="">
+             </div>
+             <div class="flex flex-col ml-4">
+               <span>{{ap.extra__ap_name}}</span>
+               <span>지원 작품: {{ap.extra__aw_title}}</span>
+               <span>배역: {{ap.extra__ar_name}}</span>
+             </div>
+             </ion-item>
+             <ion-item-options side="end">
+                <ion-item-option @click="deleteLikeApplication(ap)">제거</ion-item-option>
+             </ion-item-options>
+           </ion-item-sliding>
+         </div>
+    </div>
   </div>
 
   </ion-content>
@@ -60,11 +77,12 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref } from 'vue'
-import { IonPage, IonContent, IonIcon, IonSegment, IonButton, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonThumbnail, IonImg, IonAvatar, alertController } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonSegment, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonButton, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonThumbnail, IonImg, IonAvatar, alertController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import { useGlobalShare } from '@/stores'
-import { useMainService } from '@/services'
-import { IArtwork, IPd } from '@/types'
+import { MainService, useMainService } from '@/services'
+import { IAp, IArtwork, IPd } from '@/types'
+import axios from 'axios'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -73,6 +91,10 @@ export default defineComponent({
     IonContent,
     IonIcon,
     IonButton,
+    IonItemSliding,
+    IonItem, 
+    IonItemOption, 
+    IonItemOptions,
     IonSegment,
     IonSegmentButton,
     IonCard, 
@@ -93,11 +115,13 @@ export default defineComponent({
   setup(props) {
     const globalState = useGlobalShare();
     const mainApiService = useMainService();
+
     
     onMounted(() => {
       mainApiService.pd_showDetail(props.id)
       .then(axiosResponse => {
         state.pd = axiosResponse.data.body.pd;
+        state.likeApList = axiosResponse.data.body.aps;
       })
 
 
@@ -112,7 +136,8 @@ export default defineComponent({
 
     const state = reactive({
       pd: {} as IPd,
-      artworks: [] as any
+      artworks: [] as any,
+      likeApList:[] as IAp[]
     })
     
 
@@ -169,7 +194,15 @@ export default defineComponent({
       mainApiService.pd_deleteProfileImg(props.id)
       .then(axiosReponse => {
         state.pd.extra__thumbImg = '';
-      })
+      });
+    }
+
+    function deleteLikeApplication(ap:any){
+      
+      mainApiService.application_cancelLike(props.id, ap.id, ap.memberId)
+      .then(axiosResponse =>{
+        state.likeApList = axiosResponse.data.body.applications;
+      });
     }
    
    return {
@@ -180,7 +213,8 @@ export default defineComponent({
      segment,
      globalState,
      deleteProfileImg,
-     changeSegmentValue
+     changeSegmentValue,
+     deleteLikeApplication
    }
   }
 })

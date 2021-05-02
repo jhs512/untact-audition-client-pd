@@ -8,13 +8,16 @@
     
     <TitleBar title="Audictionary" btn_menu="true" class="border-b"></TitleBar>   
 
-    <span class="mx-auto text-xl font-bold">내 공고현황</span>
+    <div class="relative text-center">
+      <span class="text-xl font-bold">내 공고현황</span>
+      <span class="absolute top-1 right-4" :onclick="reset">초기화</span>
+    </div>
 
-    <div class="mx-4">
+    <div class="mx-4 mb-10" v-if="state.notExpiredListShow > 0">
       <span class="px-4 py-2 bg-underline font-bold">공고 중</span>
       <div v-bind:key="recruit" v-for="(recruit,index) in state.notExpiredList">
       <router-link :to="`/usr/recruit/admDetail?id=${recruit.id}`">
-        <div v-if="recruit.dateDiff >= 0 && index < 3" class="flex justify-between text-center mt-4 bg-gray-100 py-2 px-4">
+        <div v-if="recruit.dateDiff >= 0 && index < state.notExpiredListShow" class="flex justify-between text-center mt-4 bg-gray-100 py-2 px-4">
          <span class="flex-1">가제: {{recruit.title}}</span>
          <span class="flex-1">배역: {{recruit.extra__ar_name}}</span>
          <span class="flex-1">{{recruit.extra__application__count}}</span>
@@ -22,15 +25,15 @@
       </router-link>
       </div>
       <div class="flex">
-        <span class="mt-2 ml-auto text-sm">모두 보기</span>
+        <span class="mt-2 ml-auto text-sm" :onclick="showAllNotExpiredList">모두 보기</span>
       </div>
     </div> 
 
-     <div class="mx-4 mt-10">
+     <div class="mx-4" v-if="state.expiredListShow > 0">
        <span class="px-4 py-2 bg-underline font-bold">공고 마감</span>  
        <div v-bind:key="recruit" v-for="(recruit,index) in state.expiredList" class="mt-4">
       <router-link :to="`/usr/recruit/admDetail?id=${recruit.id}`">
-        <div v-if="recruit.dateDiff < 0 && index < 3" class="flex justify-between text-center mt-4 bg-gray-100 py-2 px-4">
+        <div v-if="recruit.dateDiff < 0 && index < state.expiredListShow" class="flex justify-between text-center mt-4 bg-gray-100 py-2 px-4">
          <span class="flex-1">가제: {{recruit.title}}</span>
          <span class="flex-1">배역: {{recruit.extra__ar_name}}</span>
          <span class="flex-1">{{recruit.extra__application__count}}</span>
@@ -38,7 +41,7 @@
       </router-link>
       </div>  
       <div class="flex">
-        <span class="mt-2 ml-auto text-sm">모두 보기</span>
+        <span class="mt-2 ml-auto text-sm" :onclick="showAllExpiredList">모두 보기</span>
       </div>
     </div> 
   
@@ -123,8 +126,23 @@ export default defineComponent({
     const state = reactive({
     list: [] as any[],
     expiredList:[] as any[],
-    notExpiredList:[] as any[]
+    notExpiredList:[] as any[],
+    expiredListShow: 3,
+    notExpiredListShow: 3,
     });
+
+    function showAllNotExpiredList(){
+      state.notExpiredListShow = 100;
+      state.expiredListShow = 0;
+    }
+    function showAllExpiredList(){
+      state.expiredListShow = 100;
+      state.notExpiredListShow = 0;
+    }
+    function reset(){
+      state.expiredListShow = 3;
+      state.notExpiredListShow = 3;
+    }
 
     function loadRecruits(id:number) {
       mainService.recruit_listByMemberId(id)
@@ -159,7 +177,10 @@ export default defineComponent({
       state,
       menuOutline,
       globalState,
-      filterOutline
+      filterOutline,
+      showAllNotExpiredList,
+      showAllExpiredList,
+      reset
     }
   }
 })

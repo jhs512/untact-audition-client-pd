@@ -93,6 +93,9 @@ export class MainService {
   application_list(id:number){
     return this.mainApi.application_list(id);
   }
+  application_detail(id:number){
+    return this.mainApi.application_detail(id);
+  }
   application_select(applicationId:number){
     return this.mainApi.application_select(applicationId);
   }
@@ -101,6 +104,9 @@ export class MainService {
   }
   application_like(applicationId:number, memberId:number){
     return this.mainApi.application_like(applicationId, memberId);
+  }
+  application_cancelLike(loginedMemberId:string, applicationId:number, memberId:number){
+    return this.mainApi.application_cancelLike(loginedMemberId, applicationId, memberId);
   }
   ap_list(recruitId:number){
     return this.mainApi.ap_list(recruitId);

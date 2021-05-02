@@ -4,7 +4,7 @@
     <ion-tab-bar color="light" slot="bottom" class="flex w-full mx-auto">
 
         <ion-tab-button tab="Home">
-          <ion-button color="light" router-link="/main/home">
+          <ion-button color="light" router-link="/">
           <ion-icon :icon="homeOutline"></ion-icon>
           </ion-button>
         </ion-tab-button>
@@ -16,7 +16,7 @@
         </ion-tab-button>
 
         <ion-tab-button tab="MainPage">
-          <ion-button color="light" router-link="/usr/recruit/admList">
+          <ion-button color="light" :router-link="`/usr/recruit/admList?id=${globalState.loginedMember.id}`">
           <ion-label>AD</ion-label>          
           </ion-button>
         </ion-tab-button>
@@ -51,7 +51,14 @@ export default defineComponent({
     const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
 
     return {
-     globalState, calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline, duplicateOutline
+     globalState, 
+     calendar, 
+     personCircle, 
+     homeOutline, 
+     searchOutline, 
+     newspaperOutline, 
+     personOutline, 
+     duplicateOutline
     }
   },
   

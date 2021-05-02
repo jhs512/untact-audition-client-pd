@@ -13,32 +13,56 @@
     </router-link>
   </div>
 
-  <div class="mx-4 mt-10 font-bold">
+  <span class="ml-auto mr-4 text-sm mt-10" :onclick="reset">초기화</span>
+
+  <div class="mx-4 font-bold">
     <div class="flex items-center justify-between">
-      <span class="py-2 my-1 bg-underline">지원자 현황({{state.apList.length}})</span>
-      <span class="text-xs">모두 보기</span>
+      <span class="py-2 my-1 bg-underline">지원자 현황({{state.apListAll.length}})</span>
+      <span class="text-xs" :onclick="apListAllShow">모두 보기</span>
     </div>
     <router-link :to="`/usr/application/list?id=${state.recruit.id}`">
-    <div class="p-4 flex justify-around items-center" v-bind:key="ap" v-for="ap in state.apList">
-      <div>{{ap.id}}.</div>
-      <div class="ml-2 w-16 h-16 rounded-full"><img :src="ap.extra__thumbImg" alt="" class="w-full h-full rounded-full"></div>
-      <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+    <div v-bind:key="ap" v-for="ap,index in state.apListAll">
+      <div class="p-4 flex justify-around items-center" v-if="index < state.apListAllShow">
+        <div>{{ap.id}}.</div>
+        <div class="ml-2 w-16 h-16 rounded-full"><img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full rounded-full"></div>
+        <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+      </div>
     </div>
     </router-link>
   </div>
 
   <div class="seperate-line"></div>
 
+  <div class="mx-4 font-bold">
+    <div class="flex items-center justify-between">
+      <span class="py-2 my-1 bg-underline">LIKE({{state.apListLike.length}})</span>
+      <span class="text-xs" :onclick="apListLikeShow">모두 보기</span>
+    </div>
+    <div v-bind:key="ap" v-for="ap,index in state.apListLike">
+      <div class="p-4 flex justify-around items-center" v-if="index < state.apListLikeShow">
+        <div>{{ap.id}}.</div>
+        <div class="ml-2 w-16 h-16 rounded-full"><img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full rounded-full"></div>
+        <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seperate-line"></div>
+
    <div class="mx-4 font-bold">
     <div class="flex items-center justify-between">
-      <span class="py-2 my-1 bg-underline">1차 통과({{state.apList1pass.length}})</span>
-      <span class="text-xs">모두 보기</span>
+      <span class="py-2 my-1 bg-underline">1차 통과({{state.apList1Pass.length}})</span>
+      <span class="text-xs" :onclick="apList1PassShow">모두 보기</span>
     </div>
     <router-link :to="`/usr/application/list?id=${state.recruit.id}`">
-    <div class="p-4 flex justify-around items-center" v-bind:key="ap" v-for="ap in state.apList1pass">
-      <div>{{ap.id}}.</div>
-      <div class="ml-2 w-16 h-16 rounded-full border"><img :src="ap.extra__thumbImg" alt="" class="w-full h-full rounded-full"></div>
-      <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+    <div v-bind:key="ap" v-for="ap,index in state.apList1Pass">
+      <div class="p-4 flex justify-around items-center" v-if="index < state.apList1PassShow">
+        <div>{{ap.id}}.</div>
+        <div v-if="ap.extra != null" class="ml-2 w-16 h-16 rounded-full border">
+          <img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full rounded-full">
+        </div>
+        <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+      </div>
     </div>
     </router-link>
   </div>
@@ -47,13 +71,15 @@
 
 <div class="mx-4 font-bold">
   <div class="flex items-center justify-between">
-    <span class="py-2 my-1 bg-underline">2차 통과({{state.apList2pass.length}})</span>
-    <span class="text-xs">모두 보기</span>
+    <span class="py-2 my-1 bg-underline">2차 통과({{state.apList2Pass.length}})</span>
+    <span class="text-xs" :onclick="apList2PassShow">모두 보기</span>
   </div>
-    <div class="p-4 flex justify-around items-center" v-bind:key="ap" v-for="ap in state.apList2pass">
-      <div>{{ap.id}}.</div>
-      <div class="ml-2 w-16 h-16 rounded-full border"><img :src="ap.extra__thumbImg" alt="" class="w-full h-full rounded-full"></div>
-      <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+    <div v-bind:key="ap" v-for="ap,index in state.apList2Pass">
+      <div class="p-4 flex justify-around items-center" v-if="index < state.apList2PassShow">
+        <div>{{ap.id}}.</div>
+        <div class="ml-2 w-16 h-16 rounded-full border"><img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full rounded-full"></div>
+        <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+      </div>
     </div>
   </div>
 
@@ -61,19 +87,19 @@
 
   <div class="mx-4 font-bold">
     <div class="flex items-center justify-between">
-      <span class="py-2 my-1 bg-underline">최종 합격({{state.apList3pass.length}})</span>
-      <span class="text-xs">모두 보기</span>
+      <span class="py-2 my-1 bg-underline">최종 합격({{state.apList3Pass.length}})</span>
+      <span class="text-xs" :onclick="apList3PassShow">모두 보기</span>
     </div>
-    <div class="p-4 flex justify-around items-center" v-bind:key="ap" v-for="ap in state.apList3pass">
-      <div>{{ap.id}}.</div>
-      <div class="ml-2 w-16 h-16 rounded-full border"><img :src="ap.extra__thumbImg" alt="" class="w-full h-full rounded-full"></div>
-      <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+    <div v-bind:key="ap" v-for="ap,index in state.apList3Pass">
+      <div class="p-4 flex justify-around items-center" v-if="index < state.apList3PassShow">
+        <div>{{ap.id}}.</div>
+        <div class="ml-2 w-16 h-16 rounded-full border"><img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full rounded-full"></div>
+        <div class="ml-2 flex-1">이름: {{ap.name}}</div>
+      </div>
     </div>
   </div>
 
   </div>
-  
-
 
 </ion-content>
 
@@ -117,9 +143,61 @@ export default defineComponent({
       
       const state = reactive({
       recruit: {} as IRecruit,
-      aps:[] as IAp[],
+      apListLike:[] as IAp[],
+      apListAll:[] as IAp[],
+      apList1Pass:[] as IAp[],
+      apList2Pass:[] as IAp[],
+      apList3Pass:[] as IAp[],
+      apListLikeShow:3,
+      apListAllShow:3,
+      apList1PassShow:3,
+      apList2PassShow:3,
+      apList3PassShow:3,
       dateDiff: 0
       });
+
+      function apListAllShow(){
+        state.apListAllShow = 100;
+        state.apListLikeShow = 0;
+        state.apList1PassShow = 0;
+        state.apList2PassShow = 0;
+        state.apList3PassShow = 0;
+      }
+      function apListLikeShow(){
+        state.apListAllShow = 0;
+        state.apListLikeShow = 100;
+        state.apList1PassShow = 0;
+        state.apList2PassShow = 0;
+        state.apList3PassShow = 0;
+      }
+      function apList1PassShow(){
+        state.apListAllShow = 0;
+        state.apListLikeShow = 0;
+        state.apList1PassShow = 100;
+        state.apList2PassShow = 0;
+        state.apList3PassShow = 0;
+      }
+      function apList2PassShow(){
+        state.apListAllShow = 0;
+        state.apListLikeShow = 0;
+        state.apList1PassShow = 0;
+        state.apList2PassShow = 100;
+        state.apList3PassShow = 0;
+      }
+      function apList3PassShow(){
+        state.apListAllShow = 0;
+        state.apListLikeShow = 0;
+        state.apList1PassShow = 0;
+        state.apList2PassShow = 0;
+        state.apList3PassShow = 100;
+      }
+      function reset(){
+        state.apListAllShow = 3;
+        state.apListLikeShow = 3;
+        state.apList1PassShow = 3;
+        state.apList2PassShow = 3;
+        state.apList3PassShow = 3;
+      }
 
     function loadRecruit(id:number) {
       mainApiService.recruit_detail(id)
@@ -135,14 +213,20 @@ export default defineComponent({
     function loadAp(recruitId:number){
       mainApiService.ap_list(recruitId)
       .then(axiosResponse => {
-        state.aps = axiosResponse.data.body.aps;
+        state.apListAll = axiosResponse.data.body.apListAll;
+        state.apListLike = axiosResponse.data.body.apListLike;
+        state.apList1Pass = axiosResponse.data.body.apList1Pass;
+        state.apList2Pass = axiosResponse.data.body.apList2Pass;
+        state.apList3Pass = axiosResponse.data.body.apList3Pass;
       })
     }
 
 
     onMounted(() => {
+      
       loadRecruit(props.id);
       loadAp(props.id);
+      
     });
 
     
@@ -151,7 +235,13 @@ export default defineComponent({
     return {
       state,  
       returnUpBackOutline,
-      globalState
+      globalState,
+      apListAllShow,
+      apListLikeShow,
+      apList1PassShow,
+      apList2PassShow,
+      apList3PassShow,
+      reset
     }
   }
 })
@@ -159,13 +249,4 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.bg-underline{
-  border-bottom:1px solid rgba(0,0,0,0.3);
-}
-.seperate-line{
-  height:1px;
-  background:rgba(0,0,0,0.3);
-  margin-top:20px;
-  margin-bottom:20px;
-}
 </style>
