@@ -9,7 +9,10 @@
     <div class=" w-60 mx-auto mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndModify">
         <FormRow title="비밀번호:">
-          <ion-input v-model="input.loginPwEl" ref="loginPwElRef" inputmode="password" type="text" class="w-full mt-2px"></ion-input>
+          <ion-input v-model="input.loginPwEl" ref="loginPwElRef" inputmode="password" type="password" class="w-full mt-2px"></ion-input>
+        </FormRow>
+        <FormRow title="비밀번호 확인:">
+          <ion-input v-model="input.loginPwCfEl" inputmode="password" type="password" class="w-full mt-2px"></ion-input>
         </FormRow>
       <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="완료">
       </form>
@@ -41,7 +44,7 @@ export default defineComponent({
       type: String,
       required: true
     },
-    key:{
+    emailKey:{
       type: String,
       required: true
     }
@@ -51,7 +54,8 @@ export default defineComponent({
     const mainApiService = useMainService();
 
     const input = reactive ({
-      loginPwEl:''
+      loginPwEl:'',
+      loginPwCfEl:''
     })
 
     function checkAndModify(){
@@ -64,16 +68,30 @@ export default defineComponent({
         alert('비밀번호를 입력해 주세요.');
         return;
       }
+      if (input.loginPwCfEl.length ==0 ){
+        alert('비밀번호 확인 칸을 입력해 주세요.');
+        return;
+      }
+
+      if(input.loginPwEl != input.loginPwCfEl){
+        alert('비밀번호가 맞지 않습니다.');
+        return;
+      }
       
       const loginPwReal = sha256(input.loginPwEl);
 
-      modifyPw(props.email, props.key, loginPwReal);
+      modifyPw(props.email, props.emailKey, loginPwReal);
 
     }
 
     function modifyPw (email:String, key:String, loginPw:String) {
         mainApiService.pd_doModifyPw(email,key,loginPw)
         .then(axiosResponse => {
+          if(axiosResponse.data.fail){
+            Util.showAlert("알림",axiosResponse.data.msg,null);  
+          } else {
+            Util.showAlert("알림",axiosResponse.data.msg,() => location.replace('/usr/pd/login'));
+          }
           
         }
       )}

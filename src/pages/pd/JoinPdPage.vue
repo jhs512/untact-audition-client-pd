@@ -13,9 +13,21 @@
 
         <FormRow title="주민등록번호:">
           <div class="flex items-center w-full mt-2">
-          <ion-input v-model="input.regNumber1El" type="text" ref="regNumber1ElRef" maxlength="6" inputmode="decimal" placeholder="앞 6자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-          <span class="mx-1">-</span>
-          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" maxlength="7" inputmode="decimal" placeholder="뒤 7자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+            <ion-input class="flex-1" v-model="input.regNumber1El" type="text" ref="regNumber1ElRef" maxlength="6" inputmode="decimal" placeholder="앞 6자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+            <span class="mx-2">-</span>
+            <div class="flex  items-center flex-1">
+              <div class="w-10">
+                <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" maxlength="1" inputmode="decimal" placeholder="뒤 1자리" required="true" enterkeyhint="next"></ion-input>
+              </div>
+              <span class="flex-1 flex justify-around">
+                <span>*</span>
+                <span>*</span>
+                <span>*</span>
+                <span>*</span>
+                <span>*</span>
+                <span>*</span>
+              </span>
+            </div>
           </div>
         </FormRow>
 
@@ -179,7 +191,7 @@ export default defineComponent({
       }
 
       const regNumberEl = input.regNumber1El + input.regNumber2El;  
-      const regNumber = Crypto.AES.encrypt(regNumberEl,'regKey');
+      
 
       // 휴대폰 체크
       if ( cellPhoneNoElRef.value == null ) {
@@ -260,7 +272,7 @@ export default defineComponent({
                 return;
               }
               isEmailCert = true;  
-               join(input.nameEl, regNumber.toString() , gender, input.cellPhoneNoEl , input.emailEl, addressEl, input.jobPositionEl, loginPwRealEl );
+               join(input.nameEl, regNumberEl , gender, input.cellPhoneNoEl , input.emailEl, addressEl, input.jobPositionEl, loginPwRealEl );
             });
       
     }

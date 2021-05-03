@@ -24,6 +24,7 @@ import PdModifyPage from '../pages/pd/PdModifyPage.vue'
 import FindSelectPage from '../pages/pd/FindSelectPage.vue'
 import PdFindLoginIdPage from '../pages/pd/FindLoginIdPdPage.vue'
 import PdFindLoginPwPage from '../pages/pd/FindLoginPwPdPage.vue'
+import PdModifyPwPage from '../pages/pd/ModifyPwPage.vue'
 
 import SearchPage from '../pages/search/SearchPage.vue'
 
@@ -87,6 +88,11 @@ const routes: Array<RouteRecordRaw>= [
     {
       path: '/usr/pd/findLoginPw',
       component: PdFindLoginPwPage
+    },
+    {
+      path: '/usr/pd/modifyPw',
+      component: PdModifyPwPage,
+      props: (route:any) => ( { email:route.query.email, emailKey:route.query.key })
     },
   {
     path: '/usr/pd/joinTos',
@@ -170,6 +176,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   globalState.fullPath = to.fullPath;
+  
   if(to.path == '/usr/application/list'){
     const mainService = getMainApi();
     const id = Util.toIntOrNull(to.query.id);
