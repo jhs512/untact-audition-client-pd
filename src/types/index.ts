@@ -15,6 +15,7 @@ export interface GlobalState {
 export interface IPd extends IEntity {
   authKey:string;
   id:number;
+  loginedMemberType:string;
   loginId:string;
   authLevel:number;
   name:string;
@@ -54,6 +55,7 @@ export interface IAp extends IEntity {
 export interface IRecruit extends IEntity {
 delDate: string;
 delStatus: number;
+memberTypeCode: string;
 memberId: number;
 title: string;
 body: string;
@@ -84,6 +86,7 @@ extra__ar_realName: string;
 extra__ar_name: string;
 extra__ar_age: string;
 extra__ar_gender: string;
+extra__ar_job: string;
 extra__ar_scriptStatus : string;
 extra__ar_scenesCount: number;
 extra__ar_shootingsCount: number;

@@ -6,7 +6,7 @@
     <TitleBar title="로그인 페이지" btn_back="true"></TitleBar>
 
 
-    <div class=" w-60 mx-auto mt-8 flex flex-col">
+    <div class="mx-14 mt-8 flex flex-col">
       <form action="" v-on:submit.prevent="checkAndLogin">
         <FormRow title="이메일(아이디):">
           <ion-input v-model="input.emailEl" ref="emailElRef" inputmode="email" type="text" placeholder="아이디" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
@@ -15,7 +15,7 @@
           <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password" clear-input="true" required="true" placeholder="비밀번호" enterkeyhint="done"></ion-input>
         </FormRow>
         <router-link to="/usr/pd/findSelect"><span class="text-10px">아이디 혹은 비밀번호가 기억나지 않으시나요?</span></router-link>
-      <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="LOGIN">
+      <input type="submit" class="w-full mt-14 text-center btn-next text-xs text-black mx-auto p-2" value="LOGIN">
       </form>
     </div>
     
@@ -26,6 +26,13 @@
     <div class="font-coda mx-4">OR</div>
     <div class="bg-line-sep w-full"></div>
     </div>
+
+    <div class="mx-auto mt-8">
+      <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=5b941d4fab193384e4d45ed6723fb973&redirect_uri=http://172.30.1.15:5555/usr/pd/kakaoLogin">
+        <img src="/gen/kakao_login_medium_wide.png" alt="">
+      </a>
+    </div>
+
   </div>
 </ion-content>
 </ion-page>
@@ -108,6 +115,7 @@ export default defineComponent({
           
           localStorage.setItem("authKey", authKey);
           localStorage.setItem("loginedMemberId", loginedPd.id + "");
+          localStorage.setItem("loginedMemberType", "pd");
           localStorage.setItem("loginedMemberName", loginedPd.name);
           localStorage.setItem("loginedMemberEmail", loginedPd.email);
           localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);

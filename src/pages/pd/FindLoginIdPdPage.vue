@@ -12,11 +12,23 @@
         <FormRow title="이름:">
           <ion-input v-model="input.nameEl" ref="nameElRef" type="text" class="w-full mt-2px"></ion-input>
         </FormRow>
-        <FormRow title="주민등록번호:">
-          <div class="flex items-center w-full mt-2">
-          <ion-input v-model="input.regNumber1El" type="text" ref="regNumberElRef" inputmode="decimal" class="w-full text-center" maxlength="6"></ion-input>
-          <span class="mx-1">-</span>
-          <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" inputmode="decimal" class="w-full text-center" maxlength="7"></ion-input>
+         <FormRow title="주민등록번호:">
+         <div class="flex items-center w-full mt-2">
+            <ion-input class="flex-1" v-model="input.regNumber1El" type="text" ref="regNumber1ElRef" maxlength="6" inputmode="decimal" placeholder="앞 6자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+            <span class="mx-2">-</span>
+            <div class="flex  items-center flex-1">
+              <div class="w-10">
+                <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" maxlength="1" inputmode="decimal" placeholder="뒤 1자리" required="true" enterkeyhint="next"></ion-input>
+              </div>
+              <span class="flex-1 flex justify-around">
+                <span>*</span>
+                <span>*</span>
+                <span>*</span>
+                <span>*</span>
+                <span>*</span>
+                <span>*</span>
+              </span>
+            </div>
           </div>
         </FormRow>
       <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="FIND">
@@ -90,9 +102,8 @@ export default defineComponent({
       }
      
       const regNumberEl = input.regNumber1El + input.regNumber2El;  
-      const regNumber = Crypto.AES.encrypt(regNumberEl,'regKey');
 
-      findLoginId(input.nameEl, regNumber.toString());
+      findLoginId(input.nameEl, regNumberEl);
     }
     
 

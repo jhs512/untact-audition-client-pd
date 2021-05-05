@@ -18,6 +18,7 @@ import JoinTosPage from '../pages/pd/JoinTosPage.vue'
 import JoinPdPage from '../pages/pd/JoinPdPage.vue' 
 import JoinPdEmailCertPage from '../pages/pd/JoinPdEmailCertPage.vue' 
 import LoginPdPage from '../pages/pd/LoginPdPage.vue'
+import LoginPdKakaoPage from '../pages/pd/LoginPdKakaoPage.vue'
 
 import PdInfoPage from '../pages/pd/PdInfoPage.vue'
 import PdModifyPage from '../pages/pd/PdModifyPage.vue'
@@ -105,6 +106,11 @@ const routes: Array<RouteRecordRaw>= [
   {
     path: '/usr/pd/login',
     component: LoginPdPage
+  },
+  {
+    path: '/usr/pd/kakaoLogin',
+    component: LoginPdKakaoPage,
+    props: (route:any) => ({ code: route.query.code })
   },
   {
     path: '/usr/pd/modify',

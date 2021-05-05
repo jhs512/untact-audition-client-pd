@@ -33,6 +33,10 @@ export class MainService {
     return this.mainApi.pd_doLogin(email, loginPw);
   }
 
+  pd_doKakaoLogin( code:String ) {
+    return this.mainApi.pd_doKakaoLogin(code);
+  }
+
   pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, artwork:string, isFileUploaded:boolean ) {
     return this.mainApi.pd_doModify(loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded );
   }
@@ -60,21 +64,21 @@ export class MainService {
   pd_getArtwork( loginedMemberId:string ){
     return this.mainApi.pd_getArtwork(loginedMemberId);
   }
-  recruit_write(memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awName:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
+  recruit_write(memberTypeCode:String, memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
+    awMedia:string, awName:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
     arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
     genFileIdsStr:String) {
-    return this.mainApi.recruit_write(memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
-      awMedia, awName, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awEtc, 
+    return this.mainApi.recruit_write(memberTypeCode, memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
+      awMedia, awName, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, genFileIdsStr);
   }
  
   recruit_modify(recruitmentId:number, memberId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
+    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
     arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
      isFileUploaded:boolean) {
     return this.mainApi.recruit_modify(recruitmentId, memberId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
-      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awEtc, 
+      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded );
   }
   

@@ -6,6 +6,7 @@ export const globalShareSymbol = Symbol('globalShareSymbol');
 
 // 전역상태 만들기
 const authKey = Util.toStringOrNull(localStorage.getItem("authKey"))
+const loginedMemberType = Util.toStringOrNull(localStorage.getItem("loginedMemberType"))
 const id = Util.toIntOrNull(localStorage.getItem("loginedMemberId"))
 const email = Util.toStringOrNull(localStorage.getItem("loginedMemberEmail"))
 const name = Util.toStringOrNull(localStorage.getItem("loginedMemberName"))
@@ -29,6 +30,7 @@ export const createGlobalState = () => {
     fullPath: '',
     loginedMember:{
       id,
+      loginedMemberType,
       regDate,
       updateDate,
       authKey,
@@ -48,6 +50,8 @@ export const createGlobalState = () => {
     logout: () => {
       localStorage.removeItem("authKey");
       localStorage.removeItem("loginedMemberId");
+      localStorage.removeItem("isLoginedByKakao");
+      localStorage.removeItem("loginedMemberType");
       localStorage.removeItem("regDate");
       localStorage.removeItem("updateDate");
       localStorage.removeItem("loginedMemberLoginId");

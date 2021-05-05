@@ -12,14 +12,15 @@
         <img :src="state.pd.extra__thumbImg" class="mx-auto w-60 h-60 object-contain">
         <ion-button :onclick="deleteProfileImg">프로필 이미지 삭제</ion-button>
       </div>
-      <div v-if="state.pd.extra__thumbImg == null" class="img-container mx-4 mb-4 p-4 mt-6">  
-        <div class="flex justify-center items-center mx-auto w-60 h-60 border"><span>프로필 이미지</span></div>
+
+       <div v-if="globalState.loginedMember.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
+        <img :src="globalState.loginedMember.extra__thumbImg" class="mx-auto w-60 h-60 object-contain">
       </div>
+      
+        <span v-if="globalState.loginedMember.loginedMemberType == 'pd'" class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs"><router-link class="w-full block" to="/usr/pd/modify">프로필 편집</router-link></span>
 
-        <span class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs"><router-link class="w-full block" to="/usr/pd/modify">프로필 편집</router-link></span>
-
-        <div class="mt-2">
-          <form class="my-2" action="" >
+        <div  class="mt-2">
+          <form v-if="globalState.loginedMember.loginedMemberType == 'pd'" class="my-2" action="" >
             <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)">
           </form>
           <div class="my-2">
@@ -118,6 +119,12 @@ export default defineComponent({
 
     
     onMounted(() => {
+      if(globalState.loginedMember.loginedMemberType == 'pd'){
+        loadData();
+      }
+    })
+
+    function loadData(){
       mainApiService.pd_showDetail(props.id)
       .then(axiosResponse => {
         state.pd = axiosResponse.data.body.pd;
@@ -132,7 +139,7 @@ export default defineComponent({
         }
         
       })
-    })
+    }
 
     const state = reactive({
       pd: {} as IPd,

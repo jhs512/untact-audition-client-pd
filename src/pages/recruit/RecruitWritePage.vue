@@ -147,6 +147,10 @@
           <ion-textarea v-model="input.awStoryEl"></ion-textarea>
         </FormRow>
 
+        <FormRow title="원작자:">
+          <ion-input v-model="input.awWriterEl" type="text"></ion-input>
+        </FormRow>
+
         <FormRow title="관련이미지(포스터):">
           <input ref="awFileElRef" type="file" accept="image/*" class="p-1 w-full mt-2px" v-on:change="setThumbnail">
         </FormRow>
@@ -345,6 +349,7 @@ export default defineComponent({
       awManagerEl:'',
       awGenreEl:'',
       awStoryEl:'',
+      awWriterEl:'',
       awEtcEl:'',
 
       arRealNameEl:'',
@@ -623,9 +628,9 @@ export default defineComponent({
       }
       
       const startWrite = (genFileIdsStr:string) => {
-      
-      write( globalState.loginedMember.id , 3, input.rmTitleEl, input.rmBodyEl, input.rmRoleTypeEl, input.rmPayEl, input.rmLocationEl, input.rmPeriodEl , input.rmDeadlineEl, input.rmGenderEl, input.rmAgeEl, input.rmScriptEl, input.rmVideoTimeEl, input.rmEtcEl, 
-      input.awMediaEl, input.awNameEl, input.awDirectorEl, input.awCorpEl, input.awProducerEl, input.awManagerEl, input.awGenreEl, input.awStoryEl, input.awEtcEl,
+
+      write( globalState.loginedMember.loginedMemberType, globalState.loginedMember.id , 3, input.rmTitleEl, input.rmBodyEl, input.rmRoleTypeEl, input.rmPayEl, input.rmLocationEl, input.rmPeriodEl , input.rmDeadlineEl, input.rmGenderEl, input.rmAgeEl, input.rmScriptEl, input.rmVideoTimeEl, input.rmEtcEl, 
+      input.awMediaEl, input.awNameEl, input.awDirectorEl, input.awCorpEl, input.awProducerEl, input.awManagerEl, input.awGenreEl, input.awStoryEl, input.awWriterEl, input.awEtcEl,
       input.arRealNameEl, input.arNameEl, input.arAgeEl, input.arGenderEl, input.arJobEl, input.arScriptEl, input.arScenesCountEl, input.arShootingsCountEl, input.arCharacterEl ,input.arEtcEl,
       genFileIdsStr);
       
@@ -656,12 +661,12 @@ export default defineComponent({
 
     }
 
-    function write(memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awName:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
+    function write(memberTypeCode:String, memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
+    awMedia:string, awName:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
     arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
     genFileIdsStr:String) {
-       mainApiService.recruit_write(memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
-      awMedia, awName, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awEtc, 
+       mainApiService.recruit_write(memberTypeCode, memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
+      awMedia, awName, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, genFileIdsStr)
         .then(axiosResponse => {
           if ( axiosResponse.data.fail ) {

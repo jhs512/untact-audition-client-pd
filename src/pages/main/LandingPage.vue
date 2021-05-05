@@ -4,7 +4,7 @@
     
   <IonRefresherC></IonRefresherC>
 
-    <div v-if="globalState.isLogined" class="flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-screen">
     
     <TitleBar title="Audictionary" btn_menu="true" class="border-b"></TitleBar>    
 

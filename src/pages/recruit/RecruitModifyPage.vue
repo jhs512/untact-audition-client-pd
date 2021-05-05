@@ -147,6 +147,10 @@
           <ion-textarea v-model="input.awStoryEl"></ion-textarea>
         </FormRow>
 
+        <FormRow title="원작자:">
+          <ion-input v-model="input.awWriterEl" type="text"></ion-input>
+        </FormRow>
+
         <FormRow title="관련이미지(포스터):">
           <ion-input v-model="input.awFileEl" ref="awFileElRef" type="file" accept="image/*" class="p-1 w-full mt-2px" v-on:change="setThumbnail"></ion-input>
         </FormRow>
@@ -319,44 +323,45 @@ export default defineComponent({
         input.rmVideoTimeEl = axiosResponse.data.body.recruit.videoTime;
         input.rmEtcEl = axiosResponse.data.body.recruit.etc;
 
-        input.awMediaEl = axiosResponse.data.body.artwork.media;
-        input.awNameEl = axiosResponse.data.body.artwork.title;
-        input.awDirectorEl = axiosResponse.data.body.artwork.director;
-        input.awCorpEl = axiosResponse.data.body.artwork.corp;
-        input.awProducerEl = axiosResponse.data.body.artwork.producer;
-        input.awManagerEl = axiosResponse.data.body.artwork.castingManager;
-        input.awGenreEl = axiosResponse.data.body.artwork.genre;
-        input.awStoryEl = axiosResponse.data.body.artwork.story;
-        input.awEtcEl = axiosResponse.data.body.artwork.etc;
+        input.awMediaEl = axiosResponse.data.body.recruit.extra__aw_media;
+        input.awNameEl = axiosResponse.data.body.recruit.extra__aw_title;
+        input.awDirectorEl = axiosResponse.data.body.recruit.extra__aw_director;
+        input.awCorpEl = axiosResponse.data.body.recruit.extra__aw_corp;
+        input.awProducerEl = axiosResponse.data.body.recruit.extra__aw_producer;
+        input.awManagerEl = axiosResponse.data.body.recruit.extra__aw_castingManager;
+        input.awGenreEl = axiosResponse.data.body.recruit.extra__aw_genre;
+        input.awStoryEl = axiosResponse.data.body.recruit.extra__aw_story;
+        input.awWriterEl = axiosResponse.data.body.recruit.extra__aw_writer;
+        input.awEtcEl = axiosResponse.data.body.recruit.extra__aw_etc;
 
-        input.arRealNameEl = axiosResponse.data.body.actingRole.realName;
-        input.arNameEl = axiosResponse.data.body.actingRole.name;
-        input.arAgeEl = axiosResponse.data.body.actingRole.age;
-        if ( axiosResponse.data.body.actingRole.gender == '남자'){
+        input.arRealNameEl = axiosResponse.data.body.recruit.extra__ar_realName;
+        input.arNameEl = axiosResponse.data.body.recruit.extra__ar_name;
+        input.arAgeEl = axiosResponse.data.body.recruit.extra__ar_age;
+        if ( axiosResponse.data.body.recruit.extra__ar_gender == '남자'){
           arGenderMElRef.value?.setAttribute("checked","true");
-          input.arGenderEl = axiosResponse.data.body.actingRole.gender;
-        } else if (axiosResponse.data.body.actingRole.gender == '여자') {
+          input.arGenderEl = axiosResponse.data.body.recruit.extra__ar_gender;
+        } else if (axiosResponse.data.body.recruit.extra__ar_gender == '여자') {
           arGenderFElRef.value?.setAttribute("checked","true");
-          input.arGenderEl = axiosResponse.data.body.actingRole.gender;
-        } else if (axiosResponse.data.body.actingRole.gender == '상관없음') {
+          input.arGenderEl = axiosResponse.data.body.recruit.extra__ar_gender;
+        } else if (axiosResponse.data.body.recruit.extra__ar_gender == '상관없음') {
           arGenderXElRef.value?.setAttribute("checked","true");
-          input.arGenderEl = axiosResponse.data.body.actingRole.gender;
-        } else if (axiosResponse.data.body.actingRole.gender != '남자' && axiosResponse.data.body.actingRole.gender != '여자' && axiosResponse.data.body.actingRole.gender != '상관없음' && axiosResponse.data.body.actingRole.gender.length > 0) {
+          input.arGenderEl = axiosResponse.data.body.recruit.extra__ar_gender;
+        } else if (axiosResponse.data.body.recruit.extra__ar_gender != '남자' && axiosResponse.data.body.recruit.extra__ar_gender != '여자' && axiosResponse.data.body.recruit.extra__ar_gender != '상관없음' && axiosResponse.data.body.recruit.extra__ar_gender.length > 0) {
           arGenderEtcElRef.value?.setAttribute("checked","true");
           $('#input_arGenderEtc').removeClass('hidden');
           $('#input_arGenderEtc').addClass('flex');
-          input.arGenderEl = axiosResponse.data.body.actingRole.gender;
+          input.arGenderEl = axiosResponse.data.body.recruit.extra__ar_gender;
         }
-        input.arJobEl = axiosResponse.data.body.actingRole.job;
-        if ( axiosResponse.data.body.actingRole.scriptStatus == '유'){
+        input.arJobEl = axiosResponse.data.body.recruit.extra__ar_job;
+        if ( axiosResponse.data.body.recruit.extra__ar_scriptStatus == '유'){
           arScriptYesElRef.value?.setAttribute("checked","true");
-        } else if (axiosResponse.data.body.actingRole.scriptStatus == '무') {
+        } else if (axiosResponse.data.body.recruit.extra__ar_scriptStatus == '무') {
           arScriptNoElRef.value?.setAttribute("checked","true");
         }
-        input.arScenesCountEl = axiosResponse.data.body.actingRole.scenesCount;
-        input.arShootingsCountEl = axiosResponse.data.body.actingRole.shootingsCount;
-        input.arCharacterEl = axiosResponse.data.body.actingRole.character;
-        input.arEtcEl = axiosResponse.data.body.actingRole.etc;
+        input.arScenesCountEl = axiosResponse.data.body.recruit.extra__ar_scenesCount + "";
+        input.arShootingsCountEl = axiosResponse.data.body.recruit.extra__ar_shootingsCount + "";
+        input.arCharacterEl = axiosResponse.data.body.recruit.extra__ar_character;
+        input.arEtcEl = axiosResponse.data.body.recruit.extra__ar_etc;
       })
       
       } 
@@ -415,6 +420,7 @@ export default defineComponent({
       awManagerEl:'',
       awGenreEl:'',
       awStoryEl:'',
+      awWriterEl:'',
       awFileEl: new File([''],''),
       awEtcEl:'',
 
@@ -551,7 +557,7 @@ export default defineComponent({
       const startWrite = () => {
       
       modify( props.id, globalState.loginedMember.id, input.rmTitleEl, input.rmBodyEl, input.rmRoleTypeEl, input.rmPayEl, input.rmLocationEl, input.rmPeriodEl , input.rmDeadlineEl, input.rmGenderEl, input.rmAgeEl, input.rmScriptEl, input.rmVideoTimeEl, input.rmEtcEl, 
-      input.awMediaEl, input.awNameEl, input.awDirectorEl, input.awCorpEl, input.awProducerEl, input.awManagerEl, input.awGenreEl, input.awStoryEl, input.awEtcEl,
+      input.awMediaEl, input.awNameEl, input.awDirectorEl, input.awCorpEl, input.awProducerEl, input.awManagerEl, input.awGenreEl, input.awStoryEl, input.awWriterEl, input.awEtcEl,
       input.arRealNameEl, input.arNameEl, input.arAgeEl, input.arGenderEl, input.arJobEl, input.arScriptEl, input.arScenesCountEl, input.arShootingsCountEl, input.arCharacterEl ,input.arEtcEl,
       isFileUploaded );
       
@@ -562,11 +568,11 @@ export default defineComponent({
     }
 
     function modify(recruitmentId:number, memberId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
+    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
     arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
      isFileUploaded:boolean) {
        mainApiService.recruit_modify(recruitmentId, memberId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
-      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awEtc, 
+      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded)
         .then(axiosResponse => {
 

@@ -115,6 +115,12 @@ export interface MainApi__pd_doLogin__IResponseBody extends Base__IResponseBodyT
     pd: IPd
   };
 }
+export interface MainApi__pd_doKakaoLogin__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    authKey: string,
+    pd: any
+  };
+}
 export interface MainApi__pd_doModify__IResponseBody extends Base__IResponseBodyType1 {
   body:{
     authKey: string,
@@ -244,7 +250,8 @@ export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://192.168.0.7:8024/',
+        baseURL:'http://172.30.1.15:8024/',
+       // baseURL:'https://backend.audictionary.com/'
       })
     );
   }
@@ -252,6 +259,7 @@ export class MainApi extends HttpClient {
   protected _handleRequest(config:AxiosRequestConfig) {
     config.params = {};
     config.params.authKey = localStorage.getItem("authKey");
+    config.params.loginedMemberType = localStorage.getItem("loginedMemberType");
     return config;
   };
 
@@ -289,6 +297,10 @@ export class MainApi extends HttpClient {
     return this.postByForm<MainApi__pd_doLogin__IResponseBody>(`/usr/pd/doLogin`,{ email, loginPw });
   }
 
+  public pd_doKakaoLogin( code:String ) {
+    return this.get<MainApi__pd_doKakaoLogin__IResponseBody>(`/usr/pd/kakaoLogin?code=${code}`);
+  }
+
   public pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, artwork:string, isFileUploaded:boolean ) {
     return this.postByForm<MainApi__pd_doModify__IResponseBody>(`/usr/pd/doModify`,{ loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded });
   }
@@ -321,21 +333,21 @@ export class MainApi extends HttpClient {
     return this.postByForm<MainApi__pd_doDelete__IResponseBody>(`/usr/pd/doDelete`,{ loginedMemberId });
   }
 
-  public recruit_write(memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
+  public recruit_write(memberTypeCode:String, memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
+    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
     arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
     genFileIdsStr:String) {
-    return this.postByForm<MainApi__recruit_write__IResponseBody>('/usr/recruit/write', { memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
-      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awEtc, 
+    return this.postByForm<MainApi__recruit_write__IResponseBody>('/usr/recruit/write', { memberTypeCode, memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
+      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, genFileIdsStr });
   }
  
   public recruit_modify(recruitmentId:number, memberId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awEtc:String,
+    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
     arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
      isFileUploaded:boolean) {
     return this.postByForm<MainApi__recruit_modify__IResponseBody>('/usr/recruit/modify', { recruitmentId, memberId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
-      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awEtc, 
+      awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded });
   }
   

@@ -10,7 +10,7 @@
       <div class="text-lg font-coda font-bold">{{state.recruit.extra__aw_title}}</div>
       <div v-if="state.dateDiff >= 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
       <div v-if="state.dateDiff < 0" class="text-xs mt-2">기한 마감</div>
-      <router-link v-if="state.recruit.memberId == globalState.loginedMember.id" :to="`/usr/recruit/modify?id=${state.recruit.id}`">수정</router-link>
+      <router-link v-if="state.recruit.memberId == globalState.loginedMember.id && state.recruit.memberTypeCode == globalState.loginedMemberType" :to="`/usr/recruit/modify?id=${state.recruit.id}`">수정</router-link>
 
       <div class="flex">
       <div class="ml-auto mr-4 text-xs font-bold">{{state.recruit.extra__aw_media}}/{{state.recruit.extra__aw_genre}}</div>
