@@ -24,7 +24,7 @@
             <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)">
           </form>
           <div class="my-2">
-            <span v-on:click="globalState.logout">로그아웃</span>
+            <span v-on:click="logout">로그아웃</span>
           </div>
         </div>
 
@@ -122,6 +122,10 @@ export default defineComponent({
       if(globalState.loginedMember.loginedMemberType == 'pd'){
         loadData();
       }
+      mainApiService.sendSms('01033729665','01067108114','hi')
+      .then(axiosResponse => {
+
+      })
     })
 
     function loadData(){
@@ -172,6 +176,14 @@ export default defineComponent({
 
     }
 
+    function logout(){
+      mainApiService.pd_doLogout()
+      .then(axiosResponse => {
+        globalState.logout();
+        location.replace('/');
+      })
+    }
+
       async function presentAlertConfirm(event:Event) {
       const alert = await alertController
         .create({
@@ -215,6 +227,7 @@ export default defineComponent({
    return {
      state,
      deletePd,
+     logout,
      returnUpBackOutline,
      presentAlertConfirm,
      segment,

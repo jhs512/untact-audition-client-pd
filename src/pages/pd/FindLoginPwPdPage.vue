@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue'
-import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonInput, IonLoading, loadingController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import * as Util from '@/utils'
 import router from '@/router'
@@ -54,7 +54,8 @@ export default defineComponent({
     IonPage,
     IonContent,
     IonIcon,
-    IonInput
+    IonInput,
+    IonLoading
   },
   props: {
 
@@ -98,20 +99,24 @@ export default defineComponent({
       const regNumberEl = input.regNumber1El + input.regNumber2El;
       findLoginPw(input.loginIdEl, regNumberEl);
     }
-    
 
-    const state = reactive({
-      loginPw: ''
-    });
+    async function findLoginPw( email:String, regNumber:String) {
 
-    function findLoginPw( email:String, regNumber:String) {
+        const loading = await loadingController
+          .create({
+          cssClass: 'my-custom-class',
+          message: '인증 메일을 전송하고 있습니다.',
+        });
+        
+       loading.present();
        mainApiService.pd_doFindLoginPw(email,regNumber)
         .then(axiosResponse => {
+          loading.dismiss();
           if ( axiosResponse.data.fail ) {
             Util.showAlert("알림",axiosResponse.data.msg,null);
             return;
           }
-          state.loginPw = axiosResponse.data.body.loginPw;
+          
           Util.showAlert("알림",axiosResponse.data.msg,null);
         });
     }
@@ -125,7 +130,6 @@ export default defineComponent({
     regNumber1ElRef,
     regNumber2ElRef,
     router,
-    state,
     returnUpBackOutline
    }
   },

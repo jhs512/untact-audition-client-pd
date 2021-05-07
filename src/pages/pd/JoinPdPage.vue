@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import { IonPage, IonContent, IonIcon, IonInput, IonButton } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonInput, IonButton, IonLoading, loadingController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 import router from '@/router';
 import * as Util from '@/utils'
@@ -92,7 +92,9 @@ export default defineComponent({
     IonContent,
     IonIcon,
     IonInput,
-    IonButton
+    IonButton,
+    IonLoading,
+    loadingController
   },
   props:{
 
@@ -126,16 +128,41 @@ export default defineComponent({
     
     let isEmailCert = false;
     
-    function emailCert() {
+    async function emailCert() {
       if( input.emailEl.length == 0 ){
         alert("이메일을 입력해주세요.");
         return;
       }
+      
+        const loading = await loadingController
+          .create({
+          cssClass: 'my-custom-class',
+          message: '인증 메일을 전송하고 있습니다.',
+        });
+        
+
+
+
+    function sendMail(email:string){
+      loading.present();            
+      mainApiService.pd_sendEmail(email)
+        .then(axiosResponse => {
+          loading.dismiss();
+          if ( axiosResponse.data.fail ) {
+            Util.showAlert("알림",axiosResponse.data.msg,null);
+            return;
+          }
+          
+          Util.showAlert("알림",axiosResponse.data.msg,null);
+          
+        });
+    }
 
        mainApiService.pd_emailDupCheck(input.emailEl)
         .then(axiosResponse => {
+        
           if ( axiosResponse.data.fail ) {
-          Util.showAlert("알림",axiosResponse.data.msg,null);
+            Util.showAlert("알림",axiosResponse.data.msg,null);
             return;
           }
           sendMail(input.emailEl);
@@ -144,17 +171,6 @@ export default defineComponent({
 
     }
 
-    function sendMail(email:string){
-      mainApiService.pd_sendEmail(email)
-        .then(axiosResponse => {
-          if ( axiosResponse.data.fail ) {
-            return;
-          }
-          
-          Util.showAlert("알림",axiosResponse.data.msg,null);
-          
-        });
-    }
 
     
     
@@ -311,6 +327,8 @@ export default defineComponent({
       api.isTrue = false;
     }
 
+      
+      
     return {
     api,
     openApi,

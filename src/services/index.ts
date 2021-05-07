@@ -32,7 +32,9 @@ export class MainService {
   pd_doLogin( email:String, loginPw:String) {
     return this.mainApi.pd_doLogin(email, loginPw);
   }
-
+  pd_doLogout() {
+    return this.mainApi.pd_doLogout();
+  }
   pd_doKakaoLogin( code:String ) {
     return this.mainApi.pd_doKakaoLogin(code);
   }
@@ -144,6 +146,10 @@ export class MainService {
   kakaoLocalApi(keyword:string){
     return this.mainApi.kakaoLocalApi(keyword);
   }
+  sendSms(from:string, to:string, msg:string){
+    return this.mainApi.sendSms(from, to, msg);
+  }
+
 }
 
 export const mainServiceSymbol = Symbol('globalstate');

@@ -243,6 +243,14 @@ export interface MainApi__naverApi__IResponseBody extends Base__IResponseBodyTyp
 export interface MainApi__kakaoApi__IResponseBody extends Base__IResponseBodyType1 {
   items: string; 
 }
+export interface MainApi__sendSms__IResponseBody extends Base__IResponseBodyType1 {
+  body:{
+    from: string;
+    to: string;
+    msg: string;
+    rb: any;
+  }
+}
 
 // 백엔드 와의 통신장치
 export class MainApi extends HttpClient {
@@ -295,6 +303,9 @@ export class MainApi extends HttpClient {
 
   public pd_doLogin( email:String, loginPw:String) {
     return this.postByForm<MainApi__pd_doLogin__IResponseBody>(`/usr/pd/doLogin`,{ email, loginPw });
+  }
+  public pd_doLogout() {
+    return this.get<MainApi__pd_doLogin__IResponseBody>(`/usr/pd/doLogout`);
   }
 
   public pd_doKakaoLogin( code:String ) {
@@ -423,6 +434,9 @@ export class MainApi extends HttpClient {
     return this.get<MainApi__kakaoApi__IResponseBody>(`/usr/kakao/localApi?keyword=${keyword}`);
   }
 
+  public sendSms(from:string, to:string, msg:string){
+    return this.get<MainApi__sendSms__IResponseBody>(`/usr/sms/doSendSms?from=${from}&to=${to}&msg=${msg}`);
+  }
 
 }
 
