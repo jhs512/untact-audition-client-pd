@@ -114,7 +114,8 @@ const routes: Array<RouteRecordRaw>= [
   },
   {
     path: '/usr/pd/modify',
-    component: PdModifyPage
+    component: PdModifyPage,
+    props: (route:any) => ( { id: route.query.id, globalState })
   },
   {
     path: '/usr/recruit/',

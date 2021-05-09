@@ -20,8 +20,14 @@
           <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password"></ion-input>
         </FormRow>
 
-        <FormRow title="주소:">
-          <ion-input v-model="input.addressEl" ref="addressElRef" type="text"></ion-input>
+         <FormRow class="mt-7" title="주소:">
+          <ion-input readonly="true" v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" enterkeyhint="next" class="input-address relative pr-10">
+            <ion-button color="light" class="absolute right-0" @click="openApi">검색</ion-button>
+          </ion-input>
+          <div v-if="api.isTrue" class="my-4">
+            <VueDaumPostcode @complete="confirm"/>
+          </div>
+          <ion-input v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" enterkeyhint="next" class="mt-2"></ion-input>
         </FormRow>
 
         <FormRow title="전화번호:">
@@ -39,19 +45,20 @@
         <FormRow title="작품:">
              <ion-button color="light" :onclick="openModal">검색</ion-button>
              <ion-item-sliding  v-bind:key="item" v-for="item in pdFilmgraphy.movieList">
-              <ion-item v-model="input.artworkEl" lines="none">
+              <ion-item lines="none">
                 <ion-label>{{item.title}}</ion-label>
                 <img :src=item.image>
               </ion-item>
               <ion-item-options side="end">
-                <ion-item-option @click="deleteItem(item)">Unread</ion-item-option>
+                <ion-item-option @click="deleteItem(item)">제거</ion-item-option>
               </ion-item-options>
             </ion-item-sliding>
         </FormRow>  
 
-        <FormRow title="프로필 이미지:">
+        <FormRow title="프로필 이미지:" v-if="globalState.loginedMember.loginedMemberType == 'pd'">
             <ion-input v-model="input.fileEl" @ionChange="setProfileImg($event)" type="file" accept="image/*"></ion-input>
         </FormRow>
+
         <input accept="true" type="submit" class="w-full mt-10 text-center btn-next text-xs mx-auto p-2">
       </form>
       </div>
@@ -61,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { IonPage, IonContent, IonIcon, IonInput, IonButton, IonLabel, IonItem, IonItemSliding, IonItemOption, IonItemOptions, IonPopover, IonModal, modalController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
 
@@ -74,6 +81,7 @@ import { useMainService } from '@/services'
 import SearchMovie from './SearchMovie.vue'
 import '../global.css'
 import axios from 'axios'
+import { IPd } from '@/types'
 
 export default defineComponent({
   name: 'JoinSelectPage',
@@ -93,7 +101,10 @@ export default defineComponent({
     SearchMovie
   },
   props: {
-
+    id: {
+      type: String,
+      required: true
+    }
   },
   setup(props) {
     const mainApiService = useMainService();
@@ -109,13 +120,41 @@ export default defineComponent({
     const input = reactive({
       nameEl:globalState.loginedMember.name,
       loginPwEl:'',
-      addressEl:globalState.loginedMember.address,
+      address:'',
+      addressEl:globalState.loginedMember.address ? globalState.loginedMember.address : '',
+      address2El:'',
       cellPhoneNoEl:globalState.loginedMember.cellPhoneNo,
       jobPositionEl:globalState.loginedMember.jobPosition,
       corpNameEl:globalState.loginedMember.corpName,
-      fileEl: new File([""],""),
-      artworkEl: pdFilmgraphy.movieList
+      fileEl: new File([""],"")
     })
+
+    onMounted(() => {
+        loadData();
+    })
+
+    const state = reactive({
+      pd: {} as IPd,
+      artworks: [] as any,
+    })
+    
+
+    function loadData(){
+      mainApiService.pd_showDetail(props.id)
+      .then(axiosResponse => {
+        state.pd = axiosResponse.data.body.pd;
+      })
+
+
+      mainApiService.pd_getArtwork(props.id)
+      .then(axiosResponse => {
+        if( !!!axiosResponse.data.fail ){
+          state.artworks = axiosResponse.data.body.artworks;
+          pdFilmgraphy.movieList = axiosResponse.data.body.artworks;
+        }
+        
+      })
+    }
 
   
    function setProfileImg(event:any){
@@ -126,13 +165,18 @@ export default defineComponent({
 
     function checkAndModify() {
       pdFilmgraphy.movieList = pdFilmgraphy.movieList;
-      input.artworkEl = pdFilmgraphy.movieList
-      var artwork = JSON.stringify(input.artworkEl);
+      var artwork = JSON.stringify(pdFilmgraphy.movieList);
       
       let loginPwRealEl = '';
         if (input.loginPwEl.length > 0 ){
           loginPwRealEl = sha256(input.loginPwEl);
         }
+
+      
+      if ( input.addressEl.length > 0 && input.address2El.length > 0 ){
+        input.address = input.addressEl + "//" +input.address2El;
+      }
+      
         
       const startModify = () => {
 
@@ -140,7 +184,7 @@ export default defineComponent({
           isFileUploaded = true;
         }
 
-         modify(Util.toStringOrNull(globalState.loginedMember.id), input.nameEl, loginPwRealEl, input.addressEl,  input.cellPhoneNoEl, input.jobPositionEl, input.corpNameEl, artwork, isFileUploaded);
+         modify(Util.toStringOrNull(globalState.loginedMember.id), input.nameEl, loginPwRealEl, input.address, input.cellPhoneNoEl, input.jobPositionEl, input.corpNameEl, artwork, isFileUploaded);
 
 
       }
@@ -160,30 +204,29 @@ export default defineComponent({
           
           if( loginedPd.name != null ){
               localStorage.removeItem("loginedMemberName");
+              localStorage.setItem("loginedMemberName", loginedPd.name);
           }
           if( loginedPd.cellPhoneNo != null ){
               localStorage.removeItem("loginedMemberCellPhoneNo");
+              localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);
           }
           if( loginedPd.address != null ){
               localStorage.removeItem("loginedMemberAddress");
+              localStorage.setItem("loginedMemberAddress", loginedPd.address);
           }
           if( loginedPd.jobPosition != null ){
               localStorage.removeItem("loginedMemberJobPosition");
+              localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
           }
           if( loginedPd.corpName != null ){
               localStorage.removeItem("loginedMemberCorpName");
+              localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
           }
           if( loginedPd.extra__thumbImg != null ){
               localStorage.removeItem("loginedMemberExtra__thumbImg");
+              localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
           }
           
-          localStorage.setItem("loginedMemberId", loginedPd.id + "");
-          localStorage.setItem("loginedMemberName", loginedPd.name);
-          localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);
-          localStorage.setItem("loginedMemberAddress", loginedPd.address);
-          localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
-          localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
-          localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
           
           if ( isFileUploaded ){
             doFileUpload();
@@ -215,30 +258,28 @@ export default defineComponent({
           
           if( loginedPd.name != null ){
               localStorage.removeItem("loginedMemberName");
+              localStorage.setItem("loginedMemberName", loginedPd.name);
           }
           if( loginedPd.cellPhoneNo != null ){
               localStorage.removeItem("loginedMemberCellPhoneNo");
+              localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);
           }
           if( loginedPd.address != null ){
               localStorage.removeItem("loginedMemberAddress");
+              localStorage.setItem("loginedMemberAddress", loginedPd.address);
           }
           if( loginedPd.jobPosition != null ){
               localStorage.removeItem("loginedMemberJobPosition");
+              localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
           }
           if( loginedPd.corpName != null ){
               localStorage.removeItem("loginedMemberCorpName");
+              localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
           }
           if( loginedPd.extra__thumbImg != null ){
               localStorage.removeItem("loginedMemberExtra__thumbImg");
+              localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
           }
-          
-          localStorage.setItem("loginedMemberId", loginedPd.id + "");
-          localStorage.setItem("loginedMemberName", loginedPd.name);
-          localStorage.setItem("loginedMemberCellPhoneNo", loginedPd.cellPhoneNo);
-          localStorage.setItem("loginedMemberAddress", loginedPd.address);
-          localStorage.setItem("loginedMemberJobPosition", loginedPd.jobPosition);
-          localStorage.setItem("loginedMemberCorpName", loginedPd.corpName);
-          localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
           
           Util.showAlert("알림","회원정보수정",() => location.replace('/usr/pd/info?id='+globalState.loginedMember.id));
 
@@ -254,9 +295,8 @@ export default defineComponent({
 
     function deleteItem(item:any){
       for(var i = 0; i < items.arr.length; i++) {
-
-      if(items.arr[i] == item){
-        items.arr.splice(i, 1);
+      if(items.arr[i].title == item.title && items.arr[i].director == item.director){
+        pdFilmgraphy.movieList.splice(i, 1);
       }
 
     }
@@ -286,10 +326,33 @@ export default defineComponent({
       return modal.present();
         
     }
+
+    const api = reactive({
+      isTrue:false
+    })
+
+    function openApi(){
+      if( api.isTrue ){
+        api.isTrue = false;
+      } else {
+        api.isTrue = true;
+      }
+    }
+
+    function confirm(result:any){
+      if(result.buildingName.length > 0 ){
+        input.addressEl = result.address + " ("+result.buildingName +")";
+      } else {
+        input.addressEl = result.address;
+      }
+      api.isTrue = false;
+    }
+
   
     
 
     return { 
+      globalState,
       items,
       deleteItem,
       input,
@@ -307,7 +370,10 @@ export default defineComponent({
       setOpen,
       setClose,
       openModal,
-      pdFilmgraphy
+      pdFilmgraphy,
+      api,
+      openApi,
+      confirm
     }
   }
   

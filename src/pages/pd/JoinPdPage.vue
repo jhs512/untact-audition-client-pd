@@ -62,7 +62,10 @@
         <FormRow title="PASSWORD CONFIRM:">
           <ion-input v-model="input.loginPwCfEl" ref="loginPwCfElRef" type="password" placeholder="비밀번호 확인" clear-input="true" required="true" enterkeyhint="done"></ion-input>
         </FormRow>
-      <input type="submit" class="w-60 my-10 text-center btn-next text-xs text-white mx-auto p-2" value="완료">
+
+        <div>
+          <input type="submit" class="w-full my-10 text-center btn-next text-xs text-white mx-auto p-2" value="완료">
+        </div> 
       </form>
     </div>
     
@@ -237,7 +240,7 @@ export default defineComponent({
         return;
       }
 
-      const addressEl = input.addressEl + input.address2El;
+      const addressEl = input.addressEl + "//" + input.address2El;
 
       // 직급 체크
       if ( jobPositionElRef.value == null ) {

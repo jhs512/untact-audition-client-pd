@@ -30,13 +30,13 @@
      </ion-card-header>
 
       <ion-thumbnail v-if="recruit.extra != null" class="w-60 h-60 mx-auto">  
-      <ion-img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="object-contain mx-auto"></ion-img>
+        <ion-img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="object-contain mx-auto"></ion-img>
       </ion-thumbnail>
-
+      <!--
       <ion-thumbnail v-if="recruit.extra == null" class="w-60 h-60 mx-auto">  
       <ion-img src="/gen/Avatar.jpeg" alt="Avatar" class="object-contain mx-auto"></ion-img>
       </ion-thumbnail>
-
+      -->
       <ion-card-header class="text-center">
         <ion-card-subtitle>배역이름 : {{recruit.extra__ar_name}}</ion-card-subtitle>
         <ion-card-subtitle>배역설명 : {{recruit.extra__ar_character}}</ion-card-subtitle>

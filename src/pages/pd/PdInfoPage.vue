@@ -17,10 +17,10 @@
         <img :src="globalState.loginedMember.extra__thumbImg" class="mx-auto w-60 h-60 object-contain">
       </div>
       
-        <span v-if="globalState.loginedMember.loginedMemberType == 'pd'" class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs"><router-link class="w-full block" to="/usr/pd/modify">프로필 편집</router-link></span>
+        <span class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs"><router-link class="w-full block" :to="`/usr/pd/modify?id=${globalState.loginedMember.id}`">프로필 편집</router-link></span>
 
         <div  class="mt-2">
-          <form v-if="globalState.loginedMember.loginedMemberType == 'pd'" class="my-2" action="" >
+          <form class="my-2" action="" >
             <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)">
           </form>
           <div class="my-2">
@@ -80,7 +80,7 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { IonPage, IonContent, IonIcon, IonSegment, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonButton, IonSegmentButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonThumbnail, IonImg, IonAvatar, alertController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import { useGlobalShare } from '@/stores'
+import { pdFilmgraphy, useGlobalShare } from '@/stores'
 import { MainService, useMainService } from '@/services'
 import { IAp, IArtwork, IPd } from '@/types'
 import axios from 'axios'
@@ -116,16 +116,10 @@ export default defineComponent({
   setup(props) {
     const globalState = useGlobalShare();
     const mainApiService = useMainService();
-
+    
     
     onMounted(() => {
-      if(globalState.loginedMember.loginedMemberType == 'pd'){
         loadData();
-      }
-      mainApiService.sendSms('01033729665','01067108114','hi')
-      .then(axiosResponse => {
-
-      })
     })
 
     function loadData(){
@@ -139,7 +133,8 @@ export default defineComponent({
       mainApiService.pd_getArtwork(props.id)
       .then(axiosResponse => {
         if( !!!axiosResponse.data.fail ){
-          state.artworks = axiosResponse.data.body.artworks
+          state.artworks = axiosResponse.data.body.artworks;
+          pdFilmgraphy.movieList = axiosResponse.data.body.artworks;
         }
         
       })

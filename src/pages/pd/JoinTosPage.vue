@@ -10,9 +10,8 @@
       <span class="text-center text-sm">이용 약관 동의</span>
       <div class="mt-4">
         <ul class="p-1 text-10px tos-list">
-          <li class="flex p-1"><input id="tos1" type="checkbox" :checked="state.isCheckTos1" v-on:change="checkTos1"><label for="tos1" class="ml-2 mr-3 flex-1">이용약관</label><div class="px-3 btn-detail">자세히보기</div></li>
-          <li class="flex p-1"><input id="tos2" type="checkbox" :checked="state.isCheckTos2" v-on:change="checkTos2"><label for="tos2" class="ml-2 mr-3 flex-1">개인정보 수집 및 이용에 대한 동의</label><div class="px-3 btn-detail">자세히보기</div></li>
-          <li class="flex p-1"><input id="tos3" type="checkbox" :checked="state.isCheckTos3" v-on:change="checkTos3"><label for="tos3" class="ml-2 mr-3 flex-1">개인정보의 제3자 제공에 대한 동의</label><div class="px-3 btn-detail">자세히보기</div></li>
+          <li class="flex p-1"><input id="tos1" type="checkbox" :checked="state.isCheckTos1" v-on:change="checkTos1"><label for="tos1" class="ml-2 mr-3 flex-1">이용약관</label><div :onclick="openTos1Modal" class="px-3 btn-detail">자세히보기</div></li>
+          <li class="flex p-1"><input id="tos2" type="checkbox" :checked="state.isCheckTos2" v-on:change="checkTos2"><label for="tos2" class="ml-2 mr-3 flex-1">개인정보 수집 및 이용에 대한 동의</label><div :onclick="openTos2Modal" class="px-3 btn-detail">자세히보기</div></li>
         </ul>
         
         <div class="flex mt-1 p-2 text-10px"><input id="tosAll" type="checkbox" v-on:change="check" :checked="state.isCheckTos1 && state.isCheckTos2 && state.isCheckTos3"><label for="tosAll" class="ml-2 mr-3 flex-1">약관 내용을 숙지하였으며, 위 모든 약관에 동의합니다.</label></div>
@@ -30,9 +29,10 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { IonPage, IonContent, IonIcon } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, modalController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-
+import AudictionaryTosPage from './AudictionaryTosPage.vue'
+import PrivacyPolicyTosPage from './PrivacyPolicyTosPage.vue'
 import router from '@/router'
 
 export default defineComponent({
@@ -98,6 +98,28 @@ export default defineComponent({
       router.replace('/usr/pd/join');
     }
 
+
+    async function openTos1Modal(){
+      const modal = await modalController
+        .create({
+          component: AudictionaryTosPage,
+          componentProps: {
+            modalController: modalController
+          }
+        })
+        return modal.present();
+    }
+    async function openTos2Modal(){
+      const modal = await modalController
+        .create({
+          component: PrivacyPolicyTosPage,
+          componentProps: {
+            modalController: modalController
+          }
+        })
+        return modal.present();
+    }
+
    return {
      router,
      check,
@@ -105,6 +127,8 @@ export default defineComponent({
      checkTos1,
      checkTos2,
      checkTos3,
+     openTos1Modal,
+     openTos2Modal,
      checkAndNext,
      hisback,
      returnUpBackOutline

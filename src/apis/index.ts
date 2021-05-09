@@ -258,8 +258,8 @@ export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-        baseURL:'http://172.30.1.15:8024/',
-       // baseURL:'https://backend.audictionary.com/'
+       baseURL:'http://172.30.1.15:8024/',
+       //baseURL:'https://backend.audictionary.com/'
       })
     );
   }

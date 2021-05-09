@@ -43,6 +43,7 @@ export const createGlobalState = () => {
       jobPosition,
       corpName,
       corpType,
+      filmgraphy:[] as any,
       extra__thumbImg
     },
     isMainLayoutVisible: computed(() => (globalState.isLogined == false && globalState.fullPath == "/main") || (globalState.isLogined == false && globalState.fullPath == "") ),
@@ -64,6 +65,7 @@ export const createGlobalState = () => {
       localStorage.removeItem("loginedMemberJobPosition");
       localStorage.removeItem("loginedMemberAddress");
       localStorage.removeItem("loginedMemberExtra__thumbImg");
+      pdFilmgraphy.movieList = [] as any;
       location.replace('/usr/pd/login');
     }
   });

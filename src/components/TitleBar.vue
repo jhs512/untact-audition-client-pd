@@ -4,7 +4,7 @@
         <div class="font-coda w-full text-center flex items-center justify-center h-14 text-xl">{{title}}</div>
         <div v-if="btn_back == 'true'" class="hisback absolute left-5">
             <ion-back-button default-href="/"></ion-back-button>
-      </div>
+        </div>
         <div v-if="btn_menu == 'true'" class="btn-menu absolute right-2" @click="setOpen(true, $event)">
              <ion-button slots ="icon-only" fill="clear" color="dark" class="relative">
               <FontAweSomeIcon icon="bars"></FontAweSomeIcon>  

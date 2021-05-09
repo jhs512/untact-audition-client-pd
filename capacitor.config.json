@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "audictionary.pd.ionic.starter",
   "appName": "Audictionary_pd",
   "bundledWebRuntime": false,
   "npmClient": "npm",

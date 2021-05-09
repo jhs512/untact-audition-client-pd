@@ -12,7 +12,7 @@
 <div class="container mx-auto flex flex-col justify-center h-42">
   <div class="w-60 mx-auto flex flex-col items-center">
     <router-link to="/usr/pd/login" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-1">로그인</div></router-link>
-    <router-link to="/usr/pd/joinTos" class="w-full"><div class="bg-btn mx-auto w-full text-center p-1 mt-4">회원가입</div></router-link>
+    <router-link to="/usr/pd/joinTos" class="w-full  mt-4"><div class="bg-btn mx-auto w-full text-center p-1">회원가입</div></router-link>
   </div>
 </div>
 
