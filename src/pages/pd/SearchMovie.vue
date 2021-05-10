@@ -84,19 +84,19 @@ export default defineComponent({
     }
     */
 
-    function searchKeyword (event:any){
+    function searchKeyword (event: any){
       mainApiService.naverMovieApi(event?.target.value)
     .then(axiosResponse => {
       
       list.arr.length = [] as any;
 
       if(event.target.value.length > 0){
-        for( var i = 0 ; i < axiosResponse.data.items.length ; i++ ){
+        for( let i = 0 ; i < axiosResponse.data.items.length ; i++ ){
           
                 let isChecked = false;
 
                 if ( isChecked == false ) {
-                  for ( var k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
+                  for ( let k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
                       if ( pdFilmgraphy.movieList[k].image == axiosResponse.data.items[i].image ){
                         isChecked = true;
                         break;
@@ -109,7 +109,7 @@ export default defineComponent({
                 title = title.replaceAll("</b>","");
                 let subtitle = axiosResponse.data.items[i].subtitle.replaceAll("<b>","");
                 subtitle = subtitle.replaceAll("</b>","");
-                let movie = {
+                const movie = {
                   title: title,
                   subtitle: subtitle,
                   director: axiosResponse.data.items[i].director,
@@ -133,18 +133,18 @@ export default defineComponent({
     const initialMovieList = [] as any;
 
       onMounted(() => {
-        for( var i = 0 ; i < pdFilmgraphy.movieList.length; i++) {
+        for( let i = 0 ; i < pdFilmgraphy.movieList.length; i++) {
            initialMovieList.push(pdFilmgraphy.movieList[i]);
         }     
       })
     
 
-    function checkMovie(item:any, event:any){
+    function checkMovie(item: any, event: any){
       if(event.detail.checked){
         item.isChecked = true;
         pdFilmgraphy.movieList.push(item);
       } else {
-        for(var i = 0 ; i < pdFilmgraphy.movieList.length ; i++){
+        for(let i = 0 ; i < pdFilmgraphy.movieList.length ; i++){
           if(item.title == pdFilmgraphy.movieList[i].title){
             pdFilmgraphy.movieList.splice(i,1);
             break;

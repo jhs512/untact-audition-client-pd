@@ -1,55 +1,55 @@
 export interface IEntity {
-  id:number;
-  regDate:string;
-  updateDate:string;
+  id: number;
+  regDate: string;
+  updateDate: string;
 }
 
 export interface GlobalState {
-  fullPath:string;
-  loginedMember:IPd;
-  isLogined:boolean;
-  isMainLayoutVisible:boolean;
-  logout:Function;
+  fullPath: string;
+  loginedMember: IPd;
+  isLogined: boolean;
+  isMainLayoutVisible: boolean;
+  logout: Function;
 }
 
 export interface IPd extends IEntity {
-  authKey:string;
-  id:number;
-  loginedMemberType:string;
-  loginId:string;
-  authLevel:number;
-  name:string;
-  email:string;
-  cellPhoneNo:string;
-  address:string;
-  jobPosition:string;
-  corpName:string;
-  corpType:string;
-  extra__thumbImg:string;
+  authKey: string;
+  id: number;
+  loginedMemberType: string;
+  loginId: string;
+  authLevel: number;
+  name: string;
+  email: string;
+  cellPhoneNo: string;
+  address: string;
+  jobPosition: string;
+  corpName: string;
+  corpType: string;
+  extra__thumbImg: string;
 }
 
 export interface IAp extends IEntity {
-  authKey:string;
-  loginId:string, 
-  name:string, 
-  nickName:string, 
-  engName:string, 
-  gender:string, 
-  regNumber:string, 
-  address:string, 
-  cellPhoneNo:string, 
-  feet:number, 
-  weight:number, 
-  skinTone:string, 
-  eyelid:number, 
-  feature:string, 
-  filmgraphy:string, 
-  jobArea:string, 
-  corp:string,
-  authLevel:number,
-  authStatus:number,
-  extra__thumbImg:string,
-  extra__fileType:string
+  authKey: string;
+  loginId: string; 
+  name: string; 
+  nickName: string; 
+  engName: string; 
+  gender: string; 
+  regNumber: string; 
+  address: string; 
+  cellPhoneNo: string; 
+  feet: number; 
+  weight: number; 
+  skinTone: string; 
+  eyelid: number; 
+  feature: string; 
+  filmgraphy: string; 
+  jobArea: string; 
+  corp: string;
+  authLevel: number;
+  authStatus: number;
+  extra__thumbImg: string;
+  extra__fileType: string;
 }
 
 export interface IRecruit extends IEntity {
@@ -87,7 +87,7 @@ extra__ar_name: string;
 extra__ar_age: string;
 extra__ar_gender: string;
 extra__ar_job: string;
-extra__ar_scriptStatus : string;
+extra__ar_scriptStatus: string;
 extra__ar_scenesCount: number;
 extra__ar_shootingsCount: number;
 extra__ar_character: string;
@@ -113,49 +113,49 @@ etc: string;
 }
 
 export interface IActingRole extends IEntity {
-  recruitmentId:number;
-  realName:string;
-  name:string;
-  age:string;
-  job:string;
-  gender:string;
-  scriptStatus:string;
-  scenesCount:string;
-  shootingsCount:string;
-  character:string;
-  etc:string;
+  recruitmentId: number;
+  realName: string;
+  name: string;
+  age: string;
+  job: string;
+  gender: string;
+  scriptStatus: string;
+  scenesCount: string;
+  shootingsCount: string;
+  character: string;
+  etc: string;
 }
 
 export interface IList {
-  recruits: IRecruit[],
-  artworks: IArtwork[],
-  actingRoles: IActingRole[]
+  recruits: IRecruit[];
+  artworks: IArtwork[];
+  actingRoles: IActingRole[];
 }
 
 export interface IGenFile extends IEntity {
-  relTypeCode:string;
-  relId:number;
-  originFileName:string;
-  fileExt:string;
-  typeCode:string;
-  type2Code:string;
-  fileSize:number;
-  fileExtTypeCode:string;
-  scenesCount:number;
-  shootingsCount:number;
-  character:string;
-  etc:string;
+  relTypeCode: string;
+  relId: number;
+  originFileName: string;
+  fileExt: string;
+  typeCode: string;
+  type2Code: string;
+  fileSize: number;
+  fileExtTypeCode: string;
+  scenesCount: number;
+  shootingsCount: number;
+  character: string;
+  etc: string;
 }
 
 export interface ISearchMovie {
   movieList: movieInfo[];
-  source:string;
-  totCnt: number
+  source: string;
+  totCnt: number;
 }
 
 interface movieInfo {
-companys: []
-directors: []
+companys: [];
+directors: [];
 genreAlt: string;
 movieCd: string;
 movieNm: string;
@@ -175,7 +175,7 @@ export interface naverMovieInfo {
   image: string;
   link: string;
   pubDate: string;
-  subtitle : string;
+  subtitle: string;
   title: string;
   userRating: string;
   }
@@ -183,5 +183,5 @@ export interface naverMovieInfo {
   export interface IApplication extends IEntity {
     memberId: number;
     recruitId: number;
-    exp : number;
+    exp: number;
   }

@@ -132,7 +132,7 @@ export default defineComponent({
 
       mainApiService.pd_getArtwork(props.id)
       .then(axiosResponse => {
-        if( !!!axiosResponse.data.fail ){
+        if( !axiosResponse.data.fail ){
           state.artworks = axiosResponse.data.body.artworks;
           pdFilmgraphy.movieList = axiosResponse.data.body.artworks;
         }
@@ -151,7 +151,7 @@ export default defineComponent({
       value:'profile'
     })
 
-    function changeSegmentValue(event:any){
+    function changeSegmentValue(event: any){
       segment.value = event.target.value;
     }
 
@@ -179,7 +179,7 @@ export default defineComponent({
       })
     }
 
-      async function presentAlertConfirm(event:Event) {
+      async function presentAlertConfirm(event: Event) {
       const alert = await alertController
         .create({
           cssClass: 'my-custom-class',
@@ -211,7 +211,7 @@ export default defineComponent({
       });
     }
 
-    function deleteLikeApplication(ap:any){
+    function deleteLikeApplication(ap: any){
       
       mainApiService.application_cancelLike(props.id, ap.id, ap.memberId)
       .then(axiosResponse =>{

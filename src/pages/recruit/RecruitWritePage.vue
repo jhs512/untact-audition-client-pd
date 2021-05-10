@@ -627,7 +627,7 @@ export default defineComponent({
         } 
       }
       
-      const startWrite = (genFileIdsStr:string) => {
+      const startWrite = (genFileIdsStr: string) => {
 
       write( globalState.loginedMember.loginedMemberType, globalState.loginedMember.id , 3, input.rmTitleEl, input.rmBodyEl, input.rmRoleTypeEl, input.rmPayEl, input.rmLocationEl, input.rmPeriodEl , input.rmDeadlineEl, input.rmGenderEl, input.rmAgeEl, input.rmScriptEl, input.rmVideoTimeEl, input.rmEtcEl, 
       input.awMediaEl, input.awNameEl, input.awDirectorEl, input.awCorpEl, input.awProducerEl, input.awManagerEl, input.awGenreEl, input.awStoryEl, input.awWriterEl, input.awEtcEl,
@@ -637,7 +637,7 @@ export default defineComponent({
         
       };
 
-      const startFileUpload = (onSuccess:Function) => {
+      const startFileUpload = (onSuccess: Function) => {
         if ( isFileUploaded == false ) {
           onSuccess("");
           return;
@@ -661,10 +661,10 @@ export default defineComponent({
 
     }
 
-    function write(memberTypeCode:String, memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awName:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
-    arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
-    genFileIdsStr:String) {
+    function write(memberTypeCode: string, memberId: number, boardId: number, rmTitle: string, rmBody: string, rmRoleType: string, rmPay: string, rmLocation: string, rmPeriod: string, rmDeadline: string, rmGender: string, rmAge: [], rmScript: string, rmVideoTime: string, rmEtc: string,
+    awMedia: string, awName: string, awDirector: string, awCorp: string, awProducer: string, awManager: string, awGenre: string, awStory: string, awWriter: string, awEtc: string,
+    arRealName: string, arName: string, arAge: string, arGender: string, arJob: string, arScript: string, arScenesCount: string, arShootingsCount: string, arCharacter: string, arEtc: string, 
+    genFileIdsStr: string) {
        mainApiService.recruit_write(memberTypeCode, memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
       awMedia, awName, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, genFileIdsStr)
@@ -676,16 +676,16 @@ export default defineComponent({
         });
     }
 
-    var fileType = reactive({
+    const fileType = reactive({
       type:''
     })
 
-    function setThumbnail(event:any){
+    function setThumbnail(event: any){
       
-      var reader = new FileReader(); 
+      const reader = new FileReader(); 
       fileType.type = event.target.files[0].type as string;
       reader.onload = function(event) { 
-        var element:any;
+        let element: any;
         if( fileType.type.startsWith("image") ){
           element = document.querySelector('img'); 
         }else if ( fileType.type.startsWith("video")) {

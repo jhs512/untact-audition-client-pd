@@ -9,144 +9,144 @@ export class MainService {
     this.mainApi = getMainApi();
   }
 
-  pd_doJoin(name:String, regNumber:String, gender:String, cellPhoneNo:String, email:String, address:String, jobPosition:String, loginPw:String) {
+  pd_doJoin(name: string, regNumber: string, gender: string, cellPhoneNo: string, email: string, address: string, jobPosition: string, loginPw: string) {
     return this.mainApi.pd_doJoin(name, regNumber, gender, cellPhoneNo ,email, address, jobPosition, loginPw );
   }
 
-  pd_emailDupCheck(email:string) {
+  pd_emailDupCheck(email: string) {
     return this.mainApi.pd_emailDupCheck(email);
   }
 
-  pd_sendEmail(email:string) {
+  pd_sendEmail(email: string) {
     return this.mainApi.pd_sendEmail(email);
   }
   
-  pd_emailCert(email:string, key:string) {
+  pd_emailCert(email: string, key: string) {
     return this.mainApi.pd_emailCert(email, key);
   }
 
-  pd_checkEmailCertificated(email:string) {
+  pd_checkEmailCertificated(email: string) {
     return this.mainApi.pd_checkEmailCertificated(email);
   }
 
-  pd_doLogin( email:String, loginPw:String) {
+  pd_doLogin( email: string, loginPw: string) {
     return this.mainApi.pd_doLogin(email, loginPw);
   }
   pd_doLogout() {
     return this.mainApi.pd_doLogout();
   }
-  pd_doKakaoLogin( code:String ) {
+  pd_doKakaoLogin( code: string ) {
     return this.mainApi.pd_doKakaoLogin(code);
   }
 
-  pd_doModify( loginedMemberId:string, name:String, loginPw:String, address:String, cellPhoneNo:String, jobPosition:String, corpName:String, artwork:string, isFileUploaded:boolean ) {
+  pd_doModify( loginedMemberId: string, name: string, loginPw: string, address: string, cellPhoneNo: string, jobPosition: string, corpName: string, artwork: string, isFileUploaded: boolean ) {
     return this.mainApi.pd_doModify(loginedMemberId, name, loginPw, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded );
   }
-  pd_deleteProfileImg ( loginedMemberId:string ) {
+  pd_deleteProfileImg ( loginedMemberId: string ) {
     return this.mainApi.pd_deleteProfileImg(loginedMemberId);
   }
-  pd_update(loginedMemberId:string) {
+  pd_update(loginedMemberId: string) {
     return this.mainApi.pd_update(loginedMemberId);
   }
-  pd_doFindLoginId( name:String, regNumber:String ) {
+  pd_doFindLoginId( name: string, regNumber: string ) {
     return this.mainApi.pd_doFindLoginId(name, regNumber);
   }
-  pd_doFindLoginPw( email:String, regNumber:String ) {
+  pd_doFindLoginPw( email: string, regNumber: string ) {
     return this.mainApi.pd_doFindLoginPw(email,regNumber);
   }
-  pd_doModifyPw( email:String, regNumber:String, loginPw:String ) {
+  pd_doModifyPw( email: string, regNumber: string, loginPw: string ) {
     return this.mainApi.pd_doModifyPw(email,regNumber,loginPw);
   }
-  pd_doDelete( loginedMemberId:number ) {
+  pd_doDelete( loginedMemberId: number ) {
     return this.mainApi.pd_doDelete(loginedMemberId);
   }
-  pd_showDetail( loginedMemberId:string ){
+  pd_showDetail( loginedMemberId: string ){
     return this.mainApi.pd_showDetail(loginedMemberId);
   }
-  pd_getArtwork( loginedMemberId:string ){
+  pd_getArtwork( loginedMemberId: string ){
     return this.mainApi.pd_getArtwork(loginedMemberId);
   }
-  recruit_write(memberTypeCode:String, memberId:number, boardId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awName:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
-    arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
-    genFileIdsStr:String) {
+  recruit_write(memberTypeCode: string, memberId: number, boardId: number, rmTitle: string, rmBody: string, rmRoleType: string, rmPay: string, rmLocation: string, rmPeriod: string, rmDeadline: string, rmGender: string, rmAge: [], rmScript: string, rmVideoTime: string, rmEtc: string,
+    awMedia: string, awName: string, awDirector: string, awCorp: string, awProducer: string, awManager: string, awGenre: string, awStory: string, awWriter: string, awEtc: string,
+    arRealName: string, arName: string, arAge: string, arGender: string, arJob: string, arScript: string, arScenesCount: string, arShootingsCount: string, arCharacter: string, arEtc: string, 
+    genFileIdsStr: string) {
     return this.mainApi.recruit_write(memberTypeCode, memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
       awMedia, awName, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, genFileIdsStr);
   }
  
-  recruit_modify(recruitmentId:number, memberId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
-    arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
-     isFileUploaded:boolean) {
+  recruit_modify(recruitmentId: number, memberId: number, rmTitle: string, rmBody: string, rmRoleType: string, rmPay: string, rmLocation: string, rmPeriod: string, rmDeadline: string, rmGender: string, rmAge: [], rmScript: string, rmVideoTime: string, rmEtc: string,
+    awMedia: string, awTitle: string, awDirector: string, awCorp: string, awProducer: string, awManager: string, awGenre: string, awStory: string, awWriter: string, awEtc: string,
+    arRealName: string, arName: string, arAge: string, arGender: string, arJob: string, arScript: string, arScenesCount: string, arShootingsCount: string, arCharacter: string, arEtc: string, 
+     isFileUploaded: boolean) {
     return this.mainApi.recruit_modify(recruitmentId, memberId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
       awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded );
   }
   
-  recruit_list(limit:number|null,keyword:[]|null) {
+  recruit_list(limit: number|null,keyword: []|null) {
     return this.mainApi.recruit_list(limit,keyword);
   }
-  recruit_listByMemberId(id:number){
+  recruit_listByMemberId(id: number){
     return this.mainApi.recruit_listByMemberId(id);
   }
-  recruitByKeyword(keyword:string){
+  recruitByKeyword(keyword: string){
     return this.mainApi.recruitByKeyword(keyword);
   }
-  recruit_detail(id:number) {
+  recruit_detail(id: number) {
     return this.mainApi.recruit_detail(id);
   }
-  application_list(id:number){
+  application_list(id: number){
     return this.mainApi.application_list(id);
   }
-  application_detail(id:number){
+  application_detail(id: number){
     return this.mainApi.application_detail(id);
   }
-  application_select(applicationId:number){
+  application_select(applicationId: number){
     return this.mainApi.application_select(applicationId);
   }
-  application_fail(applicationId:number){
+  application_fail(applicationId: number){
     return this.mainApi.application_fail(applicationId);
   }
-  application_like(applicationId:number, memberId:number){
+  application_like(applicationId: number, memberId: number){
     return this.mainApi.application_like(applicationId, memberId);
   }
-  application_cancelLike(loginedMemberId:string, applicationId:number, memberId:number){
+  application_cancelLike(loginedMemberId: string, applicationId: number, memberId: number){
     return this.mainApi.application_cancelLike(loginedMemberId, applicationId, memberId);
   }
-  ap_list(recruitId:number){
+  ap_list(recruitId: number){
     return this.mainApi.ap_list(recruitId);
   }
 
-  common_recruit_genFile_doUploadForAdd(file:File) {
+  common_recruit_genFile_doUploadForAdd(file: File) {
     const formDate = new FormData();
     formDate.append("file__recruit__0__common__attachment__1", file);
     return this.mainApi.common_recruit_genFile_doUploadForAdd(file);
   }
 
-  common_pdGenFile_doUpload(file:File,id:string) {
+  common_pdGenFile_doUpload(file: File,id: string) {
     const formDate = new FormData();
     formDate.append("file__pd__"+id+"__common__attachment__1", file);
     return this.mainApi.common_pdGenFile_doUpload(file,id);
   }
 
-  common_recruit_genFile_doUploadForModify(file:any,id:string) {
+  common_recruit_genFile_doUploadForModify(file: any,id: string) {
     const formDate = new FormData();
     formDate.append("file__recruit__"+id+"__common__attachment__1", file);
     return this.mainApi.common_recruit_genFile_doUploadForModify(file,id);
   }
 
-  searchMvList(searchKeyword:string) {
+  searchMvList(searchKeyword: string) {
     return this.mainApi.searchMvList(searchKeyword);
   }
 
-  naverMovieApi(keyword:String){
+  naverMovieApi(keyword: string){
     return this.mainApi.naverMovieApi(keyword);
   }
-  kakaoLocalApi(keyword:string){
+  kakaoLocalApi(keyword: string){
     return this.mainApi.kakaoLocalApi(keyword);
   }
-  sendSms(from:string, to:string, msg:string){
+  sendSms(from: string, to: string, msg: string){
     return this.mainApi.sendSms(from, to, msg);
   }
 
@@ -165,4 +165,4 @@ export const createMainService = () => {
   return Singleton.mainService;
 }
 
-export const useMainService = ():MainService => inject(mainServiceSymbol) as MainService;
+export const useMainService = (): MainService => inject(mainServiceSymbol) as MainService;

@@ -77,21 +77,21 @@ export default defineComponent({
       speed: 400
     };
 
-    function select(application:any){
+    function select(application: any){
       mainService.application_select(application.id)
       .then(axiosResponse => {
 
       });
     }
 
-    function fail(application:any){
+    function fail(application: any){
       mainService.application_fail(application.id)
       .then(axiosResponse => {
 
       })
     }
 
-    function like(application:any){
+    function like(application: any){
       mainService.application_like(application.id, globalState.loginedMember.id)
       .then(axiosResponse => {
         

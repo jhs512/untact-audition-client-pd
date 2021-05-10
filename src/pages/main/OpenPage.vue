@@ -29,6 +29,7 @@
 import { defineComponent } from 'vue'
 import { IonContent, IonPage } from '@ionic/vue';
 import { menuOutline } from 'ionicons/icons'
+import { useGlobalShare } from '@/stores';
 
 
 
@@ -41,7 +42,6 @@ export default defineComponent({
   props:{
   },
   setup(props) {
-    
     
     return {
       menuOutline

@@ -146,7 +146,7 @@ export default defineComponent({
 
 
 
-    function sendMail(email:string){
+    function sendMail(email: string){
       loading.present();            
       mainApiService.pd_sendEmail(email)
         .then(axiosResponse => {
@@ -296,7 +296,7 @@ export default defineComponent({
       
     }
 
-    function join(name:String, regNumber:String, gender:String, cellPhoneNo:String, email:String, address:String, jobPosition:String, loginPw:String) {
+    function join(name: string, regNumber: string, gender: string, cellPhoneNo: string, email: string, address: string, jobPosition: string, loginPw: string) {
        mainApiService.pd_doJoin(name, regNumber, gender, cellPhoneNo, email, address, jobPosition, loginPw)
         .then(axiosResponse => {
 
@@ -321,7 +321,7 @@ export default defineComponent({
       }
     }
 
-    function confirm(result:any){
+    function confirm(result: any){
       if(result.buildingName.length > 0 ){
         input.addressEl = result.address + " ("+result.buildingName +")";
       } else {

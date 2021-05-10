@@ -75,7 +75,7 @@ export const createGlobalState = () => {
   return Singleton.globalState;
 };
 
-export const useGlobalShare = ():GlobalState => inject(globalShareSymbol) as GlobalState;
+export const useGlobalShare = (): GlobalState => inject(globalShareSymbol) as GlobalState;
 
 export const useGlobalStateOnOutsideOfVue = createGlobalState;
 

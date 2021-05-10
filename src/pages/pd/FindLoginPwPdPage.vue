@@ -100,7 +100,7 @@ export default defineComponent({
       findLoginPw(input.loginIdEl, regNumberEl);
     }
 
-    async function findLoginPw( email:String, regNumber:String) {
+    async function findLoginPw( email: string, regNumber: string) {
 
         const loading = await loadingController
           .create({

@@ -199,18 +199,18 @@ export default defineComponent({
         state.apList3PassShow = 3;
       }
 
-    function loadRecruit(id:number) {
+    function loadRecruit(id: number) {
       mainApiService.recruit_detail(id)
       .then(axiosResponse => {
         state.recruit = axiosResponse.data.body.recruit;
-        let today = new Date();
-        let regDate = new Date(state.recruit.deadline);
+        const today = new Date();
+        const regDate = new Date(state.recruit.deadline);
       
         state.dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
       });
     }
 
-    function loadAp(recruitId:number){
+    function loadAp(recruitId: number){
       mainApiService.ap_list(recruitId)
       .then(axiosResponse => {
         state.apListAll = axiosResponse.data.body.apListAll;

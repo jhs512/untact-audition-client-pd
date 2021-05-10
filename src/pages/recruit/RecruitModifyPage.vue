@@ -567,10 +567,10 @@ export default defineComponent({
 
     }
 
-    function modify(recruitmentId:number, memberId:number, rmTitle:String, rmBody:String, rmRoleType:string, rmPay:String, rmLocation:string, rmPeriod:string, rmDeadline:string, rmGender:string, rmAge:[], rmScript:string, rmVideoTime:string, rmEtc:string,
-    awMedia:string, awTitle:String, awDirector:string, awCorp:String, awProducer:String, awManager:string, awGenre:String, awStory:string, awWriter:String, awEtc:String,
-    arRealName:String, arName:String, arAge:String, arGender:String, arJob:String, arScript:String, arScenesCount:String, arShootingsCount:String, arCharacter:String, arEtc:String, 
-     isFileUploaded:boolean) {
+    function modify(recruitmentId: number, memberId: number, rmTitle: string, rmBody: string, rmRoleType: string, rmPay: string, rmLocation: string, rmPeriod: string, rmDeadline: string, rmGender: string, rmAge: [], rmScript: string, rmVideoTime: string, rmEtc: string,
+    awMedia: string, awTitle: string, awDirector: string, awCorp: string, awProducer: string, awManager: string, awGenre: string, awStory: string, awWriter: string, awEtc: string,
+    arRealName: string, arName: string, arAge: string, arGender: string, arJob: string, arScript: string, arScenesCount: string, arShootingsCount: string, arCharacter: string, arEtc: string, 
+     isFileUploaded: boolean) {
        mainApiService.recruit_modify(recruitmentId, memberId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
       awMedia, awTitle, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, isFileUploaded)
@@ -595,17 +595,17 @@ export default defineComponent({
         });
     }
 
-    var fileType = reactive({
+    const fileType = reactive({
       type:''
     })
 
     
-    function setThumbnail(event:any){
+    function setThumbnail(event: any){
       
-      var reader = new FileReader(); 
+      const reader = new FileReader(); 
       fileType.type = event.target.files[0].type as string;
       reader.onload = function(event) { 
-        var element:any;
+        let element: any;
         if( fileType.type.startsWith("image") ){
           element = document.querySelector('img:not(.detail_img)'); 
         }else if ( fileType.type.startsWith("video")) {

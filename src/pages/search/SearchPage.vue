@@ -69,7 +69,7 @@ export default defineComponent({
       recruits:[] as any[]
     })
 
-    function searchKeyword(event:any){
+    function searchKeyword(event: any){
       if( event.target.value.length > 0 ){
 
       mainService.recruitByKeyword(event?.target.value)
@@ -78,9 +78,9 @@ export default defineComponent({
 
         state.recruits = axiosResponse.data.body.recruits;
 
-        for(var i = 0 ; i < state.recruits.length ; i++ ){
-        let today = new Date();
-        let regDate = new Date(state.recruits[i].deadline);
+        for(let i = 0 ; i < state.recruits.length ; i++ ){
+        const today = new Date();
+        const regDate = new Date(state.recruits[i].deadline);
 
         state.recruits[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
         

@@ -69,14 +69,14 @@ const routes: Array<RouteRecordRaw>= [
     {
       path: 'info',
       component: PdInfoPage,
-      props: (route:any) => ( { id: route.query.id, globalState })
+      props: (route: any) => ( { id: route.query.id, globalState })
     }
     ]
   },
   {
     path: '/usr/pd/emailCert',
     component: JoinPdEmailCertPage,
-    props: (route:any) => ( { email:route.query.email, emailCertKey:route.query.key })
+    props: (route: any) => ( { email:route.query.email, emailCertKey:route.query.key })
   },
     {
       path: '/usr/pd/findSelect',
@@ -93,7 +93,7 @@ const routes: Array<RouteRecordRaw>= [
     {
       path: '/usr/pd/modifyPw',
       component: PdModifyPwPage,
-      props: (route:any) => ( { email:route.query.email, emailKey:route.query.key })
+      props: (route: any) => ( { email:route.query.email, emailKey:route.query.key })
     },
   {
     path: '/usr/pd/joinTos',
@@ -110,12 +110,12 @@ const routes: Array<RouteRecordRaw>= [
   {
     path: '/usr/pd/kakaoLogin',
     component: LoginPdKakaoPage,
-    props: (route:any) => ({ code: route.query.code })
+    props: (route: any) => ({ code: route.query.code })
   },
   {
     path: '/usr/pd/modify',
     component: PdModifyPage,
-    props: (route:any) => ( { id: route.query.id, globalState })
+    props: (route: any) => ( { id: route.query.id, globalState })
   },
   {
     path: '/usr/recruit/',
@@ -132,29 +132,29 @@ const routes: Array<RouteRecordRaw>= [
       {
         path: 'admList',
         component: RecruitAdmListPage,
-        props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
+        props: (route: any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
       }
     ]
   },
   {
     path: '/usr/recruit/admDetail',
     component: RecruitAdmDetailPage,
-    props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
+    props: (route: any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
   },
   {
     path: '/usr/recruit/detail',
     component: RecruitDetailPage,
-    props: (route:any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
+    props: (route: any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
   },
   {
     path: '/usr/recruit/write',
     component: RecruitWritePage,
-    props: (route:any) => ({ globalState })
+    props: (route: any) => ({ globalState })
   },
   {
     path: '/usr/recruit/modify',
     component: RecruitModifyPage,
-    props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
+    props: (route: any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
   },
   {
     path: '/usr/application/',
@@ -163,14 +163,14 @@ const routes: Array<RouteRecordRaw>= [
       {
         path:'list',
         component: ApplicationListPage,
-        props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
+        props: (route: any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
       }
     ]
   },
   {
     path: '/usr/application/detail',
     component: ApplicationDetailPage,
-    props: (route:any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
+    props: (route: any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
   }
 ]
 
@@ -183,6 +183,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   globalState.fullPath = to.fullPath;
+  
   
   if(to.path == '/usr/application/list'){
     const mainService = getMainApi();

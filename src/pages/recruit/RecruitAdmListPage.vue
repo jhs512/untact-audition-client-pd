@@ -144,16 +144,16 @@ export default defineComponent({
       state.notExpiredListShow = 3;
     }
 
-    function loadRecruits(id:number) {
+    function loadRecruits(id: number) {
       mainService.recruit_listByMemberId(id)
       .then(axiosResponse => {
 
          state.list = axiosResponse.data.body.recruits;
 
-        for(var i = 0 ; i < axiosResponse.data.body.recruits.length; i++){
+        for(let i = 0 ; i < axiosResponse.data.body.recruits.length; i++){
           
-          let today = new Date();
-          let regDate = new Date(state.list[i].deadline);
+          const today = new Date();
+          const regDate = new Date(state.list[i].deadline);
 
           state.list[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
           if(state.list[i].dateDiff > 0 ){

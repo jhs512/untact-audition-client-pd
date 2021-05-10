@@ -148,7 +148,7 @@ export default defineComponent({
 
       mainApiService.pd_getArtwork(props.id)
       .then(axiosResponse => {
-        if( !!!axiosResponse.data.fail ){
+        if( !axiosResponse.data.fail ){
           state.artworks = axiosResponse.data.body.artworks;
           pdFilmgraphy.movieList = axiosResponse.data.body.artworks;
         }
@@ -157,7 +157,7 @@ export default defineComponent({
     }
 
   
-   function setProfileImg(event:any){
+   function setProfileImg(event: any){
         input.fileEl = event.target.children[0].files[0];
    }
 
@@ -165,7 +165,7 @@ export default defineComponent({
 
     function checkAndModify() {
       pdFilmgraphy.movieList = pdFilmgraphy.movieList;
-      var artwork = JSON.stringify(pdFilmgraphy.movieList);
+      const artwork = JSON.stringify(pdFilmgraphy.movieList);
       
       let loginPwRealEl = '';
         if (input.loginPwEl.length > 0 ){
@@ -193,7 +193,7 @@ export default defineComponent({
 
     }
 
-    function modify(loginedMemberId:string, name:string, loginPwReal:string, address:string, cellPhoneNo:string,  jobPosition:string, corpName:string, artwork:string, isFileUploaded:boolean ){
+    function modify(loginedMemberId: string, name: string, loginPwReal: string, address: string, cellPhoneNo: string,  jobPosition: string, corpName: string, artwork: string, isFileUploaded: boolean ){
          mainApiService.pd_doModify( loginedMemberId, name, loginPwReal, address, cellPhoneNo, jobPosition, corpName, artwork, isFileUploaded )
         .then(axiosResponse => {
           if ( axiosResponse.data.fail ) {
@@ -293,14 +293,14 @@ export default defineComponent({
           arr: pdFilmgraphy.movieList
         })
 
-    function deleteItem(item:any){
-      for(var i = 0; i < items.arr.length; i++) {
+    function deleteItem(item: any){
+      for(let i = 0; i < items.arr.length; i++) {
       if(items.arr[i].title == item.title && items.arr[i].director == item.director){
         pdFilmgraphy.movieList.splice(i, 1);
       }
 
     }
-    };
+    }
 
      const isOpenRef = ref(false);
     
@@ -339,7 +339,7 @@ export default defineComponent({
       }
     }
 
-    function confirm(result:any){
+    function confirm(result: any){
       if(result.buildingName.length > 0 ){
         input.addressEl = result.address + " ("+result.buildingName +")";
       } else {

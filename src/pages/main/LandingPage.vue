@@ -101,21 +101,21 @@ export default defineComponent({
     
     const mainService = useMainService();
     
-    let limit = 2;
+    const limit = 2;
 
       const state = reactive({
       list: [] as any[]
       });
 
-    function loadRecruits(limit:number,keyword:[]|null) {
+    function loadRecruits(limit: number,keyword: []|null) {
       mainService.recruit_list(limit,keyword)
       .then(axiosResponse => {
         
         state.list = axiosResponse.data.body.recruits;
 
-        for(var i = 0 ; i < axiosResponse.data.body.recruits.length; i++){
-          let today = new Date();
-          let regDate = new Date(state.list[i].deadline);
+        for(let i = 0 ; i < axiosResponse.data.body.recruits.length; i++){
+          const today = new Date();
+          const regDate = new Date(state.list[i].deadline);
 
           state.list[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
         }

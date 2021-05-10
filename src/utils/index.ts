@@ -1,10 +1,10 @@
 import { alertController } from "@ionic/vue";
 
-export function isEmptyObject(param:{}) {
+export function isEmptyObject(param: {}) {
   return Object.keys(param).length === 0 && param.constructor === Object;
 }
 
-export function toInt(data:any, defaultValue:any) {
+export function toInt(data: any, defaultValue: any) {
   if ( data == null ) {
     return defaultValue;
   }
@@ -12,15 +12,15 @@ export function toInt(data:any, defaultValue:any) {
   return parseInt(data)
 }
 
-export function toIntOrUnd(data:any) {
+export function toIntOrUnd(data: any) {
   return toInt(data, undefined);
 }
 
-export function toIntOrNull(data:any) {
+export function toIntOrNull(data: any) {
   return toInt(data, null);
 }
 
-export function toStringOrNull(data:any) {
+export function toStringOrNull(data: any) {
   if ( data == null ) {
     return null;
   }
@@ -32,7 +32,7 @@ export function toStringOrNull(data:any) {
   return data;
 }
 
-export function getEmailCertKey(length:number){
+export function getEmailCertKey(length: number){
   let index = 0;
   const arr = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
   'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' ];
@@ -47,7 +47,7 @@ export function getEmailCertKey(length:number){
   return sb;
 }
 
-export async function showAlert(title:string,msg:string, method:any|null) {
+export async function showAlert(title: string,msg: string, method: any|null) {
   const alert = await alertController
   .create({
     header: title,

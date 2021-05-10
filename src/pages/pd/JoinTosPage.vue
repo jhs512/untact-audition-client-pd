@@ -52,21 +52,21 @@ export default defineComponent({
       isCheckTos2: false,
       isCheckTos3: false
     });
-    function checkTos1(event:any) {
+    function checkTos1(event: any) {
       if (event.target.checked) {
         state.isCheckTos1 = true;
       } else {
         state.isCheckTos1 = false;
       }
      }
-     function checkTos2(event:any) {
+     function checkTos2(event: any) {
       if (event.target.checked) {
         state.isCheckTos2 = true;
       } else {
         state.isCheckTos2 = false;
       }
      }
-     function checkTos3(event:any) {
+     function checkTos3(event: any) {
       if (event.target.checked) {
         state.isCheckTos3 = true;
       } else {
@@ -74,7 +74,7 @@ export default defineComponent({
       }
      }
     
-    function check(event:any){
+    function check(event: any){
       if(event.target.checked) {
         state.isCheckTos1 = true;
         state.isCheckTos2 = true;

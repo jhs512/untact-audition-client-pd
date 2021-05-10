@@ -112,7 +112,7 @@ export default defineComponent({
       isFound: false
     });
 
-    function findLoginId( name:String, regNumber:String) {
+    function findLoginId( name: string, regNumber: string) {
        mainApiService.pd_doFindLoginId(name,regNumber)
        .then(axiosResponse => {
           if ( axiosResponse.data.fail ) {

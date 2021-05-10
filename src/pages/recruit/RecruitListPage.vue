@@ -107,15 +107,15 @@ export default defineComponent({
       list: [] as any[]
       });
 
-    function loadRecruits(limit:number,keyword:[]) {
+    function loadRecruits(limit: number,keyword: []) {
       mainService.recruit_list(limit,keyword)
       .then(axiosResponse => {
         
         state.list = axiosResponse.data.body.recruits;
-        for(var i = 0 ; i < axiosResponse.data.body.artworks.length; i++){
+        for(let i = 0 ; i < axiosResponse.data.body.artworks.length; i++){
           
-          let today = new Date();
-          let regDate = new Date(state.list[i].deadline);
+          const today = new Date();
+          const regDate = new Date(state.list[i].deadline);
 
           state.list[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
         }
@@ -134,7 +134,7 @@ export default defineComponent({
     
     
 
-   async function loadData(event:any){
+   async function loadData(event: any){
      if( isAllLoaded == false){
         event.target.removeAttribute('disable');
      }
@@ -148,11 +148,11 @@ export default defineComponent({
       
     }
     
-    function addData(limit:number){
+    function addData(limit: number){
       loadRecruits(limit,filter);
     }
 
-    async function wait(time:any) {
+    async function wait(time: any) {
       return new Promise(resolve => {
         setTimeout(() => {
           resolve('');
@@ -169,7 +169,7 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpenRef.value = isOpened;
       setTimeout(() => {
-         for(var i = 0 ; i < filterItems.length ; i ++){
+         for(let i = 0 ; i < filterItems.length ; i ++){
         if (filter.indexOf(filterItems[i]) >= 0 ) {
           $('.chip_'+i).css("background-color","#C4C4C4");
         }
@@ -203,7 +203,7 @@ export default defineComponent({
 
     ] as any
     
-    function filterAdd (item:string,event:any) {
+    function filterAdd (item: string,event: any) {
       
       if(filter.indexOf(item) < 0 ){
         filter.push(item);

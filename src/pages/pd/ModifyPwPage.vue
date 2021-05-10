@@ -84,7 +84,7 @@ export default defineComponent({
 
     }
 
-    function modifyPw (email:String, key:String, loginPw:String) {
+    function modifyPw (email: string, key: string, loginPw: string) {
         mainApiService.pd_doModifyPw(email,key,loginPw)
         .then(axiosResponse => {
           if(axiosResponse.data.fail){

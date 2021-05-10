@@ -33,7 +33,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge } from '@ionic/vue'
+import { IonContent, IonHeader, IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel } from '@ionic/vue'
 import { calendar , personCircle, homeOutline, searchOutline, newspaperOutline, personOutline } from 'ionicons/icons'
 export default defineComponent({
   props: {
@@ -45,7 +45,7 @@ export default defineComponent({
     }
   },
   components: {
-    IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge
+    IonContent, IonHeader, IonPage, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel
   },
   setup(){
     return {
