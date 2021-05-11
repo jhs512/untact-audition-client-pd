@@ -43,12 +43,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import { IonContent, IonPage, IonSlide, IonSlides, IonButton } from '@ionic/vue';
 import { applicationList, useGlobalShare } from '@/stores';
 import { mainServiceSymbol, useMainService } from '@/services';
 
-
+import * as Util from '@/utils'
 
 export default defineComponent({
   name: 'ApplicationgListPage',
@@ -69,6 +69,12 @@ export default defineComponent({
 
     const globalState = useGlobalShare();
     const mainService = useMainService();
+
+    onMounted(() => {
+      if(globalState.isLogined == false){
+        Util.showAlert("알림", "로그인 후 이용해주세요.", () => location.replace('/'));
+      }
+    })
     
     const list = applicationList.list;
     

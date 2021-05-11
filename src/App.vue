@@ -1,15 +1,16 @@
 <template>
-
   <ion-app>
     <ion-router-outlet />
   </ion-app>
-
-  
 </template>
 
 <script lang="ts">
 import { IonApp, IonRouterOutlet } from '@ionic/vue';
 import { defineComponent } from 'vue';
+import { Plugins } from '@capacitor/core';
+const { App } = Plugins;
+import router from '@/router'
+
 export default defineComponent({
   name: 'App',
   components:{
@@ -22,10 +23,20 @@ export default defineComponent({
     }
   },
   setup(props) {
-   
+
+    App.addListener('appUrlOpen', function (data: any) {
+      const slug = data.url.split(".com").pop();
+      
+      
+      if(slug.startsWith("/usr/pd/kakaoLogin")){
+        const sendCode = slug.split("code=")[1];
+        router.push({ name: 'kakaoLogin' , params: {code: sendCode} });
+      }
+      
+    });
     
     return {
-      
+      router
     }
   }
 });

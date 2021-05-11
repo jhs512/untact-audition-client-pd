@@ -56,6 +56,7 @@ import { IonContent, IonPage, IonSlide, IonSlides, IonButton } from '@ionic/vue'
 import { useGlobalShare } from '@/stores';
 import { useMainService } from '@/services';
 import { IAp } from '@/types';
+import * as Util from '@/utils'
 
 export default defineComponent({
   name: 'ApplicationgDetailPage',
@@ -113,6 +114,9 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      if(globalState.isLogined == false){
+        Util.showAlert("알림", "로그인 후 이용해주세요.", location.replace('/'));
+      }
       loadData();
     });
 

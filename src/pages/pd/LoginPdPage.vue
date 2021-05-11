@@ -28,7 +28,7 @@
     </div>
 
     <div class="mx-auto mt-8">
-      <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=5b941d4fab193384e4d45ed6723fb973&redirect_uri=http://localhost/usr/pd/kakaoLogin">
+      <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=5b941d4fab193384e4d45ed6723fb973&redirect_uri=https://pd.audictionary.com/usr/pd/kakaoLogin">
         <img src="/gen/kakao_login_medium_wide.png" alt="">
       </a>
     </div>
@@ -59,10 +59,12 @@ export default defineComponent({
     IonInput
   },
   props:{
-    
+    id: {
+      type: String,
+      required: true
+    }
   },
-  setup(props) {
-    
+  setup(props) { 
     const globalState = useGlobalShare();
     
     const mainApiService = useMainService();
@@ -129,6 +131,7 @@ export default defineComponent({
     
         });
     }
+
     
     return {
     checkAndLogin,
@@ -136,7 +139,8 @@ export default defineComponent({
     loginPwElRef,
     router,
     returnUpBackOutline,
-    input
+    input,
+    props
    }
   }
   

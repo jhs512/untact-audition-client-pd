@@ -66,7 +66,7 @@ import { defineComponent, reactive, onMounted } from 'vue'
 
 import { IonContent, IonItem ,IonPage, IonButton, IonInfiniteScroll, IonInfiniteScrollContent, IonRefresher, IonRefresherContent, IonPopover, IonTabs, IonTabBar, IonIcon, IonTabButton, IonLabel, IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/vue';
 import { menuOutline, filterOutline, arrowForwardOutline } from 'ionicons/icons'
-
+import * as Util from '@/utils'
 
 import '../global.css'
 
@@ -94,6 +94,11 @@ export default defineComponent({
     IonCardHeader, 
     IonCardSubtitle, 
     IonCardTitle
+    },
+    props:{
+      id: {
+        type: String
+      }
     },
   name: 'LadingPage',
   setup(props) {
@@ -124,6 +129,10 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      if(globalState.isLogined == false){
+        Util.showAlert("알림", "로그인 후 이용해주세요.", () => location.replace('/'));
+        return;
+      }
       loadRecruits(limit,null); 
     });
     
@@ -135,7 +144,8 @@ export default defineComponent({
       menuOutline,
       globalState,
       filterOutline,
-      arrowForwardOutline
+      arrowForwardOutline,
+      props
     }
   }
 })

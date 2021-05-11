@@ -24,7 +24,7 @@ import router from '@/router';
 
 
 export default defineComponent({
-  name: 'LoginPdKakaoPage',
+  name: 'LoginPdKakaoPageForMobile',
   components: {
     IonContent,
     IonPage,
@@ -55,7 +55,7 @@ export default defineComponent({
           localStorage.setItem("loginedMemberEmail", loginedPd.email);
           
           localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra.thumbnail_image_url);
-
+          
           Util.showAlert("알림", axiosResponse.data.msg, () => location.replace('/main/home'));
 
     })

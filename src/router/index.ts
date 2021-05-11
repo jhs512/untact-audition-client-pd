@@ -50,7 +50,7 @@ const routes: Array<RouteRecordRaw>= [
   },
   {
     path: '/land',
-    component: OpenPage
+    component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/main/OpenPage.vue'),
   },
   {
     path: '/main/',
@@ -58,7 +58,8 @@ const routes: Array<RouteRecordRaw>= [
     children: [
       {
         path: 'home',
-        component: LandingPage
+        component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/main/OpenPage.vue'),
+        props: (route: any) => ( { id: route.query.id })
       }
     ]
   },
@@ -68,53 +69,60 @@ const routes: Array<RouteRecordRaw>= [
     children: [
     {
       path: 'info',
-      component: PdInfoPage,
+      component: () => globalState.isLogined ? import('@/pages/pd/PdInfoPage.vue') : import('@/pages/main/OpenPage.vue'),
       props: (route: any) => ( { id: route.query.id, globalState })
     }
     ]
   },
   {
     path: '/usr/pd/emailCert',
-    component: JoinPdEmailCertPage,
+    component: () => globalState.isLogined ? import('@/pages/main/OpenPage.vue') : import('@/pages/pd/JoinPdEmailCertPage.vue'),
     props: (route: any) => ( { email:route.query.email, emailCertKey:route.query.key })
   },
     {
       path: '/usr/pd/findSelect',
-      component: FindSelectPage
+      component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/FindSelectPage.vue')
     },
     {
       path: '/usr/pd/findLoginId',
-      component: PdFindLoginIdPage
+      component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/FindLoginIdPdPage.vue')
     },
     {
       path: '/usr/pd/findLoginPw',
-      component: PdFindLoginPwPage
+      component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/FindLoginPwPdPage.vue')
     },
     {
       path: '/usr/pd/modifyPw',
-      component: PdModifyPwPage,
+      component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/ModifyPwPage.vue'),
       props: (route: any) => ( { email:route.query.email, emailKey:route.query.key })
     },
   {
     path: '/usr/pd/joinTos',
-    component: JoinTosPage
+    component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/JoinTosPage.vue'),
     },
   {
     path: '/usr/pd/join',
-    component: JoinPdPage
+    component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/JoinPdPage.vue'),
+    props: (route: any) => ( { id:route.query.id })
   },
   {
     path: '/usr/pd/login',
-    component: LoginPdPage
+    component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/LoginPdPage.vue'),
+  },
+  {
+    path: '/usr/pd/kakaoLoginForMobile',
+    component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/LoginPdKakaoPageForMobile.vue'),
+    name: "kakaoLogin",
+    props: true
   },
   {
     path: '/usr/pd/kakaoLogin',
-    component: LoginPdKakaoPage,
+    component: () => globalState.isLogined ? import('@/pages/main/LandingPage.vue') : import('@/pages/pd/LoginPdKakaoPage.vue'),
     props: (route: any) => ({ code: route.query.code })
   },
   {
     path: '/usr/pd/modify',
-    component: PdModifyPage,
+    component: () => globalState.isLogined ? import('@/pages/pd/PdModifyPage.vue') : import('@/pages/main/OpenPage.vue'),
     props: (route: any) => ( { id: route.query.id, globalState })
   },
   {
@@ -123,37 +131,37 @@ const routes: Array<RouteRecordRaw>= [
     children: [
       {
         path: 'search',
-        component: SearchPage
+        component: () => globalState.isLogined ? import('@/pages/search/SearchPage.vue') : import('@/pages/main/OpenPage.vue'),
       },
       {
         path: 'list',
-        component: RecruitListPage
+        component: () => globalState.isLogined ? import('@/pages/recruit/RecruitListPage.vue') : import('@/pages/main/OpenPage.vue'),
       },
       {
         path: 'admList',
-        component: RecruitAdmListPage,
+        component: () => globalState.isLogined ? import('@/pages/recruit/RecruitAdmListPage.vue') : import('@/pages/main/OpenPage.vue'),
         props: (route: any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
       }
     ]
   },
   {
     path: '/usr/recruit/admDetail',
-    component: RecruitAdmDetailPage,
+    component: () => globalState.isLogined ? import('@/pages/recruit/RecruitAdmDetailPage.vue') : import('@/pages/main/OpenPage.vue'),
     props: (route: any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
   },
   {
     path: '/usr/recruit/detail',
-    component: RecruitDetailPage,
+    component: () => globalState.isLogined ? import('@/pages/recruit/RecruitDetailPage.vue') : import('@/pages/main/OpenPage.vue'),
     props: (route: any) => ({ id: Util.toIntOrUnd(route.query.id), globalState })
   },
   {
     path: '/usr/recruit/write',
-    component: RecruitWritePage,
+    component: () => globalState.isLogined ? import('@/pages/recruit/RecruitWritePage.vue') : import('@/pages/main/OpenPage.vue'),
     props: (route: any) => ({ globalState })
   },
   {
     path: '/usr/recruit/modify',
-    component: RecruitModifyPage,
+    component: () => globalState.isLogined ? import('@/pages/recruit/RecruitModifyPage.vue') : import('@/pages/main/OpenPage.vue'),
     props: (route: any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
   },
   {
@@ -162,14 +170,14 @@ const routes: Array<RouteRecordRaw>= [
     children:[
       {
         path:'list',
-        component: ApplicationListPage,
+        component: () => globalState.isLogined ? import('@/pages/application/ApplicationListPage.vue') : import('@/pages/main/OpenPage.vue'),
         props: (route: any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
       }
     ]
   },
   {
     path: '/usr/application/detail',
-    component: ApplicationDetailPage,
+    component: () => globalState.isLogined ? import('@/pages/application/ApplicationDetailPage.vue') : import('@/pages/main/OpenPage.vue'),
     props: (route: any) => ({ id:Util.toIntOrUnd(route.query.id), globalState })
   }
 ]
@@ -184,8 +192,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   globalState.fullPath = to.fullPath;
   
-  
   if(to.path == '/usr/application/list'){
+    if(globalState.isLogined == false){
+      Util.showAlert("알림", "로그인 후 이용해주세요.", () => location.replace('/'));
+      return;
+    }
     const mainService = getMainApi();
     const id = Util.toIntOrNull(to.query.id);
     
@@ -199,10 +210,5 @@ router.beforeEach((to, from, next) => {
    }
   
 });
-
-router.afterEach(() => {
-  
-})
-
 
 export default router

@@ -28,7 +28,7 @@
 import { defineComponent, ref, reactive } from 'vue'
 import { IonPage, IonContent, IonIcon, IonInput } from '@ionic/vue'
 import * as Util from '@/utils'
-import router from '@/router'
+
 import { useMainService } from '@/services'
 import { sha256 } from 'js-sha256'
 export default defineComponent({

@@ -8,13 +8,9 @@
 
     <div class="flex flex-col container mx-auto border-t border-b py-2">
       <div class="flex flex-col mx-auto text-center">
-      <div v-if="state.pd.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
-        <img :src="state.pd.extra__thumbImg" class="mx-auto w-60 h-60 object-contain">
-        <ion-button :onclick="deleteProfileImg">프로필 이미지 삭제</ion-button>
-      </div>
-
-       <div v-if="globalState.loginedMember.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
+      <div v-if="globalState.loginedMember.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
         <img :src="globalState.loginedMember.extra__thumbImg" class="mx-auto w-60 h-60 object-contain">
+        <ion-button :onclick="deleteProfileImg">프로필 이미지 삭제</ion-button>
       </div>
       
         <span class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs"><router-link class="w-full block" :to="`/usr/pd/modify?id=${globalState.loginedMember.id}`">프로필 편집</router-link></span>
@@ -166,7 +162,7 @@ export default defineComponent({
 
           globalState.logout();
           
-          location.replace('/');
+          
     });
 
     }
@@ -175,7 +171,7 @@ export default defineComponent({
       mainApiService.pd_doLogout()
       .then(axiosResponse => {
         globalState.logout();
-        location.replace('/');
+        
       })
     }
 
