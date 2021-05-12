@@ -55,6 +55,11 @@ export default defineComponent({
           localStorage.setItem("loginedMemberEmail", loginedPd.email);
           
           localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra.thumbnail_image_url);
+          var thumbUrl = localStorage.getItem("loginedMemberExtra__thumbImg");
+          if(thumbUrl != null){
+            thumbUrl = thumbUrl?.replace("http","https");
+            localStorage.setItem("loginedMemberExtra__thumbImg", thumbUrl);
+          }
           
           Util.showAlert("알림", axiosResponse.data.msg, () => location.replace('/main/home'));
 

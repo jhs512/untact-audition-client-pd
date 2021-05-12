@@ -5,7 +5,7 @@
 
   <div class="container flex flex-1 items-center mx-auto">
     <div class="mx-auto">
-      <span :onclick="locationmove" class="font-coda text-4xl">Audictionary</span>
+      <span class="font-coda text-4xl">Audictionary</span>
     </div>
   </div>
 
@@ -42,14 +42,9 @@ export default defineComponent({
   props:{
   },
   setup(props) {
-
-    function locationmove(){
-      location.replace("/usr/pd/login");
-    }
     
     return {
-      menuOutline,
-      locationmove
+      menuOutline
     }
   }
 })

@@ -1,6 +1,8 @@
 <template>
 <ion-page>
     <ion-content :fullscreen="true">
+      <IonRefresherC></IonRefresherC>
+      <TitleBar title="Audictionary" btn_menu="true" class="border-b"></TitleBar>    
        <ion-slides :options="slideOpts" class="min-h-height mb-20 mt-4">
          <ion-slide v-bind:key="application" v-for="application,index in list">
            <div class="flex flex-col">
@@ -73,6 +75,7 @@ export default defineComponent({
     onMounted(() => {
       if(globalState.isLogined == false){
         Util.showAlert("알림", "로그인 후 이용해주세요.", () => location.replace('/'));
+        return;
       }
     })
     

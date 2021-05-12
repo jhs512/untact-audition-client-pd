@@ -10,7 +10,11 @@
       <div class="flex flex-col mx-auto text-center">
       <div v-if="globalState.loginedMember.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
         <img :src="globalState.loginedMember.extra__thumbImg" class="mx-auto w-60 h-60 object-contain">
-        <ion-button :onclick="deleteProfileImg">프로필 이미지 삭제</ion-button>
+        <ion-button class="btn-deleteProfileImg" v-if="globalState.loginedMember.loginedMemberType != `kakao`" :onclick="deleteProfileImg">프로필 이미지 삭제</ion-button>
+      </div>
+
+      <div v-if="globalState.loginedMember.extra__thumbImg == null" class="img-container mx-4 mb-4 p-4 mt-6">  
+        <img src="https://backend.audictionary.com/gen/common/thumbnail_alt.png" class="mx-auto w-60 h-60 object-contain">
       </div>
       
         <span class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs"><router-link class="w-full block" :to="`/usr/pd/modify?id=${globalState.loginedMember.id}`">프로필 편집</router-link></span>
@@ -240,5 +244,9 @@ ion-card {
   border-radius:25px;
   box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.25);
   border:2px solid #DADADA;
+}
+.btn-deleteProfileImg {
+  border:2px solid black;
+  border-radius:6px;
 }
 </style>

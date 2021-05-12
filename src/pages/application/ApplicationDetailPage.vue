@@ -1,6 +1,8 @@
 <template>
 <ion-page>
     <ion-content :fullscreen="true">
+
+      <IonRefresherC></IonRefresherC>
       
       <div class="flex flex-col min-h-screen mb-20">
         <TitleBar title="Audictionary" btn_back="true"></TitleBar>
@@ -13,8 +15,8 @@
           <span>NAME</span>
           <div class="flex justify-center items-center">
             <span class="flex-1 text-center">{{state.ap.name}}</span>
-            <div class="flex-1" v-if="state.ap.extra != null">
-              <img :src="state.ap.extra.file__profile__attachment.forPrintUrl" alt="">
+            <div class="flex-1" v-if="state.application.extra != null">
+              <img :src="state.application.extra.file__photo__attachment.forPrintUrl" alt="">
             </div>
           </div>  
           <span class="ml-auto">GENDER. {{state.ap.gender}}</span>
@@ -33,8 +35,8 @@
 
         <div class="flex flex-col mx-4 mt-8 p-2">
           <span>1차 오디션 연기영상</span>
-          <div v-if="state.ap.extra != null">
-            <video controls :src="state.ap.extra.file__video__attachment.forPrintUrl"></video>
+          <div v-if="state.application.extra != null">
+            <video controls :src="state.application.extra.file__video__attachment.forPrintUrl"></video>
           </div>
         </div>
 

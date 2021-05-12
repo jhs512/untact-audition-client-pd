@@ -1,6 +1,7 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
+    <IonRefresherC></IonRefresherC>
   <div class="flex flex-col min-h-screen mb-20">
    
   <TitleBar title="Audictionary" btn_back="true"></TitleBar>    
@@ -10,7 +11,7 @@
       <div class="text-lg font-coda font-bold">{{state.recruit.extra__aw_title}}</div>
       <div v-if="state.dateDiff >= 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
       <div v-if="state.dateDiff < 0" class="text-xs mt-2">기한 마감</div>
-      <router-link v-if="state.recruit.memberId == globalState.loginedMember.id && state.recruit.memberTypeCode == globalState.loginedMemberType" :to="`/usr/recruit/modify?id=${state.recruit.id}`">수정</router-link>
+      
 
       <div class="flex">
       <div class="ml-auto mr-4 text-xs font-bold">{{state.recruit.extra__aw_media}}/{{state.recruit.extra__aw_genre}}</div>
@@ -167,9 +168,10 @@
     </div>
 
 
-    <div class="flex w-full mx-auto mt-8 text-sm">
-      <div class="btn-like py-1 px-10 bg-black text-white mx-auto">좋아요</div>
-      <div class="btn-apply py-1 px-10 mx-auto">지원하기</div>
+    <div class="flex justify-center w-full mx-auto mt-8 text-sm">
+      <router-link v-if="state.recruit.memberId == globalState.loginedMember.id && state.recruit.memberTypeCode == globalState.loginedMemberType" :to="`/usr/recruit/modify?id=${state.recruit.id}`">
+        <div class="btn-apply py-1 px-10 mx-auto">수정</div>
+      </router-link>
     </div>
   </div>
   

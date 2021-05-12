@@ -23,7 +23,7 @@
      </ion-card-header>
 
       <div v-if="recruit.extra != null" class="w-60 h-60 mx-auto">  
-      <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="w-60 h-60 object-contain mx-auto">
+        <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="w-60 h-60 object-contain mx-auto">
       </div>
       <!--
       <div v-if="recruit.extra == null" class="w-60 h-60 mx-auto">  

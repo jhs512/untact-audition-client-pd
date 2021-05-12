@@ -1,6 +1,7 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
+    <IonRefresherC></IonRefresherC>
   <div class="flex flex-col min-h-screen mb-20">
    
   <TitleBar title="Audictionary" btn_back="true"></TitleBar>    

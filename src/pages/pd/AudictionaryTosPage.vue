@@ -442,7 +442,12 @@ export default defineComponent({
   name: 'AudictionaryTosPage',
   components: {
     IonBackButton,
-    IonButtons, IonTitle, IonContent, IonHeader, IonToolbar, IonPage
+    IonButtons, 
+    IonTitle, 
+    IonContent, 
+    IonHeader, 
+    IonToolbar, 
+    IonPage
   },
   props:{
     modalController:{
