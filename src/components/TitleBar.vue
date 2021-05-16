@@ -1,10 +1,11 @@
 <template>
-  <div class="my-4 container flex items-center mx-auto">
+  <div class="w-full flex items-center mx-auto border-b">
       <div class="mx-auto w-full flex justify-center items-center relative">
         <div class="font-coda w-full text-center flex items-center justify-center h-14 text-xl">{{title}}</div>
         <div v-if="btn_back == 'true'" class="hisback absolute left-5">
             <ion-back-button default-href="/"></ion-back-button>
         </div>
+        <!-- 임시로 메뉴 (마이페이지,프로필 편집,로그아웃) 로 구성 -->
         <div v-if="btn_menu == 'true'" class="btn-menu absolute right-2" @click="setOpen(true, $event)">
              <ion-button slots ="icon-only" fill="clear" color="dark" class="relative">
               <FontAweSomeIcon icon="bars"></FontAweSomeIcon>  
@@ -33,6 +34,9 @@ export default defineComponent({
       type: String
     },
     btn_menu:{
+      type: String
+    },
+    btn_back_href:{
       type: String
     }
   },

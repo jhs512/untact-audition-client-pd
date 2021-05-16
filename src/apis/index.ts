@@ -214,6 +214,12 @@ export interface MainApi__application_select__IResponseBody extends Base__IRespo
     id: number;
   };
 }
+export interface MainApi__application_like__IResponseBody extends Base__IResponseBodyType1 {
+  body: {
+    id: number;
+    isLike: boolean;
+  };
+}
 export interface MainApi__ap_select__IResponseBody extends Base__IResponseBodyType1 {
   body: {
     id: number;
@@ -258,8 +264,8 @@ export class MainApi extends HttpClient {
   public constructor() {
     super(
       axios.create({
-      // baseURL:'http://172.30.1.15:8024/',
-       baseURL:'https://backend.audictionary.com/'
+      // baseURL:'http://172.30.1.15:8024/', // 테스트용 로컬아이피
+      baseURL:'https://backend.audictionary.com/' // 서비스용 백엔드주소
       })
     );
   }
@@ -323,11 +329,12 @@ export class MainApi extends HttpClient {
   public pd_showDetail( loginedMemberId: string ) {
     return this.get<MainApi__pd_showDetail__IResponseBody>(`/usr/pd/showDetail?id=${loginedMemberId}`);
   }
-
   public pd_getArtwork( loginedMemberId: string ) {
     return this.get<MainApi__pd_getArtwork__IResponseBody>(`/usr/pd/getArtwork?loginedMemberId=${loginedMemberId}`);
   }
-
+  public pd_deleteArtwork( artworkId: number ) {
+    return this.get<MainApi__pd_getArtwork__IResponseBody>(`/usr/pd/deleteArtwork?id=${artworkId}`);
+  }
   public pd_update(loginedMemberId: string) {
     return this.postByForm<MainApi__pd_doUpdate__IResponseBody>(`/usr/pd/update`, {loginedMemberId} );
   }
@@ -340,10 +347,9 @@ export class MainApi extends HttpClient {
   public pd_doModifyPw( email: string, key: string, loginPw: string ) {
     return this.postByForm<MainApi__pd_doModifyPw__IResponseBody>(`/usr/pd/doModifyPw`,{ email, key, loginPw });
   }
-  public pd_doDelete( loginedMemberId: number ) {
-    return this.postByForm<MainApi__pd_doDelete__IResponseBody>(`/usr/pd/doDelete`,{ loginedMemberId });
+  public pd_doDelete( loginedMemberId: number, loginedMemberType:String, ) {
+    return this.postByForm<MainApi__pd_doDelete__IResponseBody>(`/usr/pd/doDelete`,{ loginedMemberId , loginedMemberType});
   }
-
   public recruit_write(memberTypeCode: string, memberId: number, boardId: number, rmTitle: string, rmBody: string, rmRoleType: string, rmPay: string, rmLocation: string, rmPeriod: string, rmDeadline: string, rmGender: string, rmAge: [], rmScript: string, rmVideoTime: string, rmEtc: string,
     awMedia: string, awTitle: string, awDirector: string, awCorp: string, awProducer: string, awManager: string, awGenre: string, awStory: string, awWriter: string, awEtc: string,
     arRealName: string, arName: string, arAge: string, arGender: string, arJob: string, arScript: string, arScenesCount: string, arShootingsCount: string, arCharacter: string, arEtc: string, 
@@ -377,11 +383,11 @@ export class MainApi extends HttpClient {
   public recruit_showList_orderBy_deadline(){
     return this.get<MainApi__recruit_list__IResponseBody>(`/usr/recruit/listOrderByDeadline`)
   }
-  public application_list(id: number){
-    return this.get<MainApi__application_list__IResponseBody>(`/usr/application/list?id=${id}`)
+  public application_list(id: number, loginedMemberId:number){
+    return this.get<MainApi__application_list__IResponseBody>(`/usr/application/list?id=${id}&loginedMemberId=${loginedMemberId}`)
   }
-  public application_detail(id: number){
-    return this.get<MainApi__application_detail__IResponseBody>(`/usr/application/detail?id=${id}`)
+  public application_detail(id: number, loginedMemberId:number){
+    return this.get<MainApi__application_detail__IResponseBody>(`/usr/application/detail?id=${id}&loginedMemberId=${loginedMemberId}`)
   }
   public application_select(applicationId: number){
     return this.get<MainApi__ap_select__IResponseBody>(`/usr/application/select?applicationId=${applicationId}`)
@@ -390,7 +396,7 @@ export class MainApi extends HttpClient {
     return this.get<MainApi__ap_select__IResponseBody>(`/usr/application/fail?applicationId=${applicationId}`)
   }
   public application_like(applicationId: number, memberId: number){
-    return this.get<MainApi__ap_select__IResponseBody>(`/usr/application/like?applicationId=${applicationId}&memberId=${memberId}`)
+    return this.get<MainApi__application_like__IResponseBody>(`/usr/application/like?applicationId=${applicationId}&memberId=${memberId}`)
   }
   public application_cancelLike(loginedMemberId: string, applicationId: number, memberId: number){
     return this.get<MainApi__application_list__IResponseBody>(`/usr/application/cancelLike?id=${loginedMemberId}&applicationId=${applicationId}&memberId=${memberId}`)

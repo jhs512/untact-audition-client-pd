@@ -25,7 +25,7 @@ export interface IPd extends IEntity {
   jobPosition: string;
   corpName: string;
   corpType: string;
-  extra__thumbImg: string;
+  extra__thumbImg: string|null;
 }
 
 export interface IAp extends IEntity {

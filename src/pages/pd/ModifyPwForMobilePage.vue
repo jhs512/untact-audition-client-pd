@@ -1,23 +1,23 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
-  <div class="login-form flex flex-col relative min-h-screen mb-20">
+    <div class="login-form flex flex-col relative min-h-screen mb-20">
 
-    <TitleBar title="비밀번호 재설정"></TitleBar>
+      <TitleBar title="비밀번호 재설정"></TitleBar>
 
-    <div class=" w-60 mx-auto mt-8 flex flex-col">
-      <form action="" v-on:submit.prevent="checkAndModify">
-        <FormRow title="비밀번호:">
-          <ion-input v-model="input.loginPwEl" ref="loginPwElRef" pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" inputmode="password" type="password" class="w-full mt-2px"></ion-input>
-        </FormRow>
-        <FormRow title="비밀번호 확인:">
-          <ion-input v-model="input.loginPwCfEl" inputmode="password" pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" type="password" class="w-full mt-2px"></ion-input>
-        </FormRow>
-        <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="완료">
-      </form>
+      <div class=" w-60 mx-auto mt-8 flex flex-col">
+        <form action="" v-on:submit.prevent="checkAndModify">
+          <FormRow title="비밀번호:">
+            <ion-input v-model="input.loginPwEl" ref="loginPwElRef" pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" inputmode="password" type="password" class="w-full mt-2px"></ion-input>
+          </FormRow>
+          <FormRow title="비밀번호 확인:">
+            <ion-input v-model="input.loginPwCfEl" inputmode="password" pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" type="password" class="w-full mt-2px"></ion-input>
+          </FormRow>
+          <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="완료">
+        </form>
+      </div>
+
     </div>
-
-  </div>
   </ion-content>
 </ion-page>
 
@@ -31,7 +31,7 @@ import { useMainService } from '@/services'
 import { sha256 } from 'js-sha256'
 
 export default defineComponent({
-  name: 'FindLoginPwPdPage',
+  name: 'FindLoginPwForMobilePdPage',
   components: {
     IonPage,
     IonContent,
@@ -49,7 +49,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    
     const mainApiService = useMainService();
 
     const input = reactive ({

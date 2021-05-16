@@ -4,58 +4,63 @@
     
   <IonRefresherC></IonRefresherC>
 
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-screen container mx-auto">
     
-    <TitleBar title="Audictionary" btn_menu="true" class="border-b"></TitleBar>    
+      <TitleBar title="Audictionary" btn_menu="true" class="border-b"></TitleBar>    
 
-    <div class="ml-8 font-bold mb-4">
-      <span class="subtitle">방금 올라온 공고</span>
-    </div>
-
-   <router-link :to="`/usr/recruit/detail?id=${recruit.id}`" v-bind:key="recruit" v-for="recruit in state.list">
-    <ion-card class="text-white py-4 mb-2 mt-0">
-     <ion-card-header class="text-center">
-       <ion-card-title>가제 : {{recruit.extra__aw_title}}</ion-card-title>
-       <ion-card-subtitle>감독 : {{recruit.extra__aw_director}}</ion-card-subtitle>
-       <ion-card-subtitle v-if="recruit.dateDiff > 0">기한 : {{recruit.dateDiff}}일</ion-card-subtitle>
-       <ion-card-subtitle v-if="recruit.dateDiff == 0">기한 : 오늘까지</ion-card-subtitle>
-       <ion-card-subtitle v-if="recruit.dateDiff < 0">기한 마감</ion-card-subtitle>
-     </ion-card-header>
-
-      <div v-if="recruit.extra != null" class="w-60 h-60 mx-auto">  
-        <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="w-60 h-60 object-contain mx-auto">
+      <div class="ml-8 mt-8 font-bold mb-4">
+        <span class="subtitle">방금 올라온 공고</span>
       </div>
-      <!--
-      <div v-if="recruit.extra == null" class="w-60 h-60 mx-auto">  
-        <img src="/gen/Avatar.jpeg" alt="Avatar" class="w-60 h-60 object-contain mx-auto">
+
+      <router-link :to="`/usr/recruit/detail?id=${recruit.id}`" v-bind:key="recruit" v-for="recruit in state.list">
+        <ion-card class="text-white py-4 mb-2 mt-0">
+          <ion-card-header class="text-center">
+            <ion-card-title>가제 : {{recruit.extra__aw_title}}</ion-card-title>
+            <ion-card-subtitle>감독 : {{recruit.extra__aw_director}}</ion-card-subtitle>
+            <ion-card-subtitle v-if="recruit.dateDiff > 0">기한 : {{recruit.dateDiff}}일</ion-card-subtitle>
+            <ion-card-subtitle v-if="recruit.dateDiff == 0">기한 : 오늘까지</ion-card-subtitle>
+            <ion-card-subtitle v-if="recruit.dateDiff < 0">기한 마감</ion-card-subtitle>
+          </ion-card-header>
+
+          <div v-if="recruit.extra != null" class="w-60 h-60 mx-auto">  
+            <img :src="recruit.extra.file__common__attachment[1].forPrintUrl" alt="" class="w-60 h-60 object-contain mx-auto">
+          </div>
+
+          <div v-if="recruit.extra == null" class="w-60 h-60 mx-auto border-2 flex justify-center items-center">  
+            <span class="text-black">이미지가 없습니다.</span>
+          </div>
+          <!-- 공고 섬네일이 없으면 대체 이미지 나오기
+          <div v-if="recruit.extra == null" class="w-60 h-60 mx-auto">  
+            <img src="/gen/Avatar.jpeg" alt="Avatar" class="w-60 h-60 object-contain mx-auto">
+          </div>
+          -->
+          <ion-card-header class="text-center">
+            <ion-card-subtitle>배역이름 : {{recruit.extra__ar_name}}</ion-card-subtitle>
+            <ion-card-subtitle>배역설명 : {{recruit.extra__ar_character}}</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </router-link>
+
+      <!-- 임시로 없앴음. 수정되면 주석 해제할 것
+      <div class="ml-8 font-bold mb-1 mt-8">
+        <span class="subtitle">많이 물어본 질문</span>
       </div>
+
+      <ion-card class="mt-2 mb-2 py-4">
+        <ion-card-header>
+          <ion-card-title class="text-lg text-center">캐스팅은 어떻게 진행되나요?</ion-card-title>
+          <ion-card-title class="text-right text-base flex justify-end items-center"><span>알아보기<ion-icon :icon="arrowForwardOutline"></ion-icon></span></ion-card-title>
+        </ion-card-header>
+      </ion-card>
+
+      <ion-card class="mt-2 py-4">
+        <ion-card-header>
+          <ion-card-title class="text-lg text-center">익명성 보장이 되나요?</ion-card-title>
+          <ion-card-title class="text-right text-base flex justify-end items-center"><span>알아보기<ion-icon :icon="arrowForwardOutline"></ion-icon></span></ion-card-title>
+        </ion-card-header>
+      </ion-card>
       -->
-      <ion-card-header class="text-center">
-        <ion-card-subtitle>배역이름 : {{recruit.extra__ar_name}}</ion-card-subtitle>
-        <ion-card-subtitle>배역설명 : {{recruit.extra__ar_character}}</ion-card-subtitle>
-      </ion-card-header>
-    </ion-card>
-    </router-link>
-
-    <div class="ml-8 font-bold mb-1 mt-8">
-      <span class="subtitle">많이 물어본 질문</span>
     </div>
-
-    <ion-card class="mt-2 mb-2 py-4">
-      <ion-card-header>
-        <ion-card-title class="text-lg text-center">캐스팅은 어떻게 진행되나요?</ion-card-title>
-        <ion-card-title class="text-right text-base flex justify-end items-center"><span>알아보기<ion-icon :icon="arrowForwardOutline"></ion-icon></span></ion-card-title>
-      </ion-card-header>
-    </ion-card>
-
-    <ion-card class="mt-2 py-4">
-      <ion-card-header>
-        <ion-card-title class="text-lg text-center">익명성 보장이 되나요?</ion-card-title>
-        <ion-card-title class="text-right text-base flex justify-end items-center"><span>알아보기<ion-icon :icon="arrowForwardOutline"></ion-icon></span></ion-card-title>
-      </ion-card-header>
-    </ion-card>
-    
-  </div>
 
 </ion-content>
 </ion-page>
@@ -103,31 +108,9 @@ export default defineComponent({
   name: 'LadingPage',
   setup(props) {
     const globalState = useGlobalShare();
-    
     const mainService = useMainService();
-    
-    const limit = 2;
 
-      const state = reactive({
-      list: [] as any[]
-      });
-
-    function loadRecruits(limit: number,keyword: []|null) {
-      mainService.recruit_list(limit,keyword)
-      .then(axiosResponse => {
-        
-        state.list = axiosResponse.data.body.recruits;
-
-        for(let i = 0 ; i < axiosResponse.data.body.recruits.length; i++){
-          const today = new Date();
-          const regDate = new Date(state.list[i].deadline);
-
-          state.list[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
-        }
-        
-      })
-    }
-
+    // 페이지가 불러와지면 로그인 여부 체크 후 recruits 정보 받아옴
     onMounted(() => {
       if(globalState.isLogined == false){
         Util.showAlert("알림", "로그인 후 이용해주세요.", () => location.replace('/'));
@@ -135,6 +118,28 @@ export default defineComponent({
       }
       loadRecruits(limit,null); 
     });
+
+    const limit = 2; // 대표로 보여질 공고 게시물 개수
+
+    const state = reactive({
+      list: [] as any[]
+    });
+
+    function loadRecruits(limit: number,keyword: []|null) {
+      mainService.recruit_list(limit,keyword)
+      .then(axiosResponse => {
+        
+        state.list = axiosResponse.data.body.recruits;
+
+        // 게시물의 regDate정보로 기한이 며칠 남았는지 계산해서 각 객체에 넣습니다.
+        for(let i = 0 ; i < axiosResponse.data.body.recruits.length; i++){
+          const today = new Date();
+          const regDate = new Date(state.list[i].deadline);
+
+          state.list[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
+        }
+      })
+    }
     
     
     

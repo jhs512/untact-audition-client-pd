@@ -1,80 +1,78 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
-  <div class="flex flex-col relative min-h-screen mb-20">
+    <div class="flex flex-col relative min-h-screen mb-20">
 
-    <TitleBar title="회원가입 페이지" btn_back="true"></TitleBar>
+      <TitleBar title="회원가입 페이지" btn_back="true"></TitleBar>
 
-    <div class="mx-4 mt-8 flex flex-col flex-1">
-      <form action="" v-on:submit.prevent="checkAndJoin">
-        <FormRow title="이름:">
-          <ion-input v-model="input.nameEl" ref="nameElRef" type="text" placeholder="이름" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-        </FormRow>
+      <div class="mx-4 mt-8 flex flex-col flex-1">
+        <form action="" v-on:submit.prevent="checkAndJoin">
+          <FormRow title="이름:">
+            <ion-input v-model="input.nameEl" ref="nameElRef" type="text" placeholder="이름" autofocus="true" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+          </FormRow>
 
-        <FormRow title="주민등록번호:">
-          <div class="flex items-center w-full mt-2">
-            <ion-input class="flex-1" v-model="input.regNumber1El" type="text" ref="regNumber1ElRef" maxlength="6" inputmode="decimal" placeholder="앞 6자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-            <span class="mx-2">-</span>
-            <div class="flex  items-center flex-1">
-              <div class="w-10">
-                <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" maxlength="1" inputmode="decimal" placeholder="뒤 1자리" required="true" enterkeyhint="next"></ion-input>
+          <FormRow title="주민등록번호:">
+            <div class="flex items-center w-full mt-2">
+              <ion-input class="flex-1" v-model="input.regNumber1El" type="text" pattern="([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))" ref="regNumber1ElRef" maxlength="6" inputmode="decimal" placeholder="앞 6자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+              <span class="mx-2">-</span>
+              <div class="flex  items-center flex-1">
+                <div class="w-10">
+                  <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" pattern="^[1-4]$" maxlength="1" inputmode="decimal" placeholder="뒤 1자리" required="true" enterkeyhint="next"></ion-input>
+                </div>
+                <span class="flex-1 flex justify-around">
+                  <span>*</span>
+                  <span>*</span>
+                  <span>*</span>
+                  <span>*</span>
+                  <span>*</span>
+                  <span>*</span>
+                </span>
               </div>
-              <span class="flex-1 flex justify-around">
-                <span>*</span>
-                <span>*</span>
-                <span>*</span>
-                <span>*</span>
-                <span>*</span>
-                <span>*</span>
-              </span>
             </div>
-          </div>
-        </FormRow>
+          </FormRow>
 
-        <FormRow title="휴대폰:">
-          <ion-input v-model="input.cellPhoneNoEl" ref="cellPhoneNoElRef" type="text" inputmode="decimal" placeholder="전화번호" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-        </FormRow>
+          <FormRow title="휴대폰:">
+            <ion-input v-model="input.cellPhoneNoEl" ref="cellPhoneNoElRef" pattern="(^02.{0}|^01.{1}|[0-9]{3})([0-9]{4})([0-9]{4})" type="text" inputmode="decimal" placeholder="전화번호" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+          </FormRow>
 
-        <FormRow title="이메일(아이디):">
-          <ion-input v-model="input.emailEl" ref="emailElRef" type="text" inputmode="email" placeholder="이메일(아이디)" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-          <div class="btn-cert text-10px top-full right-0 px-3 py-1 mt-1 absolute z-50" v-on:click="emailCert">인증하기</div>
-        </FormRow>
-        <div class="text-10px"></div>
+          <FormRow title="이메일(아이디):">
+            <ion-input v-model="input.emailEl" ref="emailElRef" type="text" pattern="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$" inputmode="email" placeholder="이메일(아이디)" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+            <div class="btn-cert text-10px top-full right-0 px-3 py-1 mt-1 absolute z-50" v-on:click="emailCert">인증하기</div>
+          </FormRow>
 
-        <FormRow class="mt-7" title="주소:">
-          <ion-input readonly="true" v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" required="true" enterkeyhint="next" class="input-address relative pr-10">
-            <ion-button color="light" class="absolute right-0" @click="openApi">검색</ion-button>
-          </ion-input>
-          <div v-if="api.isTrue" class="my-4">
-          <VueDaumPostcode @complete="confirm"/>
-        </div>
-          <ion-input v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" required="true" enterkeyhint="next" class="mt-2"></ion-input>
-        </FormRow>
+          <FormRow class="mt-7" title="주소:">
+            <ion-input readonly="true" v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" required="true" enterkeyhint="next" class="input-address relative pr-10">
+              <ion-button color="light" class="absolute right-0" @click="openApi">검색</ion-button>
+            </ion-input>
+            <div v-if="api.isTrue" class="my-4">
+              <VueDaumPostcode @complete="confirm"/>
+            </div>
+            <ion-input v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" required="true" enterkeyhint="next" class="mt-2"></ion-input>
+          </FormRow>
 
-        <FormRow title="직급:">
-          <ion-input v-model="input.jobPositionEl" ref="jobPositionElRef" type="text" placeholder="직급" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-        </FormRow>
+          <FormRow title="직급:">
+            <ion-input v-model="input.jobPositionEl" ref="jobPositionElRef" type="text" placeholder="직급" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+          </FormRow>
 
-        <FormRow title="PASSWORD:">
-          <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password" placeholder="비밀번호" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-        </FormRow>
+          <FormRow title="PASSWORD:">
+            <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password" pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" placeholder="비밀번호" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+            <span class="text-xs">* 영어,숫자,특수문자 포함 8~16자리</span>
+          </FormRow>
 
-        <FormRow title="PASSWORD CONFIRM:">
-          <ion-input v-model="input.loginPwCfEl" ref="loginPwCfElRef" type="password" placeholder="비밀번호 확인" clear-input="true" required="true" enterkeyhint="done"></ion-input>
-        </FormRow>
+          <FormRow title="PASSWORD CONFIRM:">
+            <ion-input v-model="input.loginPwCfEl" ref="loginPwCfElRef" type="password" pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" placeholder="비밀번호 확인" clear-input="true" required="true" enterkeyhint="done"></ion-input>
+          </FormRow>
 
-        <div>
-          <input type="submit" class="w-full my-10 text-center btn-next text-xs text-white mx-auto p-2" value="완료">
-        </div> 
-      </form>
+          <div>
+            <input type="submit" class="w-full my-10 text-center btn-next text-xs text-white mx-auto p-2" value="완료">
+          </div> 
+        </form>
+      </div>
+      
+      
     </div>
-    
-    
-  </div>
-
   </ion-content>
   </ion-page>
-
 </template>
 
 <script lang="ts">
@@ -99,10 +97,7 @@ export default defineComponent({
     IonLoading,
     loadingController
   },
-  props:{
-
-  },
-  setup(props) {
+  setup() {
     
     const mainApiService = useMainService();
 
@@ -129,22 +124,17 @@ export default defineComponent({
       loginPwCfEl:''
     })
     
-    let isEmailCert = false;
-    
     async function emailCert() {
       if( input.emailEl.length == 0 ){
         alert("이메일을 입력해주세요.");
         return;
       }
       
-        const loading = await loadingController
-          .create({
-          cssClass: 'my-custom-class',
-          message: '인증 메일을 전송하고 있습니다.',
-        });
-        
-
-
+      const loading = await loadingController
+        .create({
+        cssClass: 'my-custom-class',
+        message: '인증 메일을 전송하고 있습니다.',
+      });
 
     function sendMail(email: string){
       loading.present();            
@@ -170,12 +160,7 @@ export default defineComponent({
           }
           sendMail(input.emailEl);
         });
-       
-
     }
-
-
-    
     
     function checkAndJoin() {
       // 이름 체크
@@ -210,7 +195,6 @@ export default defineComponent({
       }
 
       const regNumberEl = input.regNumber1El + input.regNumber2El;  
-      
 
       // 휴대폰 체크
       if ( cellPhoneNoElRef.value == null ) {
@@ -253,7 +237,6 @@ export default defineComponent({
         return;
       }
       
-
       // 패스워드 체크
       if ( loginPwElRef.value == null ) {
         return;
@@ -284,27 +267,23 @@ export default defineComponent({
       
       const loginPwRealEl = sha256(input.loginPwEl);
 
-          mainApiService.pd_checkEmailCertificated(input.emailEl)
-            .then(axiosResponse => {
-              if ( axiosResponse.data.fail ) {
-              Util.showAlert("알림",axiosResponse.data.msg,null);
-                return;
-              }
-              isEmailCert = true;  
-               join(input.nameEl, regNumberEl , gender, input.cellPhoneNoEl , input.emailEl, addressEl, input.jobPositionEl, loginPwRealEl );
-            });
-      
+      mainApiService.pd_checkEmailCertificated(input.emailEl)
+        .then(axiosResponse => {
+          if ( axiosResponse.data.fail ) {
+            Util.showAlert("알림",axiosResponse.data.msg,null);
+            return;
+          }
+          join(input.nameEl, regNumberEl , gender, input.cellPhoneNoEl , input.emailEl, addressEl, input.jobPositionEl, loginPwRealEl );
+        });
     }
 
     function join(name: string, regNumber: string, gender: string, cellPhoneNo: string, email: string, address: string, jobPosition: string, loginPw: string) {
        mainApiService.pd_doJoin(name, regNumber, gender, cellPhoneNo, email, address, jobPosition, loginPw)
         .then(axiosResponse => {
-
           if ( axiosResponse.data.fail ) {
             Util.showAlert("알림",axiosResponse.data.msg, null);
             return;
           }
-          
           Util.showAlert("알림",axiosResponse.data.msg,() => location.replace('/usr/pd/login'));
         });
     }
@@ -328,9 +307,7 @@ export default defineComponent({
         input.addressEl = result.address;
       }
       api.isTrue = false;
-    }
-
-      
+    } 
       
     return {
     api,
@@ -369,5 +346,4 @@ input, ion-input {
 .input-address{
   --padding-end:70px;
 }
-
 </style>

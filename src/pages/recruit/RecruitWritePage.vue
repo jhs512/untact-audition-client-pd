@@ -1,273 +1,262 @@
 <template>
 <ion-page>
   <ion-content fullscreen="true">
-  <div class="flex flex-col relative min-h-screen mb-20">
+    <div class="flex flex-col relative min-h-screen mb-20">
 
-    <TitleBar v-if="state.pageNum == 1" title="공고 등록 페이지" btn_back="true"></TitleBar>
+      <TitleBar v-if="state.pageNum == 1" title="공고 등록 페이지" btn_back="true"></TitleBar>
 
-    <TitleBar v-if="state.pageNum == 2" title="작품 정보 등록 페이지" btn_back="true"></TitleBar>
+      <TitleBar v-if="state.pageNum == 2" title="작품 정보 등록 페이지" btn_back="true"></TitleBar>
 
-    <TitleBar v-if="state.pageNum == 3" title="배역 정보 등록 페이지" btn_back="true"></TitleBar>
+      <TitleBar v-if="state.pageNum == 3" title="배역 정보 등록 페이지" btn_back="true"></TitleBar>
 
-    <div class="container mx-auto mt-8">
-      <form action="" v-on:submit.prevent="checkAndWrite" class="mx-4">
+      <div class="container mx-auto mt-8">
+        <form action="" v-on:submit.prevent="checkAndWrite" class="mx-4">
 
-       <!-- 페이지 1 --> 
-      <section v-show="state.pageNum == 1" >
+          <!-- 페이지 1 --> 
+          <section v-show="state.pageNum == 1" >
 
-        <div class="mx-auto text-center">
-        <span class="subtitle">공고 작성</span>
-        </div>
+            <div class="mx-auto text-center">
+              <span class="subtitle">공고 작성</span>
+            </div>
 
-        <FormRow title="제목:">
-          <ion-input v-model="input.rmTitleEl" placeholder="공고 제목" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="제목:">
+              <ion-input v-model="input.rmTitleEl" placeholder="공고 제목" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="내용:">
-          <ion-textarea v-model="input.rmBodyEl" placeholder="공고 내용"></ion-textarea>
-        </FormRow>
+            <FormRow title="내용:">
+              <ion-textarea v-model="input.rmBodyEl" placeholder="공고 내용"></ion-textarea>
+            </FormRow>
 
-        <FormRow title="배역타입:">
-          <ion-input v-model="input.rmRoleTypeEl" placeholder="배역타입 ex) 주연, 조연, 단역" type="text" class="p-1 w-full mt-2px"></ion-input>
-        </FormRow>
+            <FormRow title="배역타입:">
+              <ion-input v-model="input.rmRoleTypeEl" placeholder="배역타입 ex) 주연, 조연, 단역" type="text" class="p-1 w-full mt-2px"></ion-input>
+            </FormRow>
 
-        <FormRow title="출연료:">
-          <ion-input v-model="input.rmPayEl" type="text"></ion-input> 
-        </FormRow>
+            <FormRow title="출연료:">
+              <ion-input v-model="input.rmPayEl" type="text"></ion-input> 
+            </FormRow>
 
-        <hr class="my-8">
+            <hr class="my-8">
 
-        <div class="mx-auto text-center">
-        <span class="subtitle">촬영 설명</span>
-        </div>
+            <div class="mx-auto text-center">
+              <span class="subtitle">촬영 설명</span>
+            </div>
 
-        <FormRow title="촬영장소:">
-          <ion-input v-model="input.rmLocationEl" placeholder="촬영장소" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="촬영장소:">
+              <ion-input v-model="input.rmLocationEl" placeholder="촬영장소" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="촬영기간:">
-          <ion-input v-model="input.rmPeriodEl" placeholder="촬영기간" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="촬영기간:">
+              <ion-input v-model="input.rmPeriodEl" placeholder="촬영기간" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="모집기한날짜:">
-          <ion-item lines="none">
-            <ion-datetime v-model="input.rmDeadlineEl" id="ion-datetime" placeholder="날짜를 선택해주세요." picker-format="YYYYMMDD" display-format="YYYY - MM - DD" max="2050-12-31" :min="today" done-text="확인" cancel-text="취소"></ion-datetime>
-          </ion-item>
-         
-        </FormRow>
+            <FormRow title="모집기한날짜:">
+              <ion-item lines="none">
+                <ion-datetime v-model="input.rmDeadlineEl" id="ion-datetime" placeholder="날짜를 선택해주세요." picker-format="YYYYMMDD" display-format="YYYY - MM - DD" max="2050-12-31" :min="today" done-text="확인" cancel-text="취소"></ion-datetime>
+              </ion-item>
+            </FormRow>
 
-        <hr class="my-8">
+            <hr class="my-8">
 
-        <div class="mx-auto text-center">
-        <span class="subtitle">지원 요건</span>
-        </div>
+            <div class="mx-auto text-center">
+              <span class="subtitle">지원 요건</span>
+            </div>
 
-         <FormRow title="성별:">
-          <div class="flex">
-            <input id="rmGenderM" ref="rmGenderMElRef" name="rmGender" type="radio"  value="남자">
-            <label for="rmGenderM" class="py-3 w-full mt-2px text-center">남자</label>
-            <input id="rmGenderF" ref="rmGenderFElRef" name="rmGender" type="radio" value="여자">
-            <label for="rmGenderF" class="py-3 w-full mt-2px text-center">여자</label>
-            <input id="rmGenderX" ref="rmGenderXElRef" name="rmGender" type="radio" value="상관없음">
-            <label for="rmGenderX" class="py-3 w-full mt-2px text-center">상관없음</label>
-          </div>
-        </FormRow>
+            <FormRow title="성별:">
+              <div class="flex">
+                <input id="rmGenderM" ref="rmGenderMElRef" name="rmGender" type="radio"  value="남자">
+                <label for="rmGenderM" class="py-3 w-full mt-2px text-center">남자</label>
+                <input id="rmGenderF" ref="rmGenderFElRef" name="rmGender" type="radio" value="여자">
+                <label for="rmGenderF" class="py-3 w-full mt-2px text-center">여자</label>
+                <input id="rmGenderX" ref="rmGenderXElRef" name="rmGender" type="radio" value="상관없음">
+                <label for="rmGenderX" class="py-3 w-full mt-2px text-center">상관없음</label>
+              </div>
+            </FormRow>
 
-        
+            
 
-        <FormRow title="나이:">
-        <ion-select v-model="input.rmAgeEl" multiple="true" cancel-text="취소" ok-text="선택" >
-          <ion-select-option value="영유아">영유아</ion-select-option>
-          <ion-select-option value="10대">10대</ion-select-option>
-          <ion-select-option value="20대">20대</ion-select-option>
-          <ion-select-option value="30대">30대</ion-select-option>
-          <ion-select-option value="40-50대">40-50대</ion-select-option>
-          <ion-select-option value="60대이상">60대이상</ion-select-option>
-        </ion-select>
-        </FormRow>
+            <FormRow title="나이:">
+              <ion-select v-model="input.rmAgeEl" multiple="true" cancel-text="취소" ok-text="선택" >
+                <ion-select-option value="영유아">영유아</ion-select-option>
+                <ion-select-option value="10대">10대</ion-select-option>
+                <ion-select-option value="20대">20대</ion-select-option>
+                <ion-select-option value="30대">30대</ion-select-option>
+                <ion-select-option value="40-50대">40-50대</ion-select-option>
+                <ion-select-option value="60대이상">60대이상</ion-select-option>
+              </ion-select>
+            </FormRow>
 
-        <FormRow title="대사:">
-          <ion-input v-model="input.rmScriptEl" placeholder="오디션 대사" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="대사:">
+              <ion-input v-model="input.rmScriptEl" placeholder="오디션 대사" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="영상 길이:">
-          <ion-select v-model="input.rmVideoTimeEl" cancel-text="취소" ok-text="선택" >
-            <ion-select-option value="1분이내">1분이내</ion-select-option>
-            <ion-select-option value="1-2분">1-2분</ion-select-option>
-            <ion-select-option value="2-3분">2-3분</ion-select-option>
-            <ion-select-option value="5분이내">5분이내</ion-select-option>
-          </ion-select>
-        </FormRow>
+            <FormRow title="영상 길이:">
+              <ion-select v-model="input.rmVideoTimeEl" cancel-text="취소" ok-text="선택" >
+                <ion-select-option value="1분이내">1분이내</ion-select-option>
+                <ion-select-option value="1-2분">1-2분</ion-select-option>
+                <ion-select-option value="2-3분">2-3분</ion-select-option>
+                <ion-select-option value="5분이내">5분이내</ion-select-option>
+              </ion-select>
+            </FormRow>
 
-        <FormRow title="기타 우대사항:">
-          <ion-input v-model="input.rmEtcEl" placeholder="기타 우대사항" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="기타 우대사항:">
+              <ion-input v-model="input.rmEtcEl" placeholder="기타 우대사항" type="text"></ion-input>
+            </FormRow>
 
-        <div v-on:click="nextPage" class="w-full mt-10 text-center btn-next text-xs text-white mx-auto p-2">다음</div>
-      </section>
+            <div v-on:click="nextPage" class="w-full mt-10 text-center btn-next text-xs text-white mx-auto p-2">다음</div>
+          </section>
 
-      
+          <!-- 페이지 2 -->
+          <section v-show="state.pageNum == 2">
 
-      <!-- 페이지 2 -->
-      <section v-show="state.pageNum == 2">
+            <div class="mx-auto text-center">
+              <span class="subtitle">작품 정보</span>
+            </div>
+            
+            <FormRow title="매체:">
+              <ion-input v-model="input.awMediaEl" type="text"></ion-input>
+            </FormRow>
 
-        <div class="mx-auto text-center">
-        <span class="subtitle">작품 정보</span>
-        </div>
-        
-        <FormRow title="매체:">
-          <ion-input v-model="input.awMediaEl" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="작품이름:">
+              <ion-input v-model="input.awNameEl" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="작품이름:">
-          <ion-input v-model="input.awNameEl" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="감독:">
+              <ion-input v-model="input.awDirectorEl" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="감독:">
-          <ion-input v-model="input.awDirectorEl" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="제작사:">
+              <ion-input v-model="input.awCorpEl" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="제작사:">
-          <ion-input v-model="input.awCorpEl" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="프로듀서:">
+              <ion-input v-model="input.awProducerEl" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="프로듀서:">
-          <ion-input v-model="input.awProducerEl" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="캐스팅담당자:">
+              <ion-input v-model="input.awManagerEl" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="캐스팅담당자:">
-          <ion-input v-model="input.awManagerEl" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="장르:">
+              <ion-input v-model="input.awGenreEl" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="장르:">
-          <ion-input v-model="input.awGenreEl" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="줄거리:">
+              <ion-textarea v-model="input.awStoryEl"></ion-textarea>
+            </FormRow>
 
-        <FormRow title="줄거리:">
-          <ion-textarea v-model="input.awStoryEl"></ion-textarea>
-        </FormRow>
+            <FormRow title="원작자:">
+              <ion-input v-model="input.awWriterEl" type="text"></ion-input>
+            </FormRow>
 
-        <FormRow title="원작자:">
-          <ion-input v-model="input.awWriterEl" type="text"></ion-input>
-        </FormRow>
+            <FormRow title="관련이미지(포스터):">
+              <input ref="awFileElRef" type="file" accept="image/*" class="p-1 w-full mt-2px" v-on:change="setThumbnail">
+            </FormRow>
+            <div id="image_container" class="mx-auto my-6">
+              <img v-if="fileType.type.startsWith('image')" src="" alt="" class="mx-auto">
+              <video v-if="fileType.type.startsWith('video')" src="" controls></video>
+            </div>
 
-        <FormRow title="관련이미지(포스터):">
-          <input ref="awFileElRef" type="file" accept="image/*" class="p-1 w-full mt-2px" v-on:change="setThumbnail">
-        </FormRow>
-        <div id="image_container" class="mx-auto my-6">
-          <img v-if="fileType.type.startsWith('image')" src="" alt="" class="mx-auto">
-          <video v-if="fileType.type.startsWith('video')" src="" controls></video>
-        </div>
-        
+            <FormRow title="기타:">
+              <ion-textarea v-model="input.awEtcEl"></ion-textarea>
+            </FormRow>
 
-        <FormRow title="기타:">
-          <ion-textarea v-model="input.awEtcEl"></ion-textarea>
-        </FormRow>
+            <div class="flex justify-around mx-auto">
+              <div v-on:click="prevPage" class="w-full mr-1 mt-10 text-center btn-next text-xs text-white p-2">이전</div>
+              <div v-on:click="nextPage" class="w-full ml-1 mt-10 text-center btn-next text-xs text-white p-2">다음</div>
+            </div>
 
-        
-        <div class="flex justify-around mx-auto">
-        <div v-on:click="prevPage" class="w-full mr-1 mt-10 text-center btn-next text-xs text-white p-2">이전</div>
-      <div v-on:click="nextPage" class="w-full ml-1 mt-10 text-center btn-next text-xs text-white p-2">다음</div>
+          </section>
+
+          <!-- 페이지 3 -->
+          <section v-show="state.pageNum == 3">
+
+            <div class="mx-auto text-center">
+              <span class="subtitle">배역 정보</span>
+            </div>
+
+            <FormRow title="배역본명:">
+              <ion-input v-model="input.arRealNameEl" type="text"></ion-input>
+            </FormRow>
+
+            <FormRow title="배역이름:">
+              <ion-input v-model="input.arNameEl" type="text"></ion-input>
+            </FormRow>
+            
+            <FormRow title="나이:">
+              <ion-input v-model="input.arAgeEl" type="text"></ion-input>
+            </FormRow>
+            
+            <FormRow title="배역성별:">
+              <div class="flex">
+                <input id="arGenderM" ref="arGenderMElRef" name="arGender" type="radio"  value="남자" v-on:click="arGenderEtcHide">
+                <label for="arGenderM" class="py-3 w-full mt-2px text-center">남자</label>
+                <input id="arGenderF" ref="arGenderFElRef" name="arGender" type="radio" value="여자" v-on:click="arGenderEtcHide">
+                <label for="arGenderF" class="py-3 w-full mt-2px text-center">여자</label>
+                <input id="arGenderX" ref="arGenderXElRef" name="arGender" type="radio" value="상관없음" v-on:click="arGenderEtcHide">
+                <label for="arGenderX" class="py-3 w-full mt-2px text-center">상관없음</label>
+                <input id="arGenderEtc" ref="arGenderEtcElRef" name="arGender" type="radio" value="기타" v-on:click="arGenderEtcShow">
+                <label for="arGenderEtc" class="py-3 w-full mt-2px text-center">기타</label>
+              </div>
+            </FormRow>
+
+            <FormRow>
+              <ion-input id="input_arGenderEtc" v-model="input.arGenderEl" placeholder="기타" type="text" class="mt-2"></ion-input>
+            </FormRow>
+
+            <FormRow title="직업:">
+              <ion-input v-model="input.arJobEl" type="text"></ion-input>
+            </FormRow>
+            
+            <FormRow title="대사유무:">
+              <div class="flex">
+              <input id="arScriptYes" ref="arScriptYesElRef" name="arScript" type="radio"  value="유">
+              <label for="arScriptYes" class="p-1 w-full mt-2px text-center">유</label>
+              <input id="arScriptNo" ref="arScriptNoElRef" name="arScript" type="radio" value="무">
+              <label for="arScriptNo" class="p-1 w-full mt-2px text-center">무</label>
+              </div>
+            </FormRow>
+            
+            <FormRow title="장면수:">
+              <ion-input v-model="input.arScenesCountEl" type="text" pattern="[0-9]*"></ion-input>
+            </FormRow>
+            
+            <FormRow title="촬영횟수:">
+              <ion-input v-model="input.arShootingsCountEl" type="text" pattern="[0-9]*"></ion-input>
+            </FormRow>
+
+            <FormRow title="배역설명:">
+              <ion-input v-model="input.arCharacterEl" type="text"></ion-input>
+            </FormRow>
+
+            <FormRow title="기타:">
+              <ion-textarea v-model="input.arEtcEl"></ion-textarea>
+            </FormRow>
+
+            <div class="flex justify-around mx-auto">
+              <div v-on:click="prevPage" class="w-full mr-1 mt-10 text-center btn-next text-xs text-white p-2">이전</div>
+              <input type="submit" class="w-full ml-1 mt-10 text-center btn-next text-xs text-white p-2" value="등록">
+            </div>
+
+          </section>
+
+        </form>
       </div>
 
-      </section>
-
-      <!-- 페이지 3 -->
-      <section v-show="state.pageNum == 3">
-
-        <div class="mx-auto text-center">
-        <span class="subtitle">배역 정보</span>
-        </div>
-
-        <FormRow title="배역본명:">
-          <ion-input v-model="input.arRealNameEl" type="text"></ion-input>
-        </FormRow>
-
-        <FormRow title="배역이름:">
-          <ion-input v-model="input.arNameEl" type="text"></ion-input>
-        </FormRow>
-        
-        <FormRow title="나이:">
-          <ion-input v-model="input.arAgeEl" type="text"></ion-input>
-        </FormRow>
-        
-        <FormRow title="배역성별:">
-          <div class="flex">
-            <input id="arGenderM" ref="arGenderMElRef" name="arGender" type="radio"  value="남자" v-on:click="arGenderEtcHide">
-            <label for="arGenderM" class="py-3 w-full mt-2px text-center">남자</label>
-            <input id="arGenderF" ref="arGenderFElRef" name="arGender" type="radio" value="여자" v-on:click="arGenderEtcHide">
-            <label for="arGenderF" class="py-3 w-full mt-2px text-center">여자</label>
-            <input id="arGenderX" ref="arGenderXElRef" name="arGender" type="radio" value="상관없음" v-on:click="arGenderEtcHide">
-            <label for="arGenderX" class="py-3 w-full mt-2px text-center">상관없음</label>
-            <input id="arGenderEtc" ref="arGenderEtcElRef" name="arGender" type="radio" value="기타" v-on:click="arGenderEtcShow">
-            <label for="arGenderEtc" class="py-3 w-full mt-2px text-center">기타</label>
-          </div>
-        </FormRow>
-
-        <FormRow>
-        <ion-input id="input_arGenderEtc" v-model="input.arGenderEl" placeholder="기타" type="text" class="mt-2"></ion-input>
-        </FormRow>
-
-        <FormRow title="직업:">
-          <ion-input v-model="input.arJobEl" type="text"></ion-input>
-        </FormRow>
-        
-        <FormRow title="대사유무:">
-          <div class="flex">
-          <input id="arScriptYes" ref="arScriptYesElRef" name="arScript" type="radio"  value="유">
-          <label for="arScriptYes" class="p-1 w-full mt-2px text-center">유</label>
-          <input id="arScriptNo" ref="arScriptNoElRef" name="arScript" type="radio" value="무">
-          <label for="arScriptNo" class="p-1 w-full mt-2px text-center">무</label>
-          </div>
-        </FormRow>
-        
-        <FormRow title="장면수:">
-          <ion-input v-model="input.arScenesCountEl" type="text" pattern="[0-9]*"></ion-input>
-        </FormRow>
-        
-        <FormRow title="촬영횟수:">
-          <ion-input v-model="input.arShootingsCountEl" type="text" pattern="[0-9]*"></ion-input>
-        </FormRow>
-
-        <FormRow title="배역설명:">
-          <ion-input v-model="input.arCharacterEl" type="text"></ion-input>
-        </FormRow>
-
-        <FormRow title="기타:">
-          <ion-textarea v-model="input.arEtcEl"></ion-textarea>
-        </FormRow>
-
-        
-
-        <div class="flex justify-around mx-auto">
-        <div v-on:click="prevPage" class="w-full mr-1 mt-10 text-center btn-next text-xs text-white p-2">이전</div>
-        <input type="submit" class="w-full ml-1 mt-10 text-center btn-next text-xs text-white p-2" value="등록">
-        
-        </div>
-      </section>
-
-      </form>
     </div>
-    
-
-
-  </div>
   </ion-content>
 </ion-page>
-
-
 </template>
 
 <script lang="ts">
 
 import { defineComponent, ref, reactive, onMounted } from 'vue'
 import { IonPage, IonContent, IonDatetime, IonItem, IonLabel, IonInput, IonTextarea, IonPicker, IonButton, IonSelect, IonSelectOption } from '@ionic/vue'
-
 import router from '@/router'
 import $ from 'jquery'
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
 import * as Util from '@/utils'
+
 export default defineComponent({
   name: 'RecruitWritePage',
   components: {
@@ -283,17 +272,14 @@ export default defineComponent({
     IonSelect, 
     IonSelectOption
   },
-  props: {
+  setup() {
     
-  },
-  setup(props) {
+    const globalState = useGlobalShare();
+    const mainApiService = useMainService();
+
     onMounted(() => {
       $('#input_arGenderEtc').addClass('hidden');
     })
-    
-    const globalState = useGlobalShare();
-    
-    const mainApiService = useMainService();
 
     const rmGenderMElRef = ref<HTMLInputElement>();
     const rmGenderFElRef = ref<HTMLInputElement>();
@@ -309,16 +295,16 @@ export default defineComponent({
     const arScriptYesElRef = ref<HTMLInputElement>();
     const arScriptNoElRef = ref<HTMLInputElement>();
 
+    // 날짜 정보를 mysql의 datetime 형식으로 저장하기 위해 형식을 맞춤.
     const date = new Date();
     const year = date.getFullYear();
     const month = ("0" + (1 + date.getMonth())).slice(-2);
     const day = ("0" + date.getDate()).slice(-2);
-   
     const today = year + "-" + month + "-" + day;
     
-   const state = reactive({
-     pageNum :1
-   })
+    const state = reactive({
+      pageNum :1
+    })
     
     function prevPage() {
       state.pageNum--;
@@ -439,7 +425,6 @@ export default defineComponent({
         return;
       }
       
-
       if( rmGenderMElRef.value.checked ) {
          input.rmGenderEl = rmGenderMElRef.value.value;
       } else if ( rmGenderFElRef.value.checked ){
@@ -475,7 +460,6 @@ export default defineComponent({
         return;
       }
       
-
       // 작품매체 체크
       if ( input.awMediaEl.length == 0 ) {
         alert('작품매체를 입력해 주세요.');
@@ -634,7 +618,6 @@ export default defineComponent({
       input.arRealNameEl, input.arNameEl, input.arAgeEl, input.arGenderEl, input.arJobEl, input.arScriptEl, input.arScenesCountEl, input.arShootingsCountEl, input.arCharacterEl ,input.arEtcEl,
       genFileIdsStr);
       
-        
       };
 
       const startFileUpload = (onSuccess: Function) => {
@@ -643,10 +626,10 @@ export default defineComponent({
           return;
         }
         if ( awFileElRef?.value?.files != null ){
-            mainApiService.common_recruit_genFile_doUploadForAdd(awFileElRef.value.files[0])
+          mainApiService.common_recruit_genFile_doUploadForAdd(awFileElRef.value.files[0])
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
-              alert(axiosResponse.data.msg);
+              Util.showAlert("알림", axiosResponse.data.msg, null);
               return;
             }
             else {
@@ -654,7 +637,6 @@ export default defineComponent({
             }
           });
         }
-       
       };
       
       startFileUpload(startWrite);
@@ -665,23 +647,23 @@ export default defineComponent({
     awMedia: string, awName: string, awDirector: string, awCorp: string, awProducer: string, awManager: string, awGenre: string, awStory: string, awWriter: string, awEtc: string,
     arRealName: string, arName: string, arAge: string, arGender: string, arJob: string, arScript: string, arScenesCount: string, arShootingsCount: string, arCharacter: string, arEtc: string, 
     genFileIdsStr: string) {
-       mainApiService.recruit_write(memberTypeCode, memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
+      mainApiService.recruit_write(memberTypeCode, memberId, boardId, rmTitle, rmBody, rmRoleType, rmPay, rmLocation, rmPeriod, rmDeadline, rmGender, rmAge, rmScript, rmVideoTime, rmEtc,
       awMedia, awName, awDirector, awCorp, awProducer, awManager, awGenre, awStory, awWriter, awEtc, 
       arRealName, arName, arAge, arGender, arJob, arScript, arScenesCount, arShootingsCount, arCharacter, arEtc, genFileIdsStr)
-        .then(axiosResponse => {
-          if ( axiosResponse.data.fail ) {
-            Util.showAlert("알림", axiosResponse.data.msg, null);
-          }
-          Util.showAlert("알림", axiosResponse.data.msg, () => router.replace('/usr/recruit/detail?id='+axiosResponse.data.body.id));
-        });
+      .then(axiosResponse => {
+        if ( axiosResponse.data.fail ) {
+          Util.showAlert("알림", axiosResponse.data.msg, null);
+        }
+        router.replace('/usr/recruit/detail?id='+axiosResponse.data.body.id);
+      });
     }
 
     const fileType = reactive({
       type:''
     })
 
+    // 첨부파일의 섬네일을 보여주는 메소드
     function setThumbnail(event: any){
-      
       const reader = new FileReader(); 
       fileType.type = event.target.files[0].type as string;
       reader.onload = function(event) { 
@@ -712,8 +694,6 @@ export default defineComponent({
         reader.readAsDataURL(event.target.files[0]);
       }
 
-
-    
     return {
     state,
     globalState,
@@ -738,13 +718,7 @@ export default defineComponent({
     setThumbnail,
     fileType,
    }
-  },
-  methods : {
-    
-
   }
-  
-  
 })
 </script>
 

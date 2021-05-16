@@ -1,50 +1,47 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
-    
-     
-          
-  <div class="flex flex-col min-h-screen mb-20">
+    <div class="flex flex-col min-h-screen mb-20">
 
-     <TitleBar title="Audictionary" btn_back="true"></TitleBar>
+      <TitleBar title="Audictionary" btn_back="true"></TitleBar>
 
-    <div class="flex flex-col mt-4 container mx-auto">
+      <div class="flex flex-col mt-4 container mx-auto">
       
-      <form action="" v-on:submit.prevent="checkAndModify" class="mx-4">
+        <form action="" v-on:submit.prevent="checkAndModify" class="mx-4">
 
-        <FormRow title="이름:">
-          <ion-input v-model="input.nameEl" ref="nameElRef" type="text"></ion-input>
-        </FormRow>
+          <FormRow title="이름:">
+            <ion-input v-model="input.nameEl" ref="nameElRef" type="text"></ion-input>
+          </FormRow>
 
-        <FormRow title="비밀번호:">
-          <ion-input v-model="input.loginPwEl" ref="loginPwElRef" type="password"></ion-input>
-        </FormRow>
+          <FormRow title="비밀번호:">
+            <ion-input v-model="input.loginPwEl" ref="loginPwElRef" pattern="(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$" type="password"></ion-input>
+          </FormRow>
 
-         <FormRow class="mt-7" title="주소:">
-          <ion-input readonly="true" v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" enterkeyhint="next" class="input-address relative pr-10">
-            <ion-button color="light" class="absolute right-0" @click="openApi">검색</ion-button>
-          </ion-input>
-          <div v-if="api.isTrue" class="my-4">
-            <VueDaumPostcode @complete="confirm"/>
-          </div>
-          <ion-input v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" enterkeyhint="next" class="mt-2"></ion-input>
-        </FormRow>
+          <FormRow class="mt-7" title="주소:">
+            <ion-input readonly="true" v-model="input.addressEl" ref="addressElRef" type="text" placeholder="주소" enterkeyhint="next" class="input-address relative pr-10">
+              <ion-button color="light" class="absolute right-0" @click="openApi">검색</ion-button>
+            </ion-input>
+            <div v-if="api.isTrue" class="my-4">
+              <VueDaumPostcode @complete="confirm"/>
+            </div>
+            <ion-input v-model="input.address2El" ref="addressElRef" type="text" placeholder="상세주소" enterkeyhint="next" class="mt-2"></ion-input>
+          </FormRow>
 
-        <FormRow title="전화번호:">
-          <ion-input v-model="input.cellPhoneNoEl" ref="cellPhoneNoElRef" type="text"></ion-input>
-        </FormRow>
+          <FormRow title="전화번호:">
+            <ion-input v-model="input.cellPhoneNoEl" ref="cellPhoneNoElRef" pattern="(^02.{0}|^01.{1}|[0-9]{3})([0-9]{4})([0-9]{4})" type="text"></ion-input>
+          </FormRow>
 
-        <FormRow title="직급:">
-          <ion-input v-model="input.jobPositionEl" ref="jobPositionElRef" type="text"></ion-input>
-        </FormRow>
+          <FormRow title="직급:">
+            <ion-input v-model="input.jobPositionEl" ref="jobPositionElRef" type="text"></ion-input>
+          </FormRow>
 
-        <FormRow title="회사:">
-          <ion-input v-model="input.corpNameEl" ref="corpNameElRef" type="text"></ion-input>
-        </FormRow>
-        
-        <FormRow title="작품:">
-             <ion-button color="light" :onclick="openModal">검색</ion-button>
-             <ion-item-sliding  v-bind:key="item" v-for="item in pdFilmgraphy.movieList">
+          <FormRow title="회사:">
+            <ion-input v-model="input.corpNameEl" ref="corpNameElRef" type="text"></ion-input>
+          </FormRow>
+          
+          <FormRow title="작품:">
+            <ion-button color="light" :onclick="openModal">검색</ion-button>
+            <ion-item-sliding  v-bind:key="item" v-for="item in pdFilmgraphy.movieList">
               <ion-item lines="none">
                 <ion-label>{{item.title}}</ion-label>
                 <img :src=item.image>
@@ -53,14 +50,14 @@
                 <ion-item-option @click="deleteItem(item)">제거</ion-item-option>
               </ion-item-options>
             </ion-item-sliding>
-        </FormRow>  
+          </FormRow>  
 
-        <FormRow title="프로필 이미지:" v-if="globalState.loginedMember.loginedMemberType == 'pd'">
+          <FormRow title="프로필 이미지:" v-if="globalState.loginedMember.loginedMemberType == 'pd'">
             <ion-input v-model="input.fileEl" @ionChange="setProfileImg($event)" type="file" accept="image/*"></ion-input>
-        </FormRow>
+          </FormRow>
 
-        <input accept="true" type="submit" class="w-full mt-10 text-center btn-next text-xs mx-auto p-2">
-      </form>
+          <input accept="true" type="submit" class="w-full mt-10 text-center btn-next text-xs mx-auto p-2">
+        </form>
       </div>
     </div>
   </ion-content>
@@ -71,16 +68,12 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { IonPage, IonContent, IonIcon, IonInput, IonButton, IonLabel, IonItem, IonItemSliding, IonItemOption, IonItemOptions, IonPopover, IonModal, modalController } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-
-
 import { sha256 } from 'js-sha256'
 import { pdFilmgraphy, useGlobalShare } from '@/stores'
 import * as Util from '@/utils'
 import { useMainService } from '@/services'
-
 import SearchMovie from './SearchMovie.vue'
 import '../global.css'
-import axios from 'axios'
 import { IPd } from '@/types'
 
 export default defineComponent({
@@ -121,7 +114,7 @@ export default defineComponent({
       nameEl:globalState.loginedMember.name,
       loginPwEl:'',
       address:'',
-      addressEl:globalState.loginedMember.address ? globalState.loginedMember.address : '',
+      addressEl:'',
       address2El:'',
       cellPhoneNoEl:globalState.loginedMember.cellPhoneNo,
       jobPositionEl:globalState.loginedMember.jobPosition,
@@ -138,13 +131,13 @@ export default defineComponent({
       artworks: [] as any,
     })
     
-
     function loadData(){
       mainApiService.pd_showDetail(props.id)
       .then(axiosResponse => {
         state.pd = axiosResponse.data.body.pd;
-      })
-
+        input.addressEl = state.pd.address.split("//")[0];
+        input.address2El = state.pd.address.split("//")[1];
+      });
 
       mainApiService.pd_getArtwork(props.id)
       .then(axiosResponse => {
@@ -152,14 +145,13 @@ export default defineComponent({
           state.artworks = axiosResponse.data.body.artworks;
           pdFilmgraphy.movieList = axiosResponse.data.body.artworks;
         }
-        
-      })
+      });
     }
 
   
-   function setProfileImg(event: any){
-        input.fileEl = event.target.children[0].files[0];
-   }
+    function setProfileImg(event: any){
+      input.fileEl = event.target.children[0].files[0];
+    }
 
     let isFileUploaded = false;
 
@@ -168,29 +160,22 @@ export default defineComponent({
       const artwork = JSON.stringify(pdFilmgraphy.movieList);
       
       let loginPwRealEl = '';
-        if (input.loginPwEl.length > 0 ){
-          loginPwRealEl = sha256(input.loginPwEl);
-        }
 
-      
+      if (input.loginPwEl.length > 0 ){
+        loginPwRealEl = sha256(input.loginPwEl);
+      }
+
       if ( input.addressEl.length > 0 && input.address2El.length > 0 ){
         input.address = input.addressEl + "//" +input.address2El;
       }
       
-        
       const startModify = () => {
-
         if ( input.fileEl != null && input.fileEl.size > 0) {
           isFileUploaded = true;
         }
-
          modify(Util.toStringOrNull(globalState.loginedMember.id), input.nameEl, loginPwRealEl, input.address, input.cellPhoneNoEl, input.jobPositionEl, input.corpNameEl, artwork, isFileUploaded);
-
-
       }
-
       startModify();
-
     }
 
     function modify(loginedMemberId: string, name: string, loginPwReal: string, address: string, cellPhoneNo: string,  jobPosition: string, corpName: string, artwork: string, isFileUploaded: boolean ){
@@ -199,7 +184,7 @@ export default defineComponent({
           if ( axiosResponse.data.fail ) {
             return;
           }
-        
+
         const loginedPd = axiosResponse.data.body.pd;
           
           if( loginedPd.name != null ){
@@ -226,29 +211,27 @@ export default defineComponent({
               localStorage.removeItem("loginedMemberExtra__thumbImg");
               localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
           }
-          
-          
+          // 파일이 업로드 되었으면 회원정보수정 후 관련 파일 업로드
           if ( isFileUploaded ){
             doFileUpload();
-          }else{
+          }
+          else{
             Util.showAlert("알림",axiosResponse.data.msg, () => location.replace('/usr/pd/info?id='+globalState.loginedMember.id));
           }
-          
     });
       }
-
 
      function doFileUpload(){
         if(globalState.loginedMember.id == null){
           return;
         }
-
+        // 파일 업로드 되었으면 관련 파일 업로드
         mainApiService.common_pdGenFile_doUpload(input.fileEl, Util.toStringOrNull(globalState.loginedMember.id))
           .then(axiosResponse => {
             if ( axiosResponse.data.fail ) {
               return;
             }
-
+            // 파일이 업로드 되었으면 관련 데이터로 갱신된 회원을 받아옴
             mainApiService.pd_update(Util.toStringOrNull(globalState.loginedMember.id))
             .then( axiosResponse => {
               if(axiosResponse.data.fail){
@@ -281,28 +264,27 @@ export default defineComponent({
               localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra__thumbImg);
           }
           
-          Util.showAlert("알림","회원정보수정",() => location.replace('/usr/pd/info?id='+globalState.loginedMember.id));
+          location.replace('/usr/pd/info?id='+globalState.loginedMember.id);
 
             })
             
           });
         }
 
- 
+        // 기존의 작품 리스트들을 받아서 배열에 담기
         const items = reactive({
           arr: pdFilmgraphy.movieList
         })
 
     function deleteItem(item: any){
       for(let i = 0; i < items.arr.length; i++) {
-      if(items.arr[i].title == item.title && items.arr[i].director == item.director){
-        pdFilmgraphy.movieList.splice(i, 1);
+        if(items.arr[i].title == item.title && items.arr[i].director == item.director){
+          pdFilmgraphy.movieList.splice(i, 1);
+        }
       }
-
-    }
     }
 
-     const isOpenRef = ref(false);
+    const isOpenRef = ref(false);
     
     const setOpen = (isOpened: boolean) => {
       isOpenRef.value = isOpened;
@@ -311,7 +293,6 @@ export default defineComponent({
       isOpenRef.value = isOpened;
     }
 
-    
      async function openModal() {
       const modal = await modalController
         .create({
@@ -347,9 +328,6 @@ export default defineComponent({
       }
       api.isTrue = false;
     }
-
-  
-    
 
     return { 
       globalState,

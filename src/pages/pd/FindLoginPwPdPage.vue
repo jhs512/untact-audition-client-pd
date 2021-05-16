@@ -1,40 +1,39 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
-  <div class="login-form flex flex-col relative min-h-screen mb-20">
+    <div class="login-form flex flex-col relative min-h-screen mb-20">
 
-    <TitleBar title="로그인 비밀번호 찾기 페이지" btn_back="true"></TitleBar>
+      <TitleBar title="로그인 비밀번호 찾기 페이지" btn_back="true"></TitleBar>
 
-
-    <div class=" w-60 mx-auto mt-8 flex flex-col">
-      <form action="" v-on:submit.prevent="checkAndFind">
-        <FormRow title="이메일(아이디):">
-          <ion-input v-model="input.loginIdEl" ref="loginIdElRef" inputmode="email" type="text" class="w-full mt-2px"></ion-input>
-        </FormRow>
-        <FormRow title="주민등록번호:">
-         <div class="flex items-center w-full mt-2">
-            <ion-input class="flex-1" v-model="input.regNumber1El" type="text" ref="regNumber1ElRef" maxlength="6" inputmode="decimal" placeholder="앞 6자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
-            <span class="mx-2">-</span>
-            <div class="flex  items-center flex-1">
-              <div class="w-10">
-                <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" maxlength="1" inputmode="decimal" placeholder="뒤 1자리" required="true" enterkeyhint="next"></ion-input>
+      <div class=" w-60 mx-auto mt-8 flex flex-col">
+        <form action="" v-on:submit.prevent="checkAndFind">
+          <FormRow title="이메일(아이디):">
+            <ion-input v-model="input.loginIdEl" ref="loginIdElRef" inputmode="email" type="text" class="w-full mt-2px"></ion-input>
+          </FormRow>
+          <FormRow title="주민등록번호:">
+          <div class="flex items-center w-full mt-2">
+              <ion-input class="flex-1" v-model="input.regNumber1El" type="text" ref="regNumber1ElRef" maxlength="6" inputmode="decimal" placeholder="앞 6자리" clear-input="true" required="true" enterkeyhint="next"></ion-input>
+              <span class="mx-2">-</span>
+              <div class="flex  items-center flex-1">
+                <div class="w-10">
+                  <ion-input v-model="input.regNumber2El" type="text" ref="regNumber2ElRef" maxlength="1" inputmode="decimal" placeholder="뒤 1자리" required="true" enterkeyhint="next"></ion-input>
+                </div>
+                <span class="flex-1 flex justify-around">
+                  <span>*</span>
+                  <span>*</span>
+                  <span>*</span>
+                  <span>*</span>
+                  <span>*</span>
+                  <span>*</span>
+                </span>
               </div>
-              <span class="flex-1 flex justify-around">
-                <span>*</span>
-                <span>*</span>
-                <span>*</span>
-                <span>*</span>
-                <span>*</span>
-                <span>*</span>
-              </span>
             </div>
-          </div>
-        </FormRow>
-      <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="FIND">
-      </form>
-    </div>
+          </FormRow>
+          <input type="submit" class="w-60 mt-10 text-center btn-next text-xs text-black mx-auto p-2" value="FIND">
+        </form>
+      </div>
 
-  </div>
+    </div>
   </ion-content>
 </ion-page>
 
@@ -47,7 +46,7 @@ import { returnUpBackOutline } from 'ionicons/icons'
 import * as Util from '@/utils'
 import router from '@/router'
 import { useMainService } from '@/services'
-import * as Crypto from 'crypto-ts'
+
 export default defineComponent({
   name: 'FindLoginPwPdPage',
   components: {
@@ -57,10 +56,7 @@ export default defineComponent({
     IonInput,
     IonLoading
   },
-  props: {
-
-  },
-  setup(props) {
+  setup() {
     
     const mainApiService = useMainService();
 
@@ -75,24 +71,19 @@ export default defineComponent({
     })
 
     function checkAndFind() {
-      // 이름 체크
-
+      // 이메일 체크
       if ( input.loginIdEl.length == 0 ) {
         alert('이메일(아이디)을 입력해 주세요.');
-        
         return;
       }
 
        // 주민등록번호 체크
       if ( input.regNumber1El.length == 0 ) {
         alert('주민등록번호를 제대로 입력해 주세요.');
-        
         return;
       }
-
       if ( input.regNumber2El.length == 0 ) {
         alert('주민등록번호를 제대로 입력해 주세요.');
-        
         return;
       }
       
@@ -105,7 +96,7 @@ export default defineComponent({
         const loading = await loadingController
           .create({
           cssClass: 'my-custom-class',
-          message: '인증 메일을 전송하고 있습니다.',
+          message: '비밀번호 재설정 메일을 전송하고 있습니다.',
         });
         
        loading.present();
@@ -116,12 +107,9 @@ export default defineComponent({
             Util.showAlert("알림",axiosResponse.data.msg,null);
             return;
           }
-          
           Util.showAlert("알림",axiosResponse.data.msg,null);
         });
     }
-
-    
 
     return {
     checkAndFind,
@@ -132,12 +120,8 @@ export default defineComponent({
     router,
     returnUpBackOutline
    }
-  },
-  methods : {
-    
   }
-  
-  
+
 })
 </script>
 

@@ -3,10 +3,8 @@
 
 <script lang="ts">
 import { useMainService } from '@/services';
-import { useGlobalShare } from '@/stores';
 import { defineComponent } from 'vue'
 import * as Util from '@/utils'
-import { MainApi, useMainApi } from '../../apis'
 
 export default defineComponent({
   name: 'JoinPdEmailCertPage',

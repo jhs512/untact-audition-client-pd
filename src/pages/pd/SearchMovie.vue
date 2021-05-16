@@ -46,8 +46,7 @@ export default defineComponent({
 
     const mainApiService = useMainService();
 
-    
-  /*
+    /*
     function searchKeyword (event:any){
       mainApiService.searchMvList(event?.target.value)
     .then(axiosResponse => {
@@ -84,60 +83,59 @@ export default defineComponent({
     }
     */
 
+    
     function searchKeyword (event: any){
+      
       mainApiService.naverMovieApi(event?.target.value)
-    .then(axiosResponse => {
-      
-      list.arr.length = [] as any;
+      .then(axiosResponse => {
 
-      if(event.target.value.length > 0){
-        for( let i = 0 ; i < axiosResponse.data.items.length ; i++ ){
-          
-                let isChecked = false;
+        list.arr.length = [] as any;
 
-                if ( isChecked == false ) {
-                  for ( let k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
-                      if ( pdFilmgraphy.movieList[k].image == axiosResponse.data.items[i].image ){
-                        isChecked = true;
-                        break;
-                      } else {
-                        isChecked = false;
-                      }
-                    }
+        if(event.target.value.length > 0){
+          for( let i = 0 ; i < axiosResponse.data.items.length ; i++ ){
+            
+            let isChecked = false;
+            // naverMovieApi로 영화 목록 받아온 후 회원에게 이미 등록된 작품이면 체크 된 상태로 만들어두기
+            if ( isChecked == false ) {
+              for ( let k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
+                  if ( pdFilmgraphy.movieList[k].image == axiosResponse.data.items[i].image ){
+                    isChecked = true;
+                    break;
+                  } else {
+                    isChecked = false;
                   }
-                let title = axiosResponse.data.items[i].title.replaceAll("<b>","");
-                title = title.replaceAll("</b>","");
-                let subtitle = axiosResponse.data.items[i].subtitle.replaceAll("<b>","");
-                subtitle = subtitle.replaceAll("</b>","");
-                const movie = {
-                  title: title,
-                  subtitle: subtitle,
-                  director: axiosResponse.data.items[i].director,
-                  image: axiosResponse.data.items[i].image,
-                  link: axiosResponse.data.items[i].link,
-                  isChecked: isChecked
                 }
-                list.arr.push(movie);
               }
-      }
-      
-        
-      
-    })
+            // naverMovieApi로 받아온 영화에 들어있는 태그들 제거하고 객체정보로 넣어서 배열에 담기  
+            let title = axiosResponse.data.items[i].title.replaceAll("<b>","");
+            title = title.replaceAll("</b>","");
+            let subtitle = axiosResponse.data.items[i].subtitle.replaceAll("<b>","");
+            subtitle = subtitle.replaceAll("</b>","");
+            const movie = {
+              title: title,
+              subtitle: subtitle,
+              director: axiosResponse.data.items[i].director,
+              image: axiosResponse.data.items[i].image,
+              link: axiosResponse.data.items[i].link,
+              isChecked: isChecked
+            }
+            list.arr.push(movie);
+          }
+        }
+      });
     }
 
     const list = reactive({
       arr: [] as any
     })
 
+    // 페이지가 불러와지면 배열 선언 후 기존의 회원 작품 정보를 담는다. (검색 취소 시 초기 상태로 되돌리기 위함)    
+    onMounted(() => {
+      for( let i = 0 ; i < pdFilmgraphy.movieList.length; i++) {
+          initialMovieList.push(pdFilmgraphy.movieList[i]);
+      }     
+    })
     const initialMovieList = [] as any;
-
-      onMounted(() => {
-        for( let i = 0 ; i < pdFilmgraphy.movieList.length; i++) {
-           initialMovieList.push(pdFilmgraphy.movieList[i]);
-        }     
-      })
-    
 
     function checkMovie(item: any, event: any){
       if(event.detail.checked){
@@ -154,13 +152,12 @@ export default defineComponent({
       
     }
 
-    
-  
     function confirm(){
       props.curmodal.dismiss();
     }
 
     function dismissModal() {
+      // 취소를 눌렀을 때 작품 리스트를 초기 상태로 되돌린다.
       pdFilmgraphy.movieList = initialMovieList;
       props.curmodal.dismiss();
     }

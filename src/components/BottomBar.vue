@@ -48,8 +48,7 @@ export default defineComponent({
   },
   setup(){
     const globalState = useGlobalShare();
-    const router = getCurrentInstance()?.appContext.config.globalProperties.$router;
-
+    
     return {
      globalState, 
      calendar, 

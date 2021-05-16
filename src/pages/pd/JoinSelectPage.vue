@@ -4,8 +4,16 @@
     <TitleBar title="회원가입 페이지" btn_back="true"></TitleBar>
 
     <div class="flex flex-col mt-4 w-72 text-white mx-auto">
-      <div class="relative btn-joinSel h-32 mt-2"><span class="inline-block left-1/2 top-1/2 relative">아티스트로 시작하기</span><div class="top-1/2 mx-auto relative bg-line"></div></div>
-      <router-link to="/usr/pd/join"><div class="relative btn-joinSel h-32 mt-4"><span class="inline-block left-1/2 top-1/2 relative">제작자로 시작하기</span><div class="top-1/2 mx-auto relative bg-line"></div></div></router-link>
+      <div class="relative btn-joinSel h-32 mt-2">
+        <span class="inline-block left-1/2 top-1/2 relative">아티스트로 시작하기</span>
+        <div class="top-1/2 mx-auto relative bg-line"></div>
+      </div>
+      <router-link to="/usr/pd/join">
+        <div class="relative btn-joinSel h-32 mt-4">
+          <span class="inline-block left-1/2 top-1/2 relative">제작자로 시작하기</span>
+          <div class="top-1/2 mx-auto relative bg-line"></div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -18,21 +26,16 @@ export default defineComponent({
   name: 'JoinSelectPage',
   components: {
   },
-  props: {
-    
-  },
-  setup(props) {
+  setup() {
 
    function hisback() {
      router.back();
     }
+
    return {
      router,
      hisback
    }
-    
-  },
-  methods : {
     
   }
   

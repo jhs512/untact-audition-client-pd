@@ -57,14 +57,17 @@ export class MainService {
   pd_doModifyPw( email: string, regNumber: string, loginPw: string ) {
     return this.mainApi.pd_doModifyPw(email,regNumber,loginPw);
   }
-  pd_doDelete( loginedMemberId: number ) {
-    return this.mainApi.pd_doDelete(loginedMemberId);
+  pd_doDelete( loginedMemberId: number , loginedMemberType:String) {
+    return this.mainApi.pd_doDelete(loginedMemberId, loginedMemberType);
   }
   pd_showDetail( loginedMemberId: string ){
     return this.mainApi.pd_showDetail(loginedMemberId);
   }
   pd_getArtwork( loginedMemberId: string ){
     return this.mainApi.pd_getArtwork(loginedMemberId);
+  }
+  pd_deleteArtwork( artworkId: number ) {
+    return this.mainApi.pd_deleteArtwork(artworkId);
   }
   recruit_write(memberTypeCode: string, memberId: number, boardId: number, rmTitle: string, rmBody: string, rmRoleType: string, rmPay: string, rmLocation: string, rmPeriod: string, rmDeadline: string, rmGender: string, rmAge: [], rmScript: string, rmVideoTime: string, rmEtc: string,
     awMedia: string, awName: string, awDirector: string, awCorp: string, awProducer: string, awManager: string, awGenre: string, awStory: string, awWriter: string, awEtc: string,
@@ -96,11 +99,11 @@ export class MainService {
   recruit_detail(id: number) {
     return this.mainApi.recruit_detail(id);
   }
-  application_list(id: number){
-    return this.mainApi.application_list(id);
+  application_list(id: number, loginedMemberId:number){
+    return this.mainApi.application_list(id,loginedMemberId);
   }
-  application_detail(id: number){
-    return this.mainApi.application_detail(id);
+  application_detail(id: number, loginedMemberId:number){
+    return this.mainApi.application_detail(id,loginedMemberId);
   }
   application_select(applicationId: number){
     return this.mainApi.application_select(applicationId);

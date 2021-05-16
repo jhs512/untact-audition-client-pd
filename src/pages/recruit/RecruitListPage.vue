@@ -95,17 +95,21 @@ export default defineComponent({
     IonChip
     },
   name: 'RecruitListPage',
-  setup(props) {
+  setup() {
+
     const globalState = useGlobalShare();
-    
     const mainService = useMainService();
+
+    onMounted(() => {
+      loadRecruits(limit,filter); 
+    });
     
     let limit = 5;
     let isAllLoaded = false;
 
-      const state = reactive({
+    const state = reactive({
       list: [] as any[]
-      });
+    });
 
     function loadRecruits(limit: number,keyword: []) {
       mainService.recruit_list(limit,keyword)
@@ -123,16 +127,8 @@ export default defineComponent({
         if( axiosResponse.data.body.isAllLoaded == true ){
           isAllLoaded = true;
         }
-        
-      })
-      
+      });  
     }
-
-    onMounted(() => {
-      loadRecruits(limit,filter); 
-    });
-    
-    
 
    async function loadData(event: any){
      if( isAllLoaded == false){
@@ -145,7 +141,6 @@ export default defineComponent({
       event.target.complete();
       limit = limit + 2;
       addData(limit);
-      
     }
     
     function addData(limit: number){
@@ -159,8 +154,6 @@ export default defineComponent({
         }, time);
       });
     }
-
-  
     
     const isOpenRef = ref(false);
 
@@ -169,18 +162,17 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpenRef.value = isOpened;
       setTimeout(() => {
-         for(let i = 0 ; i < filterItems.length ; i ++){
-        if (filter.indexOf(filterItems[i]) >= 0 ) {
-          $('.chip_'+i).css("background-color","#C4C4C4");
+        for(let i = 0 ; i < filterItems.length ; i ++){
+          if (filter.indexOf(filterItems[i]) >= 0 ) {
+            $('.chip_'+i).css("background-color","#C4C4C4");
+          }
         }
-      }
-      }, 100);
-     
+      }, 100); 
     }
+
     const setClose = ( isOpened: boolean) => {
       isOpenRef.value = isOpened;
     }
-
     
     const filterItems = [
       "영화",
@@ -213,8 +205,7 @@ export default defineComponent({
         $('.chip_'+filterItems.indexOf(item)).css("background-color","white");
       }
     }
-
-  
+    
     function filterSave(){
       limit = 5;
       isAllLoaded = false;
