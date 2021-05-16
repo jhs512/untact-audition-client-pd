@@ -42,12 +42,12 @@
           <FormRow title="작품:">
             <ion-button color="light" :onclick="openModal">검색</ion-button>
             <ion-item-sliding  v-bind:key="item" v-for="item in pdFilmgraphy.movieList">
-              <ion-item lines="none">
-                <ion-label>{{item.title}}</ion-label>
+              <ion-item lines="none" class="mt-2">
+                <ion-label class="text-center">{{item.title}}</ion-label>
                 <img :src=item.image>
               </ion-item>
-              <ion-item-options side="end">
-                <ion-item-option @click="deleteItem(item)">제거</ion-item-option>
+              <ion-item-options side="end" class="mt-2">
+                <ion-item-option color="dark" @click="deleteItem(item)">제거</ion-item-option>
               </ion-item-options>
             </ion-item-sliding>
           </FormRow>  

@@ -1,34 +1,36 @@
 <template>
-  <ion-content class="ion-padding">
-    <ion-button :onclick="dismissModal">Close</ion-button>
-    <ion-button :onclick="confirm">Confirm</ion-button>
-    <ion-searchbar clear-icon="close-sharp" debounce="700" @ionChange="searchKeyword($event)"></ion-searchbar>
-        <ion-card v-bind:key="item" v-for="item in list.arr" class="p-2 py-4">
-          <img :src="item.image" class="mx-auto">
-               <ion-card-header>
-                <ion-card-title class="text-center">
-                  {{item.title}}
-                </ion-card-title>
-                <ion-card-subtitle class="text-center">
-                  {{item.subtitle}}
-                </ion-card-subtitle>
-               </ion-card-header>
-               <div class="mx-auto flex">
+<div class="fixed w-full pt-2 z-10 bg-white">
+      <div class="flex justify-between mx-2">
+        <ion-button color="medium" :onclick="dismissModal">취소</ion-button>
+        <ion-button color="medium" :onclick="confirm">확인</ion-button>
+      </div>
+      <ion-searchbar clear-icon="close-sharp" debounce="700" @ionChange="searchKeyword($event)"></ion-searchbar>
+    </div>
+  <ion-content class="ion-padding relative">
+    <div class="mt-28">
+      <ion-card v-bind:key="item" v-for="item in list.arr" class="p-2 py-4">
+        <img :src="item.image" class="mx-auto">
+          <ion-card-header>
+            <ion-card-title class="text-center">
+              {{item.title}}
+            </ion-card-title>
+            <ion-card-subtitle class="text-center">
+              {{item.subtitle}}
+            </ion-card-subtitle>
+          </ion-card-header>
+          <div class="mx-auto flex">
             <ion-checkbox :checked="item.isChecked" @ionChange="checkMovie(item, $event)" class="mx-auto"></ion-checkbox>  
-               </div>
-          
-        </ion-card>
+          </div>
+      </ion-card>
+    </div>
   </ion-content>
 </template>
 
 <script lang="ts">
 import { useMainService } from '@/services';
 import { pdFilmgraphy } from '@/stores';
-
 import { IonContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar, IonText, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/vue';
-
 import { defineComponent, onMounted, reactive } from 'vue';
-import { text } from '@fortawesome/fontawesome-svg-core';
 
 export default defineComponent({
   name: 'SearchMovie',
@@ -46,19 +48,27 @@ export default defineComponent({
 
     const mainApiService = useMainService();
 
+    // 페이지가 불러와지면 배열 선언 후 기존의 회원 작품 정보를 담는다. (검색 취소 시 초기 상태로 되돌리기 위함)    
+    onMounted(() => {
+      for( let i = 0 ; i < pdFilmgraphy.movieList.length; i++) {
+          initialMovieList.push(pdFilmgraphy.movieList[i]);
+      }     
+    })
+    const initialMovieList = [] as any;
+
     /*
     function searchKeyword (event:any){
       mainApiService.searchMvList(event?.target.value)
-    .then(axiosResponse => {
+      .then(axiosResponse => {
       
       list.arr.length = [] as any;
 
-      if(event.target.value.length > 0){
-        for( var i = 0 ; i < axiosResponse.data.movieListResult.movieList.length ; i++ ){
-                let isChecked = false;
+        if(event.target.value.length > 0){
+          for( var i = 0 ; i < axiosResponse.data.movieListResult.movieList.length ; i++ ){
+                  let isChecked = false;
 
-                if ( isChecked == false ) {
-                  for ( var k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
+                  if ( isChecked == false ) {
+                    for ( var k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
                       if ( pdFilmgraphy.movieList[k].movieCd == axiosResponse.data.movieListResult.movieList[i].movieCd ){
                         isChecked = true;
                         break;
@@ -67,19 +77,16 @@ export default defineComponent({
                       }
                     }
                   }
-                
-                let movie = {
-                  movieCd: axiosResponse.data.movieListResult.movieList[i].movieCd,
-                  movieNm: axiosResponse.data.movieListResult.movieList[i].movieNm,
-                  isChecked: isChecked
-                }
-                list.arr.push(movie);
-              }
-      }
-      
-        
-      
-    })
+                  
+                  let movie = {
+                    movieCd: axiosResponse.data.movieListResult.movieList[i].movieCd,
+                    movieNm: axiosResponse.data.movieListResult.movieList[i].movieNm,
+                    isChecked: isChecked
+                  }
+                  list.arr.push(movie);
+          }
+        }
+      });
     }
     */
 
@@ -128,14 +135,6 @@ export default defineComponent({
     const list = reactive({
       arr: [] as any
     })
-
-    // 페이지가 불러와지면 배열 선언 후 기존의 회원 작품 정보를 담는다. (검색 취소 시 초기 상태로 되돌리기 위함)    
-    onMounted(() => {
-      for( let i = 0 ; i < pdFilmgraphy.movieList.length; i++) {
-          initialMovieList.push(pdFilmgraphy.movieList[i]);
-      }     
-    })
-    const initialMovieList = [] as any;
 
     function checkMovie(item: any, event: any){
       if(event.detail.checked){

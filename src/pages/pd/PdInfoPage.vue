@@ -59,7 +59,7 @@
             </ion-card>
           </ion-item>
           <ion-item-options side="end">
-            <ion-item-option @click="deleteFilmgraphy(artwork)">제거</ion-item-option>
+            <ion-item-option color="dark" @click="deleteFilmgraphy(artwork)" class="my-6">제거</ion-item-option>
           </ion-item-options> 
         </ion-item-sliding>
       </div>

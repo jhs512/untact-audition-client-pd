@@ -34,17 +34,28 @@ export default defineComponent({
 
           const authKey = axiosResponse.data.body.authKey;
           const loginedPd = axiosResponse.data.body.pd;
-
+          
           localStorage.setItem("isLoginedByKakao", "true");
           localStorage.setItem("loginedMemberType", "kakao");
           localStorage.setItem("authKey", authKey);
           
           localStorage.setItem("loginedMemberId", loginedPd.id + "");
-          localStorage.setItem("loginedMemberName", loginedPd.name);
-          localStorage.setItem("loginedMemberEmail", loginedPd.email);
+          if(loginedPd.name != null){
+            localStorage.setItem("loginedMemberName", loginedPd.name);
+          }
           
-          localStorage.setItem("loginedMemberExtra__thumbImg", loginedPd.extra.thumbnail_image_url);
-
+          if(loginedPd.email != null){
+            localStorage.setItem("loginedMemberEmail", loginedPd.email);
+          }
+          var thumbUrl = '';
+          
+          if(loginedPd.extra != null && loginedPd.extra.thumbnail_image_url != null){
+            thumbUrl = loginedPd.extra.thumbnail_image_url;
+            if(thumbUrl != null){
+            thumbUrl = thumbUrl?.replace("http","https");
+            localStorage.setItem("loginedMemberExtra__thumbImg", thumbUrl);
+          }
+          }
           location.replace('/main/home');
 
     })
