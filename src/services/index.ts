@@ -143,8 +143,8 @@ export class MainService {
     return this.mainApi.searchMvList(searchKeyword);
   }
 
-  naverMovieApi(keyword: string){
-    return this.mainApi.naverMovieApi(keyword);
+  naverMovieApi(keyword: string, startIndex: number){
+    return this.mainApi.naverMovieApi(keyword, startIndex);
   }
   kakaoLocalApi(keyword: string){
     return this.mainApi.kakaoLocalApi(keyword);

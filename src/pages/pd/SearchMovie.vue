@@ -23,18 +23,25 @@
           </div>
       </ion-card>
     </div>
+
+    <ion-infinite-scroll threshold="150px" id="infinite-scroll" @ionInfinite="loadData($event)" class='mt-4'>
+        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="불러오는 중..">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
   </ion-content>
 </template>
 
 <script lang="ts">
 import { useMainService } from '@/services';
 import { pdFilmgraphy } from '@/stores';
-import { IonContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar, IonText, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/vue';
+import { IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar, IonText, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle } from '@ionic/vue';
+import axios from 'axios';
 import { defineComponent, onMounted, reactive } from 'vue';
 
 export default defineComponent({
   name: 'SearchMovie',
-  components: { IonContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar, IonText, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle  },
+  components: { IonContent, IonItem, IonLabel, IonCheckbox, IonButton, IonSearchbar, IonText, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonInfiniteScroll, IonInfiniteScrollContent  },
   props:{
     title:{
       type:String
@@ -90,12 +97,15 @@ export default defineComponent({
     }
     */
 
-    
+   let keyword = '';
+   
     function searchKeyword (event: any){
-      
-      mainApiService.naverMovieApi(event?.target.value)
+      keyword = event.target.value;
+      mainApiService.naverMovieApi(event?.target.value, 1)
       .then(axiosResponse => {
-
+        
+        movieTotalCount = axiosResponse.data.total;
+        
         list.arr.length = [] as any;
 
         if(event.target.value.length > 0){
@@ -132,6 +142,78 @@ export default defineComponent({
       });
     }
 
+    let startIndex = 1;
+    let movieTotalCount = 0;
+
+    function movieLoad(keyword: any, startIndex:any){
+      
+       mainApiService.naverMovieApi(keyword, startIndex)
+      .then(axiosResponse => {
+       
+        if(keyword.length > 0){
+          for( let i = 0 ; i < axiosResponse.data.items.length ; i++ ){
+            
+            let isChecked = false;
+            // naverMovieApi로 영화 목록 받아온 후 회원에게 이미 등록된 작품이면 체크 된 상태로 만들어두기
+            if ( isChecked == false ) {
+              for ( let k = 0; k <  pdFilmgraphy.movieList.length; k++ ){  
+                  if ( pdFilmgraphy.movieList[k].image == axiosResponse.data.items[i].image ){
+                    isChecked = true;
+                    break;
+                  } else {
+                    isChecked = false;
+                  }
+                }
+              }
+            // naverMovieApi로 받아온 영화에 들어있는 태그들 제거하고 객체정보로 넣어서 배열에 담기  
+            let title = axiosResponse.data.items[i].title.replaceAll("<b>","");
+            title = title.replaceAll("</b>","");
+            let subtitle = axiosResponse.data.items[i].subtitle.replaceAll("<b>","");
+            subtitle = subtitle.replaceAll("</b>","");
+            const movie = {
+              title: title,
+              subtitle: subtitle,
+              director: axiosResponse.data.items[i].director,
+              image: axiosResponse.data.items[i].image,
+              link: axiosResponse.data.items[i].link,
+              isChecked: isChecked
+            }
+            list.arr.push(movie);
+          }
+        }
+      });
+    }
+
+    async function loadData(event: any){
+      
+     if( startIndex < movieTotalCount){
+        event.target.removeAttribute('disable');
+     }
+     if ( startIndex >= movieTotalCount ) {
+        event.target.setAttribute('disabled' , 'true');
+        return;
+     }
+     
+      await wait(500);
+      event.target.complete();
+      startIndex = startIndex + 10;
+      addData(startIndex);
+    }
+
+    function addData(startIndex: number){
+      if(startIndex < movieTotalCount){
+        movieLoad(keyword,startIndex);
+      }
+    }
+
+    async function wait(time: any) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve('');
+        }, time);
+      });
+    }
+
     const list = reactive({
       arr: [] as any
     })
@@ -164,6 +246,7 @@ export default defineComponent({
     return {
       list,
       checkMovie,
+      loadData,
       dismissModal,
       confirm,
       searchKeyword

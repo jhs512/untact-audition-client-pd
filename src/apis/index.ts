@@ -245,6 +245,8 @@ export interface MainApi__searchMvList__IResponseBody extends Base__IResponseBod
 
 export interface MainApi__naverApi__IResponseBody extends Base__IResponseBodyType1 {
   items: naverMovieInfo[]; 
+  total: number;
+  display: number;
 }
 export interface MainApi__kakaoApi__IResponseBody extends Base__IResponseBodyType1 {
   items: string; 
@@ -432,8 +434,8 @@ export class MainApi extends HttpClient {
     return this.get<MainApi__searchMvList__IResponseBody>(`/usr/pd/searchMvList?movieName=${movieName}`);
   }
 
-  public naverMovieApi(keyword: string) {
-    return this.get<MainApi__naverApi__IResponseBody>(`/usr/naver/movie?keyword=${keyword}`);
+  public naverMovieApi(keyword: string, startIndex: number) {
+    return this.get<MainApi__naverApi__IResponseBody>(`/usr/naver/movie?keyword=${keyword}&startIndex=${startIndex}`);
   }
 
   public kakaoLocalApi(keyword: string) {
