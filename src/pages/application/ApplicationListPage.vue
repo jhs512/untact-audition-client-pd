@@ -12,16 +12,16 @@
             <span>현재 사진</span>
             <div v-if="application.extra != null && application.extra.file__photo__attachment != null" class="my-10">
               <div class="w-72 h-72 flex flex-col justify-center items-center">
-                <img :src="application.extra.file__photo__attachment[1].forPrintUrl" alt="">
+                <img :src="application.extra.file__photo__attachment[1].forPrintUrl" alt="" class="mx-auto">
               </div>
             </div>
           </div>
 
             <div class="mt-8 border-b-4">
               <span>프로필 사진</span>
-              <div v-if="application.extra != null && application.extra.file__profile__attachment != null" class="my-10">
-                <div class="w-72 h-72 flex flex-col justify-center items-center mt-10"  v-bind:key="profile" v-for="profile in application.extra.file__profile__attachment">
-                  <img :src="profile.forPrintUrl" alt="">
+              <div v-if="application.extra != null && application.extra.file__profile__attachment != null" class="my-10 flex justify-center items-center">
+                <div class="w-72 h-72" v-bind:key="profile" v-for="profile in application.extra.file__profile__attachment">
+                  <img :src="profile.forPrintUrl" alt="" class="mx-auto">
                 </div>
               </div>
             </div>
@@ -30,7 +30,7 @@
             <span>연기 영상</span>
             <div v-if="application.extra != null && application.extra.file__video__attachment != null" class="my-10">
               <div class="w-72 h-72 flex flex-col justify-center items-center" >
-                <video controls :src="application.extra.file__video__attachment[1].forPrintUrl"></video>
+                <video controls :src="application.extra.file__video__attachment[1].forPrintUrl" class="mx-auto"></video>
               </div>
             </div>
           </div>

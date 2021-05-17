@@ -7,7 +7,7 @@
       <div class="flex flex-col min-h-screen mb-20">
         <TitleBar title="Audictionary" btn_back="true"></TitleBar>
 
-        <div class="flex mx-4">
+        <div class="flex mx-4 mt-4">
           <span class="bg-underline p-2">ARTIST INFO</span>
         </div>
 

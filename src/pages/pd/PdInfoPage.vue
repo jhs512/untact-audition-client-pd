@@ -8,20 +8,25 @@
 
       <div class="flex flex-col container mx-auto border-b py-2">
         <div class="flex flex-col mx-auto text-center">
+
           <div v-if="globalState.loginedMember.extra__thumbImg != null" class="img-container mx-4 mb-4 p-4 mt-6">  
-            <img :src="globalState.loginedMember.extra__thumbImg" class="mx-auto w-60 h-60 object-contain">
-            <ion-button color="medium" fill="outline" class="btn-deleteProfileImg" v-if="globalState.loginedMember.loginedMemberType != `kakao`" :onclick="deleteProfileImg">프로필 이미지 삭제</ion-button>
+            <img :src="globalState.loginedMember.extra__thumbImg" class="mx-auto w-60 h-60 object-cover rounded-full">
+            <ion-button size="small" color="dark" fill="outline" v-if="globalState.loginedMember.loginedMemberType != `kakao`" :onclick="deleteProfileImg" class="mt-4">프로필 이미지 삭제</ion-button>
           </div>
 
           <div v-if="globalState.loginedMember.extra__thumbImg == null" class="img-container mx-4 mb-4 p-4 mt-6">  
             <img src="https://backend.audictionary.com/gen/common/thumbnail_alt.png" class="mx-auto w-60 h-60 object-contain">
+          </div>
+
+          <div>
+            <span class="text-3xl">{{state.pd.name}}</span>
           </div>
           <!-- 임시 
           <span class="btn-modify border-2 w-24 mx-auto mt-2 border-black text-xs"><router-link class="w-full block" :to="`/usr/pd/modify?id=${globalState.loginedMember.id}`">프로필 편집</router-link></span>
           -->
           <div  class="mt-2">
             <form v-if="globalState.loginedMember.loginedMemberType != `kakao`" class="my-2" action="" >
-              <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)">
+              <input type="button" value="회원탈퇴" v-on:click="presentAlertConfirm($event)" class="px-2 text-sm">
             </form>
             <!-- 임시
             <div class="my-2">
@@ -68,8 +73,8 @@
         <div class="mt-4">
           <ion-item-sliding class="flex mt-4" v-bind:key="ap" v-for="ap in state.likeApList">
             <ion-item lines="none" class="w-full">
-              <div class="w-20 h-16" v-if="ap.extra != null && ap.extra.file__profile__attachment != null">
-                <img class="w-20 h-16 object-cover rounded-3xl" :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="">
+              <div class="w-20 h-20 rounded-full" v-if="ap.extra != null && ap.extra.file__profile__attachment != null">
+                <img class="w-full h-full object-cover rounded-full" :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="">
               </div>
               <div class="flex flex-col ml-4">
                 <span class="font-bold">{{ap.extra__ap_name}}</span>
@@ -78,7 +83,7 @@
               </div>
             </ion-item>
             <ion-item-options side="end">
-              <ion-item-option @click="deleteLikeApplication(ap)">제거</ion-item-option>
+              <ion-item-option color="dark" @click="deleteLikeApplication(ap)">제거</ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
         </div>
@@ -293,9 +298,5 @@ ion-card {
   border-radius:25px;
   box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.25);
   border:2px solid #DADADA;
-}
-.btn-deleteProfileImg {
-  border:2px solid black;
-  border-radius:6px;
 }
 </style>

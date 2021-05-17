@@ -379,6 +379,9 @@ export class MainApi extends HttpClient {
   public recruit_detail(id: number) {
     return this.get<MainApi__recruit_detail__IResponseBody>(`/usr/recruit/detail?id=${id}`);
   }
+  public recruit_finish(id: number) {
+    return this.get<MainApi__recruit_detail__IResponseBody>(`/usr/recruit/finish?id=${id}`);
+  }
   public recruitByKeyword(keyword: string) {
     return this.get<MainApi__recruit_search__IResponseBody>(`/usr/recruit/search?keyword=${keyword}`);
   }

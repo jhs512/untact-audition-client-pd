@@ -34,9 +34,9 @@
        <div v-bind:key="recruit" v-for="(recruit,index) in state.expiredList" class="mt-4">
       <router-link :to="`/usr/recruit/admDetail?id=${recruit.id}`">
         <div v-if="recruit.dateDiff < 0 && index < state.expiredListShow" class="flex justify-between text-center mt-4 bg-gray-100 py-2 px-4">
-         <span class="flex-1">가제: {{recruit.title}}</span>
+         <span class="flex-1">{{recruit.title}}</span>
          <span class="flex-1">배역: {{recruit.extra__ar_name}}</span>
-         <span class="flex-1">{{recruit.extra__application__count}}</span>
+         <span class="flex-1">{{recruit.extra__application__count}}명 지원</span>
         </div>
       </router-link>
       </div>  
@@ -160,7 +160,7 @@ export default defineComponent({
           const regDate = new Date(state.list[i].deadline);
 
           state.list[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
-          if(state.list[i].dateDiff > 0 ){
+          if(state.list[i].dateDiff >= 0 ){
             state.notExpiredList.push(state.list[i]);
           } else {
             state.expiredList.push(state.list[i]);

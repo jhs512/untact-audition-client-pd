@@ -25,7 +25,9 @@
         <router-link :to="`/usr/application/list?id=${state.recruit.id}`">
           <div class="p-4 flex justify-around items-center" v-if="index < state.apListAllShow">
             <div>{{ap.id}}.</div>
-            <div class="ml-2 w-16 h-16 rounded-full"><img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full rounded-full"></div>
+            <div class="ml-2 w-16 h-16 rounded-full">
+              <img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full object-cover rounded-full">
+            </div>
             <div class="ml-2 flex-1">이름: {{ap.name}}</div>
           </div>
         </router-link>
@@ -43,7 +45,7 @@
         <div class="p-4 flex justify-around items-center" v-if="index < state.apListLikeShow">
           <div>{{ap.id}}.</div>
           <div class="ml-2 w-16 h-16 rounded-full">
-            <img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full rounded-full">
+            <img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full object-cover rounded-full">
           </div>
           <div class="ml-2 flex-1">이름: {{ap.name}}</div>
         </div>
@@ -62,7 +64,7 @@
           <div class="p-4 flex justify-around items-center" v-if="index < state.apList1PassShow">
             <div>{{ap.id}}.</div>
             <div v-if="ap.extra != null" class="ml-2 w-16 h-16 rounded-full border">
-              <img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full rounded-full">
+              <img :src="ap.extra.file__profile__attachment[1].forPrintUrl" alt="" class="w-full h-full object-cover rounded-full">
             </div>
             <div class="ml-2 flex-1">이름: {{ap.name}}</div>
           </div>

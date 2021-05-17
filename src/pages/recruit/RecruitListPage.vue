@@ -47,7 +47,7 @@
   </div>
 
       <ion-infinite-scroll threshold="150px" id="infinite-scroll" @ionInfinite="loadData($event)" class='mt-4'>
-        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data...">
+        <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="불러오는 중..">
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
 
@@ -205,7 +205,7 @@ export default defineComponent({
         $('.chip_'+filterItems.indexOf(item)).css("background-color","white");
       }
     }
-    
+
     function filterSave(){
       limit = 5;
       isAllLoaded = false;

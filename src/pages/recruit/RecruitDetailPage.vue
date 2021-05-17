@@ -9,7 +9,8 @@
       <div class="font-roboto font-black container flex flex-col mx-auto">
         <div class="w-full mx-auto mt-4 text-center">
           <div class="text-lg font-coda font-bold">{{state.recruit.extra__aw_title}}</div>
-          <div v-if="state.dateDiff >= 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
+          <div v-if="state.dateDiff > 0" class="text-xs mt-2">남은 기간: {{state.dateDiff}}일</div>
+          <div v-if="state.dateDiff == 0" class="text-xs mt-2">남은 기간: 오늘까지</div>
           <div v-if="state.dateDiff < 0" class="text-xs mt-2">기한 마감</div>
           
 
@@ -168,10 +169,11 @@
         </div>
 
 
-        <div class="flex justify-center w-full mx-auto mt-8 text-sm">
-          <router-link v-if="state.recruit.memberId == globalState.loginedMember.id && state.recruit.memberTypeCode == globalState.loginedMemberType" :to="`/usr/recruit/modify?id=${state.recruit.id}`">
-            <div class="btn-apply py-1 px-10 mx-auto">수정</div>
+        <div v-if="state.recruit.memberId == globalState.loginedMember.id && state.recruit.memberTypeCode == globalState.loginedMemberType" class="flex justify-around w-full mx-auto mt-8 text-sm">
+          <router-link :to="`/usr/recruit/modify?id=${state.recruit.id}`">
+            <ion-button fill="outline" color="dark" class="">수정</ion-button>
           </router-link>
+          <ion-button fill="outline" color="dark" :onclick="finish">마감</ion-button>
         </div>
       </div>
     
@@ -184,9 +186,9 @@
 
 <script lang="ts">
 import { defineComponent,  reactive, onMounted } from 'vue'
-import { IonPage, IonContent, IonIcon, IonGrid, IonCol, IonRow, IonThumbnail, IonImg, IonAvatar  } from '@ionic/vue'
+import { IonPage, IonContent, IonIcon, IonGrid, IonCol, IonRow, IonThumbnail, IonImg, IonAvatar, IonButton  } from '@ionic/vue'
 import { returnUpBackOutline } from 'ionicons/icons'
-import router from '@/router'
+
 import { IRecruit } from '../../types'
 import { useGlobalShare } from '@/stores'
 import { useMainService } from '@/services'
@@ -201,7 +203,8 @@ export default defineComponent({
     IonRow,
     IonThumbnail, 
     IonImg, 
-    IonAvatar 
+    IonAvatar,
+    IonButton
     },
   name: 'RecruitDetailPage',
   props:{
@@ -227,17 +230,30 @@ export default defineComponent({
       mainApiService.recruit_detail(id)
       .then(axiosResponse => {
         state.recruit = axiosResponse.data.body.recruit;
-        const today = new Date();
-        const regDate = new Date(state.recruit.deadline);
-      
-      state.dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
+        if(state.recruit.deadline == null){
+            state.dateDiff = -1;
+          } else {
+             
+          const today = new Date();
+          const regDate = new Date(state.recruit.deadline);
+        
+          state.dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
+        } 
+      });
+    }
+
+    function finish(){
+      mainApiService.recruit_finish(props.id)
+      .then(axiosResponse => {
+
       });
     }
 
     return {
       state,  
       returnUpBackOutline,
-      globalState
+      globalState,
+      finish
     }
   }
 })
@@ -249,10 +265,6 @@ export default defineComponent({
   background-color: #D4D4D4;
 }
 .btn-like {
-  border:2px solid black;
-  border-radius:6px;
-}
-.btn-apply {
   border:2px solid black;
   border-radius:6px;
 }

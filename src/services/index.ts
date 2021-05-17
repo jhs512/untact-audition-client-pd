@@ -99,6 +99,9 @@ export class MainService {
   recruit_detail(id: number) {
     return this.mainApi.recruit_detail(id);
   }
+  recruit_finish(id: number) {
+    return this.mainApi.recruit_finish(id);
+  }
   application_list(id: number, loginedMemberId:number){
     return this.mainApi.application_list(id,loginedMemberId);
   }

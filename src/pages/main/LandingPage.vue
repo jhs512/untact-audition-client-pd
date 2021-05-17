@@ -130,13 +130,17 @@ export default defineComponent({
       .then(axiosResponse => {
         
         state.list = axiosResponse.data.body.recruits;
-
-        // 게시물의 regDate정보로 기한이 며칠 남았는지 계산해서 각 객체에 넣습니다.
         for(let i = 0 ; i < axiosResponse.data.body.recruits.length; i++){
+        // 게시물의 regDate정보로 기한이 며칠 남았는지 계산해서 각 객체에 넣습니다.
+        if(state.list[i].deadline == null){
+            state.list[i].dateDiff = -1;
+          } else {
           const today = new Date();
           const regDate = new Date(state.list[i].deadline);
-
+          
           state.list[i].dateDiff = Math.ceil((regDate.getTime()-today.getTime())/(1000*3600*24)); 
+        }
+         
         }
       })
     }
